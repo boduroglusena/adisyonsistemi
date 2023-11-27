@@ -1,0 +1,4159 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+	<title>POSULA | Satış Noktaları</title>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+<!--===============================================================================================-->	
+	<link rel="icon" type="image/png" href="images/icons/favicon.ico"/>
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="vendor/bootstrap-5/css/bootstrap.min.css">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="vendor/fontawesome-6/css/fontawesome.min.css">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="vendor/alertifyJS/alertify.min.css">
+<!--===============================================================================================-->
+
+<style>
+
+@font-face{
+    font-family: 'Digital-7';
+    src:  url('fonts/digital-7.ttf') format('woff2');
+}
+
+html, body {
+  height: 100%;
+  margin: 0;
+}
+
+div {
+    -ms-overflow-style: none;  /* Internet Explorer 10+ */
+    scrollbar-width: none;  /* Firefox */
+}
+div::-webkit-scrollbar { 
+    display: none;  /* Safari and Chrome */
+}
+
+.kisimbtncss{
+	box-shadow: 0px 0px 6px rgba(0,0,0,0.3);
+}
+
+.kisimbtncss:hover{
+	color: white !important;
+}
+
+.full-height {
+  height: 100%;
+  width: 100%;
+}	
+
+.alertify-notifier {
+            color: #fff;
+        }
+
+.loading-bar{
+	display: none;
+	position: fixed;
+	z-index: 1000;
+	left:0;
+	top:0;
+	width: 100%;
+	height: 100%;
+	background-image: url('images/loading.gif');
+	background-position: 50% 50%;
+	background-color: rgba(255,255,255,0.8);
+	background-repeat: no-repeat;
+}
+
+body.loading{
+	overflow: hidden;
+}
+
+body.loading .loading-bar{
+	display: block;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+	-webkit-appearance: none;
+	margin: 0;
+}
+
+input[type=number] {
+	-moz-appearance: textfield;
+}
+
+
+
+.okc-bar{
+	display: none;
+	position: fixed;
+	z-index: 99999;
+	left:0;
+	top:0;
+	width: 100%;
+	height: 100%;
+	background-image: url('images/loading.gif');
+	background-position: 50% 50%;
+	background-color: rgba(255,255,255,0.8);
+	background-repeat: no-repeat;
+	align-items: center;
+	text-align: center;
+}
+
+body.okc{
+	overflow: hidden;
+}
+
+body.okc .okc-bar{
+	display: block;
+}
+
+
+
+
+#clock {
+    color: #ffffff;
+    text-align: center;
+	width:100%;
+    color: #383838;
+    
+}
+
+.date {
+	font-family: Calibri;
+	font-size: 20px;
+	font-weight: bolder;
+	
+	
+}
+
+.time {
+	font-family: Digital-7;
+	letter-spacing: 0.05em;
+	font-size: 85px;
+	padding-top: 10px;
+	line-height: 90%;
+}
+
+.btn-outline-secondary:focus {
+    --bs-btn-color: white !important;
+}
+
+body {
+  background: url("images/bg.jpg");
+  height: 100%;
+
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.card{
+	background-color: transparent;
+}
+
+</style>
+</head>
+<body>
+	
+	
+	<div class="full-height" >
+		<div class="row m-0" style="height: 100%; width: 100%;">
+			<div id="kisim" class="col-xl-2 col-lg-2 col-md-2 col-sm-3 col-3" style="padding-left:5px; padding-right: 7px; border:1px solid white;border-radius: 5px;">
+
+			</div>
+			<div class="col-xl-7 col-lg-7 col-md-7 col-sm-6 col-6">
+				
+				<div class="row align-items-center" style="display: none; font-weight: bold; border:1px solid white; min-height: 3em; vertical-align: middle;border-radius: 5px; overflow-x: auto;">
+					<div class="col-4" style="white-space: nowrap;display:block;text-overflow: ellipsis;" id="sube1">
+						
+					</div>
+					<div class="col-4 text-center" style="white-space: nowrap;display:block;text-overflow: ellipsis;" id="tarihsaat1">
+						
+					</div>
+					<div class="col-4 text-end" style="white-space: nowrap;display:block;text-overflow: ellipsis;" id="_kullanici">
+						
+					</div>
+				</div>
+				<div id="ortabolum" class="row" style="font-weight: bold;  border:1px solid white; border-radius: 5px; overflow-y: auto;">
+					<div class="container-fluid text-center">
+						<div class="row text-center" id="masa" style="overflow-y: auto;">
+							
+						</div>
+					</div>
+					
+				</div>
+				
+				
+			</div>
+			<div id="sagbolum" class="col-xl-3 col-lg-3 col-md-3 col-sm-3 col-3" style="position: relative; padding-left:5px; padding-right: 7px;border:2px solid white;border-radius: 5px;">
+				<div class="row m-0" style="height:100%;">
+					<div class="col-12 px-0 py-1" style="min-height:50% !important; max-height:50%;">
+						<div class="card" id="masadetayboscard" style="height: 100%;" aria-hidden="true">
+							<div class="card-body p-0 text-center" id="masadetaybos" style="overflow-y: hidden; overflow-x: hidden;">
+								<div class="row m-0 p-0" style="height:100%;">
+									<div class="col-12 m-0 p-0">
+										<div class="card m-1" style="max-width: 100%;">
+											<div class="card-body py-1">
+												<p id="firma" class="card-text" style="font-weight: 500;"></p>
+											</div>
+										  </div>
+										  <div class="card m-1" style="max-width: 100%;">
+											<div class="card-body py-1">
+												<p id="sube" class="card-text" style="font-weight: 500;"></p>
+											</div>
+										  </div>
+										  <div class="card m-1" style="max-width: 100%;">
+											<div class="card-body py-1">
+												<p id="kullanici" class="card-text" style="font-weight: 500;"></p>
+											</div>
+										  </div>
+									</div>
+									
+
+								</div>
+								
+							</div>
+						  </div>
+
+
+						  <div class="card" id="masadetaycard" style="height: 100%; display: none;" aria-hidden="true">
+							<div class="card-body p-0" id="masadetay" style="overflow-y: auto; overflow-x: hidden;">
+								
+							</div>
+						  </div>
+
+
+
+					</div>
+					<div class="col-12 px-0 py-1" style="min-height:50% !important; max-height:50%;">
+						<div class="card" id="masabutonboscard" style="height: 100%;" aria-hidden="true">
+							<div class="card-body px-0 py-0 text-center" id="masabutonbos">
+								
+								
+								
+									
+							
+								
+
+								
+
+								
+								<div class="row p-0" style="width: 100%; position: absolute; bottom:0px; margin-left:0px;">
+									<div class="col-6 p-1">
+										<button id="canlidurumbtn" class="btn btn-block p-1" style='background-color: cornflowerblue; color:white; font-weight: 500; width: 100%;min-height: 65px;' data-bs-toggle='modal' data-bs-target='#durumModal'>Canlı Durum</button>
+									</div>
+									<div class="col-6 p-1">
+										<button class='btn btn-block p-1' style='background-color: lightcoral; color:white; font-weight: 500; width: 100%;min-height: 65px;' onclick='window.location=`index.html`;'>Çıkış</button>
+									</div>
+								</div>
+							</div>
+						  </div>
+
+
+						  <div class="card" id="masabutoncard" style="height: 100%; display:none;" aria-hidden="true">
+							<div class="card-body px-1 py-1 text-center" id="masabuton">
+								
+							</div>
+						  </div>
+						
+					</div>
+				</div>
+				
+				
+				
+	
+			</div>
+		</div>
+	</div>
+
+	<div class="modal fade" id="aciklamaModal" tabindex="-1" aria-labelledby="aciklamaModalLabel">
+		<div class="modal-dialog modal-dialog-centered">
+			<div class="modal-content">
+			<div class="modal-header py-1" style="background-color:lightgrey;">
+				<h6 id="aciklama_baslik" class="modal-title">Açıklama giriniz</h6>
+			</div>
+			<div class="modal-body">
+				<div class="row mt-3 mx-0" style="width: 100%;">
+					<div class="col-12">
+						<input type="password" style="display: none;" id="ac_masaid">
+						<input type="text" class="form-control" id="ac_aciklama">
+					</div>
+				</div>
+			</div>
+			<div class="modal-footer text-right px-2">
+				
+				<button id="btn1" class="btn btn-primary text-center" style="display: inline-block; text-align: center;"  data-bs-dismiss="modal" onclick="aciklamaekle();">Kaydet</button>	
+				<button class='btn text-secondary' style='background-color:lightgrey; margin-left:20px; font-weight:700; min-width:85px; border: 1px solid lightgrey;' onclick='$(`#aciklamaModal`).modal(`hide`);'>Kapat</button>
+				
+			</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="modal fade" id="masatasiModal" tabindex="-1" aria-labelledby="masatasiModalLabel">
+		<div class="modal-dialog modal-dialog-centered modal-xl modal-dialog-scrollable" style="height:90% !important;">
+			<div class="modal-content" style="height:100% !important;">
+			<div class="modal-header py-1" style="background-color:lightgrey;">
+				<h6 id="masatasi_baslik" class="modal-title">Yeni masa seçiniz</h6>
+			</div>
+			<div class="modal-body py-2">
+				<input type="password" style="display: none;" id="mt_masaid">
+				<input type="password" style="display: none;" id="mt_masaidyeni">
+				<div class="row m-0">
+					<div class="col-3">
+						<div class="row">
+							<div class="col-12" id="masatasi_kisimlar" style="padding-top: 2px;">
+								
+							</div>
+						</div>
+					</div>
+					<div class="col-9" style="font-weight: 700;">
+						<div class="row m-0" id="masatasi_masalar">
+
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="modal-footer text-right px-2 py-1">
+				
+				<button id="btn1" class="btn btn-primary text-center" style="display: inline-block; text-align: center;"  data-bs-dismiss="modal" onclick="masatasi();">Onay</button>	
+				<button class='btn text-secondary' style='background-color:lightgrey; margin-left:20px; font-weight:700; min-width:85px; border: 1px solid lightgrey;' onclick='$(`#masatasiModal`).modal(`hide`);'>Kapat</button>
+			</div>
+			</div>
+		</div>
+	</div>
+
+
+	<div class="modal fade" id="uruntasiModal" tabindex="-1" aria-labelledby="uruntasiModalLabel">
+		<div class="modal-dialog modal-dialog-centered modal-xl modal-dialog-scrollable" style="height:90% !important;">
+			<div class="modal-content" style="height:100% !important;">
+			<div class="modal-header py-1" style="background-color:lightgrey;">
+				<h6 id="uruntasi_baslik" class="modal-title">Taşınacak ürünleri seçiniz</h6>
+			</div>
+			<div class="modal-body py-2">
+				<input type="password" style="display: none;" id="ut_masaid">
+				<input type="password" style="display: none;" id="ut_masaidyeni">
+				<div class="row m-0" id="uruntasi_urunsec">
+					<div class="col-12" id="uruntasi_urundiv">
+
+					</div>
+				</div>
+				<div class="row m-0" id="uruntasi_masasec" style="display:none;">
+					<div class="col-3">
+						<div class="row">
+							<div class="col-12" id="uruntasi_kisimlar" style="padding-top: 2px;">
+								
+							</div>
+						</div>
+					</div>
+					<div class="col-9" style="font-weight: 700;">
+						<div class="row m-0" id="uruntasi_masalar">
+
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="modal-footer text-right px-2 py-1">
+				
+				<button id="uruntasi_ileribtn" class="btn btn-success text-center" style="display: inline-block; text-align: center;" onclick="document.getElementById('uruntasi_urunsec').style.display='none'; document.getElementById('uruntasi_masasec').style.display=''; document.getElementById('uruntasi_geribtn').style.display='inline-block'; document.getElementById('uruntasi_ileribtn').style.display='none'; document.getElementById('uruntasi_onaybtn').style.display='inline-block'; document.getElementById('uruntasi_baslik').innerText = 'Yeni masa seçiniz'; kisimgetir_ut();">İleri</button>
+				<button id="uruntasi_geribtn" class="btn btn-success text-center" style="display: none; text-align: center;" onclick="document.getElementById('uruntasi_masasec').style.display='none'; document.getElementById('uruntasi_urunsec').style.display=''; document.getElementById('uruntasi_geribtn').style.display='none'; document.getElementById('uruntasi_ileribtn').style.display='inline-block'; document.getElementById('uruntasi_onaybtn').style.display='none'; document.getElementById('uruntasi_baslik').innerText = 'Taşınacak ürünleri seçiniz';">Geri</button>
+				<button id="uruntasi_onaybtn" class="btn btn-primary text-center" style="display: none; text-align: center;" onclick="uruntasi();">Onay</button>
+				<button class='btn text-secondary' style='background-color:lightgrey; margin-left:20px; font-weight:700; min-width:85px; border: 1px solid lightgrey;' onclick='$(`#uruntasiModal`).modal(`hide`);'>Kapat</button>
+			</div>
+			</div>
+		</div>
+	</div>
+
+
+	<div class="modal fade" id="iskontoModal" tabindex="-1" aria-labelledby="iskontoModalLabel">
+		<div class="modal-dialog modal-dialog-centered">
+		  <div class="modal-content">
+			<div class="modal-header py-1" style="background-color:lightgrey;">
+				<h6 id="iskonto_baslik" class="modal-title">İndirim seçiniz</h6>
+			</div>
+			<div class="modal-body">
+				<input type="password" style="display: none;" id="is_masaid">
+				<div class="row mt-3" style="width: 100%;">
+					<div class="col-12">
+						<div class="row m-2" style="width: 100%;" id="m_iskontocard">
+
+						</div>
+					</div>
+				</div>
+			</div>
+		  </div>
+		</div>
+	</div>
+
+
+	<div class="modal fade" id="cekbolModal" tabindex="-1" aria-labelledby="cekbolModalLabel">
+		<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+		  <div class="modal-content">
+
+			<div class="modal-header py-1" style="background-color:lightgrey;">
+				<h6 id="kisisayisi_baslik" class="modal-title">Detaylı ödeme</h6>
+				<input type="password" style="display: none;" id="cb_masaid">
+				<input type="password" style="display: none;" id="cb_musteri">
+				<input type="text" id="kalanhesaptxt" style="display: none;">
+			</div>
+			<div class="modal-body pt-0 p-0">
+				<div class="row p-0 m-0" style="width:100%;">
+					<table class="table table-responsive-sm table-responsive-xs" style="width:100%;">
+						<thead>
+							<tr>
+								<th style="width:70%;">
+									Ödeme Türü
+								</th>
+								<th style="width:30%; text-align: right;">
+									Tutar
+								</th>
+							</tr>
+						</thead>
+						<tbody id="cekboltbl">
+							
+						</tbody>
+					</table>
+				</div>
+
+				
+			</div>
+			<div class="modal-footer text-right px-2">
+				
+				<button id="hesapkapatbtn" disabled class="btn btn-outline-success text-center" style="display: inline-block; width:180px; text-align: center;" onclick="hesapkapatcekbol();">Hesabı Kapat</button>	
+				<button class='btn text-secondary' style='background-color:lightgrey; margin-left:20px; font-weight:700; min-width:85px; border: 1px solid lightgrey;' onclick='$(`#cekbolModal`).modal(`hide`);'>Kapat</button>
+			</div>
+		  </div>
+		</div>
+	</div>
+
+
+
+	<div class="modal fade" id="kupurModal" tabindex="-1" aria-labelledby="kupurModalLabel">
+		<div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
+		  <div class="modal-content" style="max-height:800px; min-width:712px;">
+			<div class="modal-header py-1" style="background-color:lightgrey;">
+				<h6 id="kupur_baslik" class="modal-title">Para Üstü</h6>
+			</div>
+			<div class="modal-body py-1">
+
+				<input type="password" style="display: none;" id="kupur_recipient1">
+				<input type="password" style="display: none;" id="kupur_recipient2">
+				<input type="password" style="display: none;" id="kupur_recipient3">
+
+				<div class="row m-0 mt-1" style="width: 100%;">
+					<div class="col-4 text-center">
+						<h3 style="border-bottom:1px solid black; margin:0px;">Alınan</h3>
+						<h1 style="font-weight:600; display: none; margin:0px;" id="alinanucret">0</h1>
+						<h1 style="font-weight:600; margin:0px;" id="alinanucret_gorunen">0</h1>
+						<div style="margin-top:2px;" id="small1_div">
+							<small id="alinanucret_doviz"></small>
+						</div>
+						
+					</div>
+					<div class="col-4 text-center">
+						<h3 style="border-bottom:1px solid black; margin:0px;">Para Üstü</h3>
+						<h1 style="font-weight:600; display: none; margin:0px;" id="paraustu">0</h1>
+						<h1 style="font-weight:600;margin:0px;" id="paraustu_gorunen">0</h1>
+						<div style="margin-top:2px;" id="small2_div">
+							<small id="paraustu_doviz"></small>
+						</div>
+					</div>
+					<div class="col-4 text-center">
+						<div class="row" style="height:100%;">
+							<div class="col-4 py-0 px-1">
+								<button class="btn btn-success" id="kupur_tl_btn" style="width: 100%; height:100%;" onclick="kupur_parabirimi('tl');"><i class="fa fa-try fa-2x" aria-hidden="true"></i></button>
+							</div>
+							<div class="col-4 py-0 px-1">
+								<button class="btn btn-light" id="kupur_usd_btn" style="width: 100%; height:100%;" onclick="kupur_parabirimi('usd');"><i class="fa fa-usd fa-2x" aria-hidden="true"></i></button>
+							</div>
+							<div class="col-4 py-0 px-1">
+								<button class="btn btn-light" id="kupur_eur_btn" style="width: 100%; height:100%;" onclick="kupur_parabirimi('eur');"><i class="fa fa-eur fa-2x" aria-hidden="true"></i></button>
+							</div>
+						</div>
+						
+					</div>
+				</div>
+
+				<div class="row m-0 mt-1" style="width: 100%;" id="kupur_tl_div">
+					<div class="col-6 text-center px-3 py-2">
+						<img src="images/banknot/tl/5.jpg" style="width: 100%; box-shadow: 0px 0px 8px 2px #666;" onclick="ucretekle('5');">
+					</div>
+					<div class="col-6 text-center px-3 py-2">
+						<img src="images/banknot/tl/10.jpg" style="width: 100%; box-shadow: 0px 0px 8px 2px #666;" onclick="ucretekle('10');">
+					</div>
+					<div class="col-6 text-center px-3 py-2">
+						<img src="images/banknot/tl/20.jpg" style="width: 100%; box-shadow: 0px 0px 8px 2px #666;" onclick="ucretekle('20');">
+					</div>
+					<div class="col-6 text-center px-3 py-2">
+						<img src="images/banknot/tl/50.jpg" style="width: 100%; box-shadow: 0px 0px 8px 2px #666;" onclick="ucretekle('50');">
+					</div>
+					<div class="col-6 text-center px-3 py-2">
+						<img src="images/banknot/tl/100.jpg" style="width: 100%; box-shadow: 0px 0px 8px 2px #666;" onclick="ucretekle('100');">
+					</div>
+					<div class="col-6 text-center px-3 py-2">
+						<img src="images/banknot/tl/200.jpg" style="width: 100%; box-shadow: 0px 0px 8px 2px #666;" onclick="ucretekle('200');">
+					</div>
+				</div>
+
+
+				<div class="row m-0 mt-1" style="width: 100%; display: none;" id="kupur_usd_div">
+					<div class="col-6 text-center px-3 py-2">
+						<img src="images/banknot/usd/1.jpg" style="width: 100%; box-shadow: 0px 0px 8px 2px #666;" onclick="ucretekle_usd('1');">
+					</div>
+					<div class="col-6 text-center px-3 py-2">
+						<img src="images/banknot/usd/5.jpg" style="width: 100%; box-shadow: 0px 0px 8px 2px #666;" onclick="ucretekle_usd('5');">
+					</div>
+					<div class="col-6 text-center px-3 py-2">
+						<img src="images/banknot/usd/10.jpg" style="width: 100%; box-shadow: 0px 0px 8px 2px #666;" onclick="ucretekle_usd('10');">
+					</div>
+					<div class="col-6 text-center px-3 py-2">
+						<img src="images/banknot/usd/20.jpg" style="width: 100%; box-shadow: 0px 0px 8px 2px #666;" onclick="ucretekle_usd('20');">
+					</div>
+					<div class="col-6 text-center px-3 py-2">
+						<img src="images/banknot/usd/50.jpg" style="width: 100%; box-shadow: 0px 0px 8px 2px #666;" onclick="ucretekle_usd('50');">
+					</div>
+					<div class="col-6 text-center px-3 py-2">
+						<img src="images/banknot/usd/100.jpg" style="width: 100%; box-shadow: 0px 0px 8px 2px #666;" onclick="ucretekle_usd('100');">
+					</div>
+				</div>
+
+
+				<div class="row m-0 mt-1" style="width: 100%; display: none;" id="kupur_eur_div">
+					<div class="col-6 text-center px-3 py-2">
+						<img src="images/banknot/eur/1.jpg" style="width: 100%; box-shadow: 0px 0px 8px 2px #666;" onclick="ucretekle_eur('1');">
+					</div>
+					<div class="col-6 text-center px-3 py-2">
+						<img src="images/banknot/eur/5.jpg" style="width: 100%; box-shadow: 0px 0px 8px 2px #666;" onclick="ucretekle_eur('5');">
+					</div>
+					<div class="col-6 text-center px-3 py-2">
+						<img src="images/banknot/eur/10.jpg" style="width: 100%; box-shadow: 0px 0px 8px 2px #666;" onclick="ucretekle_eur('10');">
+					</div>
+					<div class="col-6 text-center px-3 py-2">
+						<img src="images/banknot/eur/20.jpg" style="width: 100%; box-shadow: 0px 0px 8px 2px #666;" onclick="ucretekle_eur('20');">
+					</div>
+					<div class="col-6 text-center px-3 py-2">
+						<img src="images/banknot/eur/50.jpg" style="width: 100%; box-shadow: 0px 0px 8px 2px #666;" onclick="ucretekle_eur('50');">
+					</div>
+					<div class="col-6 text-center px-3 py-2">
+						<img src="images/banknot/eur/100.jpg" style="width: 100%; box-shadow: 0px 0px 8px 2px #666;" onclick="ucretekle_eur('100');">
+					</div>
+				</div>
+
+			</div>
+			<div class="modal-footer px-2 py-1">
+
+				<div class="row" style="width: 100%;">
+					<div class="col-4 justify-content-start">
+						<div class="input-group" id="doviz_div" style="display: none;">
+							<span class="input-group-text" id="doviz_p"></span>
+							<input type="number" id="doviz_input" onchange="kurkaydet();" class="form-control" value="" style="max-width: 70px; text-align: right; font-weight: 600;border-right: 0px solid white !important; padding-right: 4px;">
+							<span class="input-group-text bg-white" style="padding-left: 0px; text-align: left; font-weight: 600;"> ₺</span>
+							<button class="btn btn-light" style="border:1px solid #ccc; color: rgba(25, 135, 84, 0.8); min-width: 60px;" onclick="kurgetir();" type="button" id="button-addon2"><span class="fa fa-refresh"></span></button>
+						  </div>
+					</div>
+					<div class="col-8" style="text-align: right;">
+						<button id="btn1" class="btn btn-primary text-center" style="display: inline-block; text-align: center;"  data-bs-dismiss="modal" onclick="hesapkapat(document.getElementById('kupur_recipient1').value,document.getElementById('kupur_recipient2').value,document.getElementById('kupur_recipient3').value)">Ödemeyi Tamamla</button>	
+						<button class='btn text-secondary' style='background-color:lightgrey; margin-left:20px; font-weight:700; min-width:85px; border: 1px solid lightgrey;' onclick='ucretekle(`0`);'>Sıfırla</button>
+						<button class='btn text-secondary' style='background-color:lightgrey; margin-left:20px; font-weight:700; min-width:85px; border: 1px solid lightgrey;' onclick='$(`#kupurModal`).modal(`hide`);'>İptal</button>
+					</div>
+				</div>
+
+			</div>
+		  </div>
+		</div>
+	</div>
+
+
+
+
+	<div class="modal fade" id="adetcekbolModal" tabindex="-1" aria-labelledby="adetModalLabel" aria-hidden="true" style="z-index: 9999;">
+		<div class="modal-dialog modal-sm modal-dialog-centered" style="max-width:230px !important;width:230px;">
+		  <div class="modal-content">
+			<div class="modal-header py-1" style="background-color:lightgrey;">
+				<h6 id="adetcekbol_baslik" class="modal-title">Adet giriniz</h6>
+			</div>
+			<div class="modal-body">
+				<div class="row text-center" style="max-width: 220px; width:220px;">
+					<input class="form-control text-center" type="text" placeholder="TUTAR" readonly id="m_adetcekbol" style="width:210px; max-width: 210px; margin-left: 5px; box-shadow: 0px 0px 8px #dbdbdb; background-color: white;">
+					<div class="col-xl-4 col-lg-4 col-md-4 col-sm-4 col-xs-4 col-4 px-0">
+						<button class="btn btn-light btn-block my-2" style="min-height: 60px; height: 60px; max-height: 60px; min-width: 60px; width: 60px; max-width: 60px; box-shadow: 0px 0px 6px #adadad;" onclick="adetyaz(`1`); return false;">
+							1
+						</button>
+					</div>
+					<div class="col-xl-4 col-lg-4 col-md-4 col-sm-4 col-xs-4 col-4 px-0">
+						<button class="btn btn-light btn-block my-2" style="min-height: 60px; height: 60px; max-height: 60px; min-width: 60px; width: 60px; max-width: 60px; box-shadow: 0px 0px 6px #adadad;" onclick="adetyaz(`2`); return false;">
+							2
+						</button>
+					</div>
+					<div class="col-xl-4 col-lg-4 col-md-4 col-sm-4 col-xs-4 col-4 px-0">
+						<button class="btn btn-light btn-block my-2" style="min-height: 60px; height: 60px; max-height: 60px; min-width: 60px; width: 60px; max-width: 60px; box-shadow: 0px 0px 6px #adadad;" onclick="adetyaz(`3`); return false;">
+							3
+						</button>
+					</div>
+					<div class="col-xl-4 col-lg-4 col-md-4 col-sm-4 col-xs-4 col-4 px-0">
+						<button class="btn btn-light btn-block my-2" style="min-height: 60px; height: 60px; max-height: 60px; min-width: 60px; width: 60px; max-width: 60px; box-shadow: 0px 0px 6px #adadad;" onclick="adetyaz(`4`); return false;">
+							4
+						</button>
+					</div>
+					<div class="col-xl-4 col-lg-4 col-md-4 col-sm-4 col-xs-4 col-4 px-0">
+						<button class="btn btn-light btn-block my-2" style="min-height: 60px; height: 60px; max-height: 60px; min-width: 60px; width: 60px; max-width: 60px; box-shadow: 0px 0px 6px #adadad;" onclick="adetyaz(`5`); return false;">
+							5
+						</button>
+					</div>
+					<div class="col-xl-4 col-lg-4 col-md-4 col-sm-4 col-xs-4 col-4 px-0">
+						<button class="btn btn-light btn-block my-2" style="min-height: 60px; height: 60px; max-height: 60px; min-width: 60px; width: 60px; max-width: 60px; box-shadow: 0px 0px 6px #adadad;" onclick="adetyaz(`6`); return false;">
+							6
+						</button>
+					</div>
+					<div class="col-xl-4 col-lg-4 col-md-4 col-sm-4 col-xs-4 col-4 px-0">
+						<button class="btn btn-light btn-block my-2" style="min-height: 60px; height: 60px; max-height: 60px; min-width: 60px; width: 60px; max-width: 60px; box-shadow: 0px 0px 6px #adadad;" onclick="adetyaz(`7`); return false;">
+							7
+						</button>
+					</div>
+					<div class="col-xl-4 col-lg-4 col-md-4 col-sm-4 col-xs-4 col-4 px-0">
+						<button class="btn btn-light btn-block my-2" style="min-height: 60px; height: 60px; max-height: 60px; min-width: 60px; width: 60px; max-width: 60px; box-shadow: 0px 0px 6px #adadad;" onclick="adetyaz(`8`); return false;">
+							8
+						</button>
+					</div>
+					<div class="col-xl-4 col-lg-4 col-md-4 col-sm-4 col-xs-4 col-4 px-0">
+						<button class="btn btn-light btn-block my-2" style="min-height: 60px; height: 60px; max-height: 60px; min-width: 60px; width: 60px; max-width: 60px; box-shadow: 0px 0px 6px #adadad;" onclick="adetyaz(`9`); return false;">
+							9
+						</button>
+					</div>
+					<div class="col-xl-4 col-lg-4 col-md-4 col-sm-4 col-xs-4 col-4 px-0">
+						<button class="btn btn-light btn-block my-2" style="min-height: 60px; height: 60px; max-height: 60px; min-width: 60px; width: 60px; max-width: 60px; box-shadow: 0px 0px 6px #adadad;" onclick="adetyaz(`0`); return false;">
+							0
+						</button>
+					</div>
+					<div class="col-xl-4 col-lg-4 col-md-4 col-sm-4 col-xs-4 col-4 px-0">
+						<button class="btn btn-light btn-block my-2" style="min-height: 60px; height: 60px; max-height: 60px; min-width: 60px; width: 60px; max-width: 60px; box-shadow: 0px 0px 6px #adadad;" onclick="if (document.getElementById('m_adetcekbol').value==document.getElementById('kalanhesaptxt').value) document.getElementById('m_adetcekbol').value='.'; else document.getElementById('m_adetcekbol').value+=`.`; return false;">
+							,
+						</button>
+					</div>
+					<div class="col-xl-4 col-lg-4 col-md-4 col-sm-4 col-xs-4 col-4 px-0">
+						<button class="btn btn-light btn-block my-2" style="min-height: 60px; height: 60px; max-height: 60px; min-width: 60px; width: 60px; max-width: 60px; box-shadow: 0px 0px 6px #adadad;" onclick="document.getElementById('m_adetcekbol').value=``; return false;">
+							SİL
+						</button>
+					</div>
+					
+					<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12 col-12 px-0">
+						<button data-bs-dismiss="modal" class="btn btn-light btn-block my-2" style="min-height: 60px; height: 60px; max-height: 60px; min-width: 208px; width: 208px; max-width: 208px; box-shadow: 0px 0px 6px #adadad;" onclick="adetgiriscekbol();">
+							TAMAM
+						</a>
+					</div>
+				</div>
+			</div>
+		  </div>
+		</div>
+	</div>
+
+
+	<div class="modal fade" id="durumModal" tabindex="-1" aria-labelledby="durumLabel">
+		<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+		  <div class="modal-content" style="border: 2px solid #4b4b4b; box-shadow: 0px 0px 8px 8px rgba(3,37,37,0.3);">
+			<div class="modal-header py-1" style="background-color:lightgrey;">
+				<h6 id="canlidurum_baslik" class="modal-title">Canlı Durum</h6>
+				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+			</div>
+			<div class="modal-body">
+				<div class="row p-0 m-0" style="width:100%;">
+					<table class="table table-responsive-sm table-responsive-xs" style="width:100%;">
+						<tbody id="canlidurumtbl">
+							
+						</tbody>
+					</table>
+					<button class="btn btn-secondary btn-block p-2" data-bs-toggle='modal' data-bs-target='#gunsonuModal' onclick="$('#durumModal').modal('hide'); if (localStorage.pos_useryetki.split(',')[2]=='1') gunsonuraporugetir();"><h5 class="mb-0">Günlük Rapor</h5></button>
+				</div>
+			</div>
+			
+		  </div>
+		</div>
+	</div>
+
+	<div class="modal fade" id="gunsonuModal" tabindex="-1" aria-labelledby="gunsonuModalLabel">
+		<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+		  <div class="modal-content" style="border: 2px solid #4b4b4b; box-shadow: 0px 0px 8px 8px rgba(3,37,37,0.3);">
+			<div class="modal-header py-1" style="background-color:lightgrey;">
+				<h6 id="gunsonu_baslik" class="modal-title">Gün Sonu Raporu</h6>
+				<input type="password" style="display: none;" id="gunsonu_yn">
+				<input type="password" style="display: none;" id="masaacikkengunsonu_yn">
+			</div>
+			<div class="modal-body">
+				<div class="row p-0 m-0" style="width:100%;" id="gunsonurapordiv">
+					<div class="col-6">
+						<input type="date" class="form-control" id="tarih1" onchange="gunsonuraporugetir();">
+					</div>
+					<div class="col-6">
+						<input type="date" class="form-control" id="tarih2" onchange="gunsonuraporugetir();">
+					</div>
+					<table class="table table-responsive-sm table-responsive-xs mt-3" style="width:100%;">
+						<tbody id="gunsonuraporutbl">
+							
+						</tbody>
+					</table>
+				</div>
+			</div>
+			<div class="modal-footer" id="gunsonufooter">
+				
+				<button class="btn btn-warning p-2"  id="gunsonubtn" onclick="gunsonuyap();"><h5 class="mb-0">Gün Sonu İşlemi Yap</h5></button>		
+
+				<button class="btn btn-secondary p-2 px-3"  id="raporbtn" onclick="$('#raporModal').modal('show');"><h5 class="mb-0">Rapor Yazdır</h5></button>
+		
+				<button class="btn btn-outline-secondary p-2 px-3" onclick="$('#gunsonuModal').modal('hide');"><h5 class="mb-0">Kapat</h5></button>
+
+			</div>
+		  </div>
+		</div>
+	</div>
+
+	<div class="modal fade" id="raporModal" tabindex="-1" aria-labelledby="raporModalLabel">
+		<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+		  <div class="modal-content" style="border: 2px solid #4b4b4b; box-shadow: 0px 0px 8px 8px rgba(3,37,37,0.3);">
+			<div class="modal-header py-1" style="background-color:lightgrey;">
+				<h6 id="gunsonu_baslik" class="modal-title">Rapor Türü</h6>
+			</div>
+			<div class="modal-body">
+				<div class="row p-0 m-0" style="width:100%;" id="rapordiv">
+					<button class="btn btn-outline-secondary btn-block my-2" style="height:80px; min-height:80px; font-size: x-large; font-weight: 600;" onclick="raporyazdir('ozet');">
+						Özet Rapor
+					</button>
+					<button class="btn btn-outline-secondary btn-block my-2" style="height:80px; min-height:80px; font-size: x-large; font-weight: 600;" onclick="raporyazdir('detay');">
+						Detaylı Rapor
+					</button>
+					<button id="zraporubtn" class="btn btn-outline-secondary btn-block my-2" style="height:80px; min-height:80px; font-size: x-large; font-weight: 600; display:none;" onclick="raporyazdir('zraporu');">
+						Z Raporu
+					</button>
+				</div>
+			</div>
+			<div class="modal-footer" id="gunsonufooter">
+				<button class='btn text-secondary' style='background-color:lightgrey; margin-left:20px; font-weight:700; min-width:85px; border: 1px solid lightgrey;' onclick='$(`#raporModal`).modal(`hide`);'>Kapat</button>
+			</div>
+		  </div>
+		</div>
+	</div>
+
+
+	<div class="modal fade" id="gunsonusonucModal" tabindex="-1" aria-labelledby="gunsonusonucModalLabel">
+		<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+		  <div class="modal-content" style="border: 2px solid #4b4b4b; box-shadow: 0px 0px 8px 8px rgba(3,37,37,0.3);">
+			<div class="modal-body">
+				<div class="row p-0 m-0" style="width:100%;" id="gunsonusonucdiv">
+					<div class="col-12 text-center">
+						<h2 id="gunsonusonuctext"></h2>
+					</div>
+				</div>	
+			</div>
+		  </div>
+		</div>
+	</div>
+
+
+	<div class="modal fade" id="kisisayisiModal" tabindex="-1" aria-labelledby="kisisayisiModalLabel" aria-hidden="true" style="z-index: 9999;">
+		<div class="modal-dialog modal-sm modal-dialog-centered" style="max-width:250px !important;width:250px;">
+		  <div class="modal-content">
+
+			<div class="modal-header py-1" style="background-color:lightgrey;">
+				<h6 id="kisisayisi_baslik" class="modal-title">Misafir sayısı</h6>
+			</div>
+			<div class="modal-body">
+				<div class="row text-center m-0 p-0 pt-1" style="max-width: 215px; width:220px;">
+		
+					  <div class="input-group mb-2 px-0">
+						<input class="form-control text-center" style="box-shadow:-2px 0px 8px #dbdbdb; border:1px solid lightgrey;" type="text" placeholder="KİŞİ SAYISI" id="m_kisisayisi" aria-describedby="button-addon2">
+						<button class="btn btn-white" style="border:1px solid lightgrey;box-shadow: 2px 0px 8px #dbdbdb;border:1px solid lightgrey" type="button" id="button-addon2" onclick="document.getElementById('m_kisisayisi').value=''; return false;"><span style="color:grey;" class="fas fa-delete-left"></span></button>
+					  </div>
+					<div class="col-xl-4 col-lg-4 col-md-4 col-sm-4 col-xs-4 col-4 px-0">
+						<button class="btn btn-light btn-block my-2" style="min-height: 60px; height: 60px; max-height: 60px; min-width: 60px; width: 60px; max-width: 60px; box-shadow: 0px 0px 6px #adadad;" onclick="kisisayisiyaz(`1`); return false;">
+							1
+						</button>
+					</div>
+					<div class="col-xl-4 col-lg-4 col-md-4 col-sm-4 col-xs-4 col-4 px-0">
+						<button class="btn btn-light btn-block my-2" style="min-height: 60px; height: 60px; max-height: 60px; min-width: 60px; width: 60px; max-width: 60px; box-shadow: 0px 0px 6px #adadad;" onclick="kisisayisiyaz(`2`); return false;">
+							2
+						</button>
+					</div>
+					<div class="col-xl-4 col-lg-4 col-md-4 col-sm-4 col-xs-4 col-4 px-0">
+						<button class="btn btn-light btn-block my-2" style="min-height: 60px; height: 60px; max-height: 60px; min-width: 60px; width: 60px; max-width: 60px; box-shadow: 0px 0px 6px #adadad;" onclick="kisisayisiyaz(`3`); return false;">
+							3
+						</button>
+					</div>
+					<div class="col-xl-4 col-lg-4 col-md-4 col-sm-4 col-xs-4 col-4 px-0">
+						<button class="btn btn-light btn-block my-2" style="min-height: 60px; height: 60px; max-height: 60px; min-width: 60px; width: 60px; max-width: 60px; box-shadow: 0px 0px 6px #adadad;" onclick="kisisayisiyaz(`4`); return false;">
+							4
+						</button>
+					</div>
+					<div class="col-xl-4 col-lg-4 col-md-4 col-sm-4 col-xs-4 col-4 px-0">
+						<button class="btn btn-light btn-block my-2" style="min-height: 60px; height: 60px; max-height: 60px; min-width: 60px; width: 60px; max-width: 60px; box-shadow: 0px 0px 6px #adadad;" onclick="kisisayisiyaz(`5`); return false;">
+							5
+						</button>
+					</div>
+					<div class="col-xl-4 col-lg-4 col-md-4 col-sm-4 col-xs-4 col-4 px-0">
+						<button class="btn btn-light btn-block my-2" style="min-height: 60px; height: 60px; max-height: 60px; min-width: 60px; width: 60px; max-width: 60px; box-shadow: 0px 0px 6px #adadad;" onclick="kisisayisiyaz(`6`); return false;">
+							6
+						</button>
+					</div>
+					<div class="col-xl-4 col-lg-4 col-md-4 col-sm-4 col-xs-4 col-4 px-0">
+						<button class="btn btn-light btn-block my-2" style="min-height: 60px; height: 60px; max-height: 60px; min-width: 60px; width: 60px; max-width: 60px; box-shadow: 0px 0px 6px #adadad;" onclick="kisisayisiyaz(`7`); return false;">
+							7
+						</button>
+					</div>
+					<div class="col-xl-4 col-lg-4 col-md-4 col-sm-4 col-xs-4 col-4 px-0">
+						<button class="btn btn-light btn-block my-2" style="min-height: 60px; height: 60px; max-height: 60px; min-width: 60px; width: 60px; max-width: 60px; box-shadow: 0px 0px 6px #adadad;" onclick="kisisayisiyaz(`8`); return false;">
+							8
+						</button>
+					</div>
+					<div class="col-xl-4 col-lg-4 col-md-4 col-sm-4 col-xs-4 col-4 px-0">
+						<button class="btn btn-light btn-block my-2" style="min-height: 60px; height: 60px; max-height: 60px; min-width: 60px; width: 60px; max-width: 60px; box-shadow: 0px 0px 6px #adadad;" onclick="kisisayisiyaz(`9`); return false;">
+							9
+						</button>
+					</div>
+					<div class="col-xl-4 col-lg-4 col-md-4 col-sm-4 col-xs-4 col-4 px-0">
+						<button class="btn btn-light btn-block my-2" style="min-height: 60px; height: 60px; max-height: 60px; min-width: 60px; width: 60px; max-width: 60px; box-shadow: 0px 0px 6px #adadad;" onclick="kisisayisiyaz(`0`); return false;">
+							0
+						</button>
+					</div>
+					<div class="col-xl-8 col-lg-8 col-md-8 col-sm-8 col-xs-8 col-8 px-0">
+						<button data-bs-dismiss="modal" class="btn btn-light btn-block my-2" style="min-height: 60px; height: 60px; max-height: 60px; min-width: 130px; width: 130px; max-width: 130px; box-shadow: 0px 0px 6px #adadad;" onclick="if (parseFloat(document.getElementById('m_kisisayisi').value)>0) {localStorage.pos_masa = localStorage.pos_masa + '|'+document.getElementById('m_kisisayisi').value; window.location = 'table.html';}">
+							TAMAM
+						</a>
+					</div>
+				</div>
+			</div>
+		  </div>
+		</div>
+	</div>
+
+
+
+
+	<div class="modal fade" id="misafirlerModal" tabindex="-1" aria-labelledby="misafirlerModalLabel" aria-hidden="true">
+		<div class="modal-dialog modal-lg modal-dialog-centered">
+		  <div class="modal-content">
+			<div class="modal-header py-1" style="background-color:lightgrey;">
+				<h6 id="misafirler_baslik" class="modal-title">Misafirler</h6>
+			</div>
+			
+			<div class="modal-body pt-0 p-0">
+				<input type="password" style="display: none;" id="ms_masaid">
+				<div class="row p-0 m-0" style="width:100%;">
+					<table class="table table-striped table-responsive-sm table-responsive-xs" style="width:70%;">
+						<thead>
+							<tr>
+								<th style="width: 25%;">
+									Adı
+								</th>
+								<th style="width: 25%;">
+									Soyadı
+								</th>
+								<th style="width: 25%;">
+									Telefon
+								</th>
+								<th style="width:25%;">
+
+								</th>
+							</tr>
+						</thead>
+						<tbody id="misafirtbl">
+							
+						</tbody>
+					</table>
+
+					<table class="table table-striped table-responsive-sm table-responsive-xs" style="width:30%;">
+						<thead>
+							<tr>
+								<th style="width: 75%;">
+									Plaka
+								</th>
+								<th style="width:25%;">
+
+								</th>
+							</tr>
+						</thead>
+						<tbody id="plakatbl">
+							
+						</tbody>
+					</table>
+				</div>
+
+				
+			</div>
+			<div class="modal-footer text-right px-2">
+				<button id="misafireklebtn" class="btn btn-outline-secondary btn-block grupbtn" style="border: 1px solid lightgrey;"  data-bs-toggle="modal" data-bs-target="#misafirekleModal">Misafir Ekle</button>
+				<button id="plakaeklebtn" class="btn btn-outline-secondary btn-block grupbtn" style="border: 1px solid lightgrey;"  data-bs-toggle="modal" data-bs-target="#plakaekleModal">Plaka Ekle</button>
+				<button class='btn text-secondary grupbtnkapat' style='background-color:lightgrey; font-weight:700; min-width:85px; border: 1px solid lightgrey;' data-bs-dismiss="modal">Kapat</button>
+				
+			</div>
+		  </div>
+		</div>
+	</div>
+
+
+	<div class="modal fade" id="misafirekleModal" tabindex="-1" aria-labelledby="misafirekleModalLabel">
+		<div class="modal-dialog modal-dialog-centered modal-lg modal-dialog-scrollable">
+			<div class="modal-content">
+				<div class="modal-header py-1" style="background-color:lightgrey;">
+					<h6 id="misafirekle_baslik" class="modal-title">Misafir Ekle</h6>
+				</div>
+				<div class="modal-body py-2">
+					<div class="row pt-3">
+						<div class="col-6">
+							<div class="form-floating mb-2">
+								<input type="text" class="form-control" id="misafirtckne" placeholder="* TC Kimlik / Pasaport No">
+								<label for="misafirtckne">* TC Kimlik / Pasaport No</label>
+							</div>
+						</div>
+						<div class="col-6">
+							<div class="form-floating mb-2">
+								<input type="text" class="form-control" id="misafiruyruke" placeholder="Uyruk" value="TC">
+								<label for="misafiruyruke">Uyruk</label>
+							</div>
+						</div>
+					</div>
+						
+					
+					<div class="row pt-3">
+						<div class="col-6">
+							<div class="form-floating mb-2">
+								<input type="text" class="form-control" id="misafiradie" placeholder="Adı">
+								<label for="misafiradie">Adı</label>
+							</div>
+						</div>
+						<div class="col-6">
+							<div class="form-floating mb-2">
+								<input type="text" class="form-control" id="misafirsoyadie" placeholder="Soyadı">
+								<label for="misafirsoyadie">Soyadı</label>
+							</div>
+						</div>
+					</div>
+					<div class="row pt-3">
+						<div class="col-6">
+							<div class="form-floating mb-2">
+								<input type="text" class="form-control" id="misafirdogumtarihie" placeholder="Doğum Tarihi">
+								<label for="misafirdogumtarihie">Doğum Tarihi</label>
+							</div>
+						</div>
+						<div class="col-6">
+							<div class="form-floating mb-2">
+								<input type="text" class="form-control" id="misafirdogumyerie" placeholder="Doğum Yeri">
+								<label for="misafirdogumyerie">Doğum Yeri</label>
+							</div>
+						</div>
+						
+					</div>
+					
+					
+					<div class="row pt-3">
+						<div class="col-6">
+							<div class="form-floating mb-2">
+								<input type="text" class="form-control" id="misafiradrese" placeholder="Adres">
+								<label for="misafiradrese">Adres</label>
+							</div>
+						</div>
+						<div class="col-6">
+							<div class="form-floating mb-2">
+								<input type="text" class="form-control" id="misafirtelefone" placeholder="Telefon">
+								<label for="misafirtelefone">Telefon</label>
+							</div>
+						</div>
+					
+					</div>
+					
+				</div>
+				<div class="modal-footer text-right px-2">
+					
+					<button id="misafirekle_tmmbtn" class="btn btn-outline-secondary btn-block grupbtn px-4" style="border: 1px solid lightgrey;" onclick="misafirekle();">Kaydet</button>
+					<button class='btn text-secondary grupbtnkapat' style='background-color:lightgrey; font-weight:700; min-width:85px; border: 1px solid lightgrey;' onclick='$(`#misafirekleModal`).modal(`hide`);'>Kapat</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+
+	<div class="modal fade" id="misafirguncelleModal" tabindex="-1" aria-labelledby="misafirguncelleModalLabel">
+		<div class="modal-dialog modal-dialog-centered modal-lg modal-dialog-scrollable">
+			<div class="modal-content">
+				<div class="modal-header py-1" style="background-color:lightgrey;">
+					<h6 id="misafirduzenle_baslik" class="modal-title">Misafir Düzenle</h6>
+				</div>
+				<div class="modal-body py-2">
+					<div class="row pt-3">
+						<div class="col-6">
+							<div class="form-floating mb-2">
+								<input type="text" class="form-control" id="misafirtcknd" placeholder="* TC Kimlik / Pasaport No" readonly>
+								<label for="misafirtcknd">* TC Kimlik / Pasaport No</label>
+							</div>
+						</div>
+						<div class="col-6">
+							<div class="form-floating mb-2">
+								<input type="text" class="form-control" id="misafiruyrukd" placeholder="Uyruk" value="TC">
+								<label for="misafiruyrukd">Uyruk</label>
+							</div>
+						</div>
+					</div>
+						
+					
+					<div class="row pt-3">
+						<div class="col-6">
+							<div class="form-floating mb-2">
+								<input type="text" class="form-control" id="misafiradid" placeholder="Adı">
+								<label for="misafiradid">Adı</label>
+							</div>
+						</div>
+						<div class="col-6">
+							<div class="form-floating mb-2">
+								<input type="text" class="form-control" id="misafirsoyadid" placeholder="Soyadı">
+								<label for="misafirsoyadid">Soyadı</label>
+							</div>
+						</div>
+					</div>
+					<div class="row pt-3">
+						<div class="col-6">
+							<div class="form-floating mb-2">
+								<input type="text" class="form-control" id="misafirdogumtarihid" placeholder="Doğum Tarihi">
+								<label for="misafirdogumtarihid">Doğum Tarihi</label>
+							</div>
+						</div>
+						<div class="col-6">
+							<div class="form-floating mb-2">
+								<input type="text" class="form-control" id="misafirdogumyerid" placeholder="Doğum Yeri">
+								<label for="misafirdogumyerid">Doğum Yeri</label>
+							</div>
+						</div>
+						
+					</div>
+					
+					
+					<div class="row pt-3">
+						<div class="col-6">
+							<div class="form-floating mb-2">
+								<input type="text" class="form-control" id="misafiradresd" placeholder="Adres">
+								<label for="misafiradresd">Adres</label>
+							</div>
+						</div>
+						<div class="col-6">
+							<div class="form-floating mb-2">
+								<input type="text" class="form-control" id="misafirtelefond" placeholder="Telefon">
+								<label for="misafirtelefond">Telefon</label>
+							</div>
+						</div>
+					
+					</div>
+					
+				</div>
+				<div class="modal-footer text-right px-2">
+					
+					<button id="misafirekle_tmmbtn" class="btn btn-outline-secondary btn-block grupbtn px-4" style="border: 1px solid lightgrey;" onclick="misafirguncelle();">Kaydet</button>
+					<button class='btn text-secondary grupbtnkapat' style='background-color:lightgrey; font-weight:700; min-width:85px; border: 1px solid lightgrey;' onclick='$(`#misafirguncelleModal`).modal(`hide`);'>Kapat</button>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+
+
+	<div class="modal fade" id="plakaekleModal" tabindex="-1" aria-labelledby="plakaekleModalLabel">
+		<div class="modal-dialog modal-dialog-centered modal modal-dialog-scrollable">
+			<div class="modal-content">
+				<div class="modal-header py-1" style="background-color:lightgrey;">
+					<h6 id="plakaekle_baslik" class="modal-title">Plaka Ekle</h6>
+				</div>
+				<div class="modal-body py-2">
+					<div class="row pt-3">
+						<div class="col-12">
+							<div class="form-floating mb-2">
+								<input type="text" class="form-control" id="misafirplakae" placeholder="* Plaka">
+								<label for="misafirplakae">* Plaka</label>
+							</div>
+						</div>
+					</div>
+
+					
+				</div>
+				<div class="modal-footer text-right px-2">
+					
+					<button id="plakaekle_tmmbtn" class="btn btn-outline-secondary btn-block grupbtn px-4" style="border: 1px solid lightgrey;" onclick="plakaekle();">Kaydet</button>
+					<button class='btn text-secondary grupbtnkapat' style='background-color:lightgrey; font-weight:700; min-width:85px; border: 1px solid lightgrey;' onclick='$(`#plakaekleModal`).modal(`hide`);'>Kapat</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+
+	<div class="modal fade" id="plakaguncelleModal" tabindex="-1" aria-labelledby="plakaguncelleModalLabel">
+		<div class="modal-dialog modal-dialog-centered modal modal-dialog-scrollable">
+			<div class="modal-content">
+				<div class="modal-header py-1" style="background-color:lightgrey;">
+					<h6 id="plakaduzenle_baslik" class="modal-title">Plaka Düzenle</h6>
+				</div>
+				<div class="modal-body py-2">
+					<div class="row pt-3">
+						<div class="col-12">
+							<input type="password" style="display: none;" id="ms_plakaid">
+							<div class="form-floating mb-2">
+								<input type="text" class="form-control" id="misafirplakad" placeholder="* Plaka">
+								
+								<label for="misafirplakad">* Plaka</label>
+							</div>
+						</div>
+					</div>
+
+					
+				</div>
+				<div class="modal-footer text-right px-2">
+					
+					<button id="plakaduzenle_tmmbtn" class="btn btn-outline-secondary btn-block grupbtn px-4" style="border: 1px solid lightgrey;" onclick="plakaguncelle();">Kaydet</button>
+					<button class='btn text-secondary grupbtnkapat' style='background-color:lightgrey; font-weight:700; min-width:85px; border: 1px solid lightgrey;' onclick='$(`#plakaguncelleModal`).modal(`hide`);'>Kapat</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+
+
+	<div class="loading-bar"></div>
+
+	<div class="okc-bar">
+		<div class="row mx-0" style="width: 100%; margin-top:calc(100vh/1.85);">
+			<div class="col-12 m-0 p-0" style="width: 100%;">
+				<h1 id="okc_title">ÖDEME ALINIYOR</h1>
+				<button class="btn btn-outline-danger" onclick="fisiptal();">İPTAL ET</button>
+			</div>
+		</div>
+	</div>
+	
+<!--===============================================================================================-->	
+	<script src="vendor/jquery/jquery-3.2.1.min.js"></script>
+<!--===============================================================================================-->
+	<script src="vendor/bootstrap-5/js/bootstrap.bundle.min.js"></script>
+<!--===============================================================================================-->
+	<script src="vendor/fontawesome-6/js/all.min.js"></script>
+<!--===============================================================================================-->
+	<script src="vendor/alertifyJS/alertify.min.js"></script>
+<!--===============================================================================================-->
+	<script type="text/javascript">
+
+		let timerID;
+
+		let kitleyen="";
+		let masadata;
+		let timer;
+
+		$(document).ready(function () {
+
+			localStorage.pos_masa = "";
+			localStorage.pos_dataid = "";
+			alertify.defaults.transition = "zoom";
+			alertify.defaults.theme.ok = "btn btn-success";
+			alertify.defaults.theme.cancel = "btn btn-secondary";
+			alertify.defaults.theme.input = "form-control";
+			let yukseklik = $(window).height() + "px";
+			let yukseklikorta = parseInt($(window).height()) + "px";
+			document.getElementById("sagbolum").style.height=yukseklik;
+			document.getElementById("sagbolum").style.minHeight=yukseklik;
+			document.getElementById("sagbolum").style.maxHeight=yukseklik;
+			document.getElementById("kisim").style.height=yukseklik;
+			document.getElementById("kisim").style.minHeight=yukseklik;
+			document.getElementById("kisim").style.maxHeight=yukseklik;
+			document.getElementById("ortabolum").style.height=yukseklikorta;
+			document.getElementById("ortabolum").style.minHeight=yukseklikorta;
+			document.getElementById("ortabolum").style.maxHeight=yukseklikorta;
+			if ($(window).height()<=768 && $(window).width()<=1024) document.getElementById("posulalogo").style.marginTop = "25%";
+			else if ($(window).height()<=768 && $(window).width()<=1368) document.getElementById("posulalogo").style.marginTop = "15%";
+			else if ($(window).height()<=1024 && $(window).width()<=1280) document.getElementById("posulalogo").style.marginTop = "35%";
+			
+			bilgilerigetir();
+			kullanicikontrol();
+			kisimgetir();
+			iskontogetir();
+			cekbolgetir();
+			entegrasyoncheck();
+			//if (document.getElementById('firmalogo').style.width)
+
+			document.getElementById("tarih1").value = new Date().toISOString().substring(0,10);
+			document.getElementById("tarih2").value = new Date().toISOString().substring(0,10);
+
+			var week = ['PAZAR', 'PAZARTESİ', 'SALI', 'ÇARŞAMBA', 'PERŞEMBE', 'CUMA', 'CUMARTESİ'];
+			var timerID = setInterval(updateTime, 30000);
+			var timerID2 = setInterval(masakontrol, 3000);
+			updateTime();
+			function updateTime() {
+				var cd = new Date();
+				document.getElementById("time1").innerText = zeroPadding(cd.getHours(), 2) + ':' + zeroPadding(cd.getMinutes(), 2);
+				document.getElementById("time1").textContent = zeroPadding(cd.getHours(), 2) + ':' + zeroPadding(cd.getMinutes(), 2);
+				//document.getElementById("date1").innerText = zeroPadding(cd.getDate(), 2) + '.' + zeroPadding(cd.getMonth()+1, 2) + '.' + zeroPadding(cd.getFullYear(), 4) + ' ' + week[cd.getDay()];
+				//document.getElementById("date1").textContent = zeroPadding(cd.getDate(), 2) + '.' + zeroPadding(cd.getMonth()+1, 2) + '.' + zeroPadding(cd.getFullYear(), 4) + ' ' + week[cd.getDay()];
+
+				//Masa seçili değilse 30 saniyede 1 masalar yenilenecek
+				if (document.getElementById("masadetaycard").style.display=='none' && $('#kisisayisiModal').is(':visible') == false){
+					const kisimbtn1 = document.querySelectorAll('[data-kisimbtn]');
+					kisimbtn1.forEach(element => { //Hangi kısım seçili buluyoruz.
+						if (element.classList.contains('btn-secondary')) //Eğer btn-secondary içeriyorsa seçili olan bu kısımdır.
+						{
+							masagetir(element.dataset.kisimbtn);
+						}
+					});
+				}
+				
+
+			};
+
+			function zeroPadding(num, digit) {
+				var zero = '';
+				for(var i = 0; i < digit; i++) {
+					zero += '0';
+				}
+				return (zero + num).slice(-digit);
+			}
+
+			if (localStorage.pos_useryetki.split(',')[2] == "1") document.getElementById("canlidurumbtn").disabled=false;
+			else document.getElementById("canlidurumbtn").disabled=true;
+
+		});
+
+
+		$( window ).resize(function() {
+			let yukseklik = $(window).height() + "px";
+			let yukseklikorta = parseInt($(window).height()) + "px";
+			document.getElementById("sagbolum").style.height=yukseklik;
+			document.getElementById("sagbolum").style.minHeight=yukseklik;
+			document.getElementById("sagbolum").style.maxHeight=yukseklik;
+			document.getElementById("kisim").style.height=yukseklik;
+			document.getElementById("kisim").style.minHeight=yukseklik;
+			document.getElementById("kisim").style.maxHeight=yukseklik;
+			document.getElementById("ortabolum").style.height=yukseklikorta;
+			document.getElementById("ortabolum").style.minHeight=yukseklikorta;
+			document.getElementById("ortabolum").style.maxHeight=yukseklikorta;
+			document.getElementById("barkoddiv").style.width = $('#kisim').width() + "px";
+
+			if ($(window).height()<=768 && $(window).width()<=1024) document.getElementById("posulalogo").style.marginTop = "25%";
+			else if ($(window).height()<=768 && $(window).width()<=1368) document.getElementById("posulalogo").style.marginTop = "15%";
+			else if ($(window).height()<=1024 && $(window).width()<=1280) document.getElementById("posulalogo").style.marginTop = "35%";
+		});
+
+		function entegrasyoncheck(){
+			$.ajax({
+				type: 'post',
+				url: "https://pos.posula.com/api/pos/entegrasyoncheck",
+				dataType: 'json',
+				contentType: 'application/json; charset=utf-8',
+				data: JSON.stringify({ cihaz: window.location.hostname }),
+				success: function (data, textStatus, xhr) {
+					if (xhr.status == "200")
+					{
+						if (data=="1") localStorage.pos_entegrasyon_check = "1";
+						else localStorage.pos_entegrasyon_check = "0";
+					}
+				
+				},
+				error: function (hata) {
+					localStorage.pos_entegrasyon_check = "0";
+				}
+			});
+		}
+
+		function gunsonuraporugetir(){
+			$.ajax({
+				type: 'post',
+				url: "https://pos.posula.com/api/pos/kasaraporu",
+				dataType: 'json',
+				contentType: 'application/json; charset=utf-8',
+				data: JSON.stringify({ tarih1: document.getElementById("tarih1").value, tarih2: document.getElementById("tarih2").value }),
+				success: function (data, textStatus, xhr) {
+					document.body.className ="";  
+					var _html = "";
+					if (xhr.status == "200")
+					{
+						var bg = "";
+						$.each(data,
+							function (key, item) {
+								
+								if (key==0) bg = "lightgrey"
+								else if (data[key-1]["ADISYON"]=="") bg = "lightgrey";
+								else bg = "white";
+								parseFloat(item.TUTAR).toLocaleString('tr-TR')
+								var tutar = "";
+								if (item.SATIS!="" && item.TUTAR!="TUTAR" && item.TUTAR!="OR.TÜ") tutar = parseFloat(item.TUTAR).toLocaleString("tr-TR");
+								//if (item.TUTAR!="") tutar = item.TUTAR;
+								else tutar = item.TUTAR;
+								_html += "<tr style='background-color:"+bg+";'><td>"+item.SATIS+"</td><td>"+item.ADISYON+"</td><td style='text-align:right;'>"+tutar+"</td></tr>";
+							});
+							document.getElementById("gunsonuraporutbl").innerHTML=_html;
+					}
+					else
+					{
+						document.getElementById("gunsonuraporutbl").innerHTML="";
+						alertify.error("Sistem yöneticisine başvurunuz");
+					}
+					
+				},
+				error: function (hata) {
+					document.body.className ="";
+					alertify.error("Sistem yöneticisine başvurunuz");
+				}
+			});
+		}
+
+
+
+		function raporyazdir(rapor_turu){
+			if (rapor_turu=="zraporu"){
+				localStorage.pos_entegrasyon_islemtipi = "zraporu";
+
+				if (localStorage.pos_entegrasyon_kontrol=="") okcentegrasyonkontrol("", "", "", "0", "zraporu");
+
+				if (localStorage.pos_entegrasyon_kontrol!="" && localStorage.pos_entegrasyon_kontrol!="OK"){
+					document.getElementById("okc_title").innerText = "Z RAPORU YAZDIRILIYOR";
+					document.body.className = "okc";
+					timerID = setInterval(mevcutokcentegrasyonkontrol, 2000)
+				}
+				else{
+					clearInterval(timerID);
+					localStorage.pos_entegrasyon_kontrol = "";
+					document.getElementById("okc_title").innerText = "ÖDEME ALINIYOR";
+				}
+			}
+			else {
+				$.ajax({
+					type: 'post',
+					url: "https://pos.posula.com/api/pos/raporyazdir",
+					dataType: 'json',
+					contentType: 'application/json; charset=utf-8',
+					data: JSON.stringify({ tarih1: document.getElementById("tarih1").value, tarih2: document.getElementById("tarih2").value, tur: rapor_turu, cihazadi: window.location.hostname, user: document.getElementById("kullanici").innerText }),
+					success: function (data, textStatus, xhr) {
+						document.body.className ="";  
+						var _html = "";
+						if (xhr.status == "200")
+						{
+							alertify.success("Rapor yazdırıldı");
+							
+						}
+						
+					},
+					error: function (hata) {
+						document.body.className ="";
+						alertify.error("Sistem yöneticisine başvurunuz");
+					}
+				});
+			}
+			
+		}
+
+
+
+		function gunsonuyap(){
+			if (localStorage.pos_useryetki.split(',')[2] == "1"){
+				$.ajax({
+				type: 'post',
+				url: "https://pos.posula.com/api/pos/gunsonuyap",
+				dataType: 'json',
+				contentType: 'application/json; charset=utf-8',
+				data: JSON.stringify({ acikmasa : document.getElementById("masaacikkengunsonu_yn"), cihazadi : window.location.hostname, rapor: document.getElementById("gunsonuraporutbl").innerHTML}),
+				success: function (data, textStatus, xhr) {
+					document.body.className ="";  
+					var _html = "";
+					if (xhr.status == "200")
+					{
+						if (data=="MASA") //Açık masa var
+						{
+							alertify.error("Açık hesaplar olduğu için gün sonu işlemi yapılamadı");
+						}
+						else if (data=="HATA") 
+						{
+							alertify.error("Sistem yöneticisine başvurunuz");
+						}
+						else 
+						{
+							$('#gunsonuModal').modal('toggle');
+							document.getElementById('gunsonusonuctext').innerHTML = "Gün sonu işlemi yapıldı.<br>Sistem " + data + " tarihine alındı.";
+							$('#gunsonusonucModal').modal('toggle');
+							bilgilerigetir();
+						}
+						
+
+					}
+					else
+					{
+						alertify.error("Sistem yöneticisine başvurunuz");
+					}
+					
+				},
+				error: function (hata) {
+					document.body.className ="";
+					alertify.error("Sistem yöneticisine başvurunuz");
+				}
+			});
+			}
+			else {
+				alertify.error("İşlem için yetkiniz yok");
+			}
+			
+		}
+
+
+		
+		const kupurModal = document.getElementById('kupurModal')
+		kupurModal.addEventListener('show.bs.modal', event => {
+
+			const button = event.relatedTarget;
+			const recipient = button.getAttribute('data-bs-whatever');
+			document.getElementById("kupur_recipient1").value = recipient.split('|')[0];
+			document.getElementById("kupur_recipient2").value = recipient.split('|')[1];
+			document.getElementById("kupur_recipient3").value = recipient.split('|')[2];
+			localStorage.pos_tutar = recipient.split('|')[3];
+
+			document.getElementById("alinanucret").innerText = "0";
+			document.getElementById("paraustu").innerText = (parseFloat(document.getElementById("alinanucret").innerText) - parseFloat(localStorage.pos_tutar)).toFixed(2);
+
+			document.getElementById("alinanucret_gorunen").innerText = parabirimi_locale(0);
+			document.getElementById("paraustu_gorunen").innerText = parabirimi_locale(document.getElementById("paraustu").innerText);
+
+		})
+
+		const raporModal = document.getElementById('raporModal')
+		raporModal.addEventListener('show.bs.modal', event => {
+
+			if (localStorage.pos_entegrasyon_check=="1") document.getElementById("zraporubtn").style.display=''
+			else document.getElementById("zraporubtn").style.display='none'
+
+		})
+
+		function ucretekle(tutar){
+			if (tutar!="0") document.getElementById("alinanucret").innerText = (parseFloat(document.getElementById("alinanucret").innerText) + parseFloat(tutar)).toFixed(2);
+			else document.getElementById("alinanucret").innerText = "0";
+			document.getElementById("paraustu").innerText = (parseFloat(document.getElementById("alinanucret").innerText) - parseFloat(localStorage.pos_tutar)).toFixed(2);
+
+			document.getElementById("alinanucret_gorunen").innerText = parabirimi_locale(document.getElementById("alinanucret").innerText);
+			document.getElementById("paraustu_gorunen").innerText = parabirimi_locale(document.getElementById("paraustu").innerText);
+
+			if (tutar=="0"){
+				if (document.getElementById("doviz_p").innerText.indexOf('$')>0){
+					document.getElementById("alinanucret_doviz").innerText = parabirimi_locale_usd("0");
+					hesap = parabirimi_locale_usd(parseFloat(document.getElementById("paraustu").innerText)/parseFloat(document.getElementById("doviz_input").value));
+					document.getElementById("paraustu_doviz").innerText = hesap;
+				}
+				else if (document.getElementById("doviz_p").innerText.indexOf('€')>0) {
+					document.getElementById("alinanucret_doviz").innerText = parabirimi_locale_eur("0");
+					hesap = parabirimi_locale_eur(parseFloat(document.getElementById("paraustu").innerText)/parseFloat(document.getElementById("doviz_input").value));
+					document.getElementById("paraustu_doviz").innerText = hesap;
+				}
+				else{
+					document.getElementById("alinanucret_doviz").innerText = "";
+					document.getElementById("paraustu_doviz").innerText = "";
+				}
+			}
+		}
+
+		function ucretekle_usd(tutar){
+			if (tutar!="0") document.getElementById("alinanucret").innerText = (parseFloat(document.getElementById("alinanucret").innerText) + (parseFloat(tutar)*parseFloat(document.getElementById("doviz_input").value))).toFixed(2);
+			else document.getElementById("alinanucret").innerText = "0";
+			document.getElementById("paraustu").innerText = (parseFloat(document.getElementById("alinanucret").innerText) - parseFloat(localStorage.pos_tutar)).toFixed(2);
+
+			document.getElementById("alinanucret_gorunen").innerText = parabirimi_locale(document.getElementById("alinanucret").innerText);
+			document.getElementById("alinanucret_doviz").innerText = parabirimi_locale_usd(parseFloat(document.getElementById("alinanucret").innerText)/parseFloat(document.getElementById("doviz_input").value));
+			document.getElementById("paraustu_gorunen").innerText = parabirimi_locale(document.getElementById("paraustu").innerText);
+			document.getElementById("paraustu_doviz").innerText = parabirimi_locale_usd(parseFloat(document.getElementById("paraustu").innerText)/parseFloat(document.getElementById("doviz_input").value));
+		}
+
+		function ucretekle_eur(tutar){
+			if (tutar!="0") document.getElementById("alinanucret").innerText = (parseFloat(document.getElementById("alinanucret").innerText) + (parseFloat(tutar)*parseFloat(document.getElementById("doviz_input").value))).toFixed(2);
+			else document.getElementById("alinanucret").innerText = "0";
+			document.getElementById("paraustu").innerText = (parseFloat(document.getElementById("alinanucret").innerText) - parseFloat(localStorage.pos_tutar)).toFixed(2);
+
+			document.getElementById("alinanucret_gorunen").innerText = parabirimi_locale(document.getElementById("alinanucret").innerText);
+			document.getElementById("alinanucret_doviz").innerText = parabirimi_locale_eur(parseFloat(document.getElementById("alinanucret").innerText)/parseFloat(document.getElementById("doviz_input").value));
+			document.getElementById("paraustu_gorunen").innerText = parabirimi_locale(document.getElementById("paraustu").innerText);
+			document.getElementById("paraustu_doviz").innerText = parabirimi_locale_eur(parseFloat(document.getElementById("paraustu").innerText)/parseFloat(document.getElementById("doviz_input").value));
+		}
+
+		function parabirimi_locale(price){
+			var formattedOutput = new Intl.NumberFormat('tr-TR', {
+				style: 'currency',
+				currency: 'TRY',
+				minimumFractionDigits: 2,
+				maximumFractionDigits: 2
+			});
+			return formattedOutput.format(price).replace('₺','') + " ₺";
+		}
+
+		function parabirimi_locale_usd(price){
+			var formattedOutput = new Intl.NumberFormat('tr-TR', {
+				style: 'currency',
+				currency: 'TRY',
+				minimumFractionDigits: 2,
+				maximumFractionDigits: 2
+			});
+			return formattedOutput.format(price).replace('₺','') + " $";
+		}
+
+		function parabirimi_locale_eur(price){
+			var formattedOutput = new Intl.NumberFormat('tr-TR', {
+				style: 'currency',
+				currency: 'TRY',
+				minimumFractionDigits: 2,
+				maximumFractionDigits: 2
+			});
+			return formattedOutput.format(price).replace('₺','') + " €";
+		}
+
+		function kupur_parabirimi(parabirimi)
+		{
+			document.getElementById("kupur_tl_btn").classList.remove("btn-success");
+			document.getElementById("kupur_usd_btn").classList.remove("btn-success");
+			document.getElementById("kupur_eur_btn").classList.remove("btn-success");
+			
+			document.getElementById("kupur_tl_btn").classList.remove("btn-light");
+			document.getElementById("kupur_usd_btn").classList.remove("btn-light");
+			document.getElementById("kupur_eur_btn").classList.remove("btn-light");
+
+			document.getElementById("kupur_tl_btn").classList.remove("text-secondary");
+			document.getElementById("kupur_usd_btn").classList.remove("text-secondary");
+			document.getElementById("kupur_eur_btn").classList.remove("text-secondary");
+
+			if(parabirimi=="tl") {
+				document.getElementById("kupur_tl_btn").classList.add("btn-success");
+				document.getElementById("kupur_usd_btn").classList.add("btn-light");
+				document.getElementById("kupur_eur_btn").classList.add("btn-light");
+
+				document.getElementById("kupur_usd_btn").classList.add("text-secondary");
+				document.getElementById("kupur_eur_btn").classList.add("text-secondary");
+
+				document.getElementById("kupur_tl_div").style.display="";
+				document.getElementById("kupur_usd_div").style.display="none";
+				document.getElementById("kupur_eur_div").style.display="none";
+
+				document.getElementById("doviz_div").style.display='none';
+
+				document.getElementById("doviz_p").innerText = "";
+
+				document.getElementById("alinanucret_doviz").innerText="";
+				document.getElementById("paraustu_doviz").innerText="";
+
+
+				document.getElementById("alinanucret_gorunen").outerHTML = document.getElementById("alinanucret_gorunen").outerHTML.replace("h4","h1");
+				document.getElementById("paraustu_gorunen").outerHTML = document.getElementById("paraustu_gorunen").outerHTML.replace("h4","h1");
+
+				document.getElementById('small1_div').style.marginTop="2px";
+				document.getElementById('small2_div').style.marginTop="2px";
+				//document.getElementById("doviz_input").style.display='none';
+			}
+			else if(parabirimi=="usd") {
+
+				var d1 = localStorage.pos_usd;
+				var t1 = localStorage.pos_usd_tarih;
+				var t2 = new Date().toJSON().slice(0, 10);
+
+				if (d1 == "" || t1 != t2) usdgetir();
+				else 
+				{
+					document.getElementById("doviz_p").innerText="1 $";
+					document.getElementById("doviz_input").value = d1;
+				}
+
+				document.getElementById("alinanucret_doviz").innerText = parabirimi_locale_usd(parseFloat(document.getElementById("alinanucret").innerText)/parseFloat(document.getElementById("doviz_input").value));
+				document.getElementById("paraustu_doviz").innerText = parabirimi_locale_usd(parseFloat(document.getElementById("paraustu").innerText)/parseFloat(document.getElementById("doviz_input").value));
+
+				document.getElementById("alinanucret_gorunen").outerHTML = document.getElementById("alinanucret_gorunen").outerHTML.replace("h1","h4");
+				document.getElementById("paraustu_gorunen").outerHTML = document.getElementById("paraustu_gorunen").outerHTML.replace("h1","h4");
+
+				document.getElementById('small1_div').style.marginTop="-4px";
+				document.getElementById('small2_div').style.marginTop="-4px";
+
+				document.getElementById("doviz_div").style.display='';
+				//document.getElementById("doviz_input").style.display='';
+
+				document.getElementById("kupur_tl_btn").classList.add("btn-light");
+				document.getElementById("kupur_usd_btn").classList.add("btn-success");
+				document.getElementById("kupur_eur_btn").classList.add("btn-light");
+
+				document.getElementById("kupur_tl_btn").classList.add("text-secondary");
+				document.getElementById("kupur_eur_btn").classList.add("text-secondary");
+
+				document.getElementById("kupur_tl_div").style.display="none";
+				document.getElementById("kupur_usd_div").style.display="";
+				document.getElementById("kupur_eur_div").style.display="none";
+
+			}
+			else if(parabirimi=="eur") {
+
+				var d1 = localStorage.pos_eur;
+				var t1 = localStorage.pos_eur_tarih;
+				var t2 = new Date().toJSON().slice(0, 10);
+
+				if (d1 == "" || t1 != t2) eurgetir();
+				else 
+				{
+					document.getElementById("doviz_p").innerText="1 €";
+					document.getElementById("doviz_input").value = d1;
+				}
+
+				document.getElementById("alinanucret_doviz").innerText = parabirimi_locale_eur(parseFloat(document.getElementById("alinanucret").innerText)/parseFloat(document.getElementById("doviz_input").value));
+				document.getElementById("paraustu_doviz").innerText = parabirimi_locale_eur(parseFloat(document.getElementById("paraustu").innerText)/parseFloat(document.getElementById("doviz_input").value));
+
+				document.getElementById("alinanucret_gorunen").outerHTML = document.getElementById("alinanucret_gorunen").outerHTML.replace("h1","h4");
+				document.getElementById("paraustu_gorunen").outerHTML = document.getElementById("paraustu_gorunen").outerHTML.replace("h1","h4");
+
+				document.getElementById('small1_div').style.marginTop="-4px";
+				document.getElementById('small2_div').style.marginTop="-4px";
+
+				document.getElementById("doviz_div").style.display='';
+				//document.getElementById("doviz_input").style.display='';
+
+				document.getElementById("kupur_tl_btn").classList.add("btn-light");
+				document.getElementById("kupur_usd_btn").classList.add("btn-light");
+				document.getElementById("kupur_eur_btn").classList.add("btn-success");
+
+				document.getElementById("kupur_tl_btn").classList.add("text-secondary");
+				document.getElementById("kupur_usd_btn").classList.add("text-secondary");
+
+				document.getElementById("kupur_tl_div").style.display="none";
+				document.getElementById("kupur_usd_div").style.display="none";
+				document.getElementById("kupur_eur_div").style.display="";
+			}
+			
+		}
+
+		async function usdgetir() {
+		
+			const response = await fetch( 'https://min-api.cryptocompare.com/data/price?fsym=USD&tsyms=TRY' )
+			const data = await response.json()
+			document.getElementById("doviz_p").innerText="1 USD";
+			document.getElementById("doviz_input").value=data.TRY;
+            
+			localStorage.pos_usd_tarih = new Date().toJSON().slice(0, 10);
+			localStorage.pos_usd = data.TRY;
+
+			ucretekle("0");
+        }
+
+		async function eurgetir() {
+		
+			const response = await fetch( 'https://min-api.cryptocompare.com/data/price?fsym=EUR&tsyms=TRY' )
+			const data = await response.json()
+			document.getElementById("doviz_p").innerText="1 EUR";
+			document.getElementById("doviz_input").value=data.TRY;
+			
+			localStorage.pos_eur_tarih = new Date().toJSON().slice(0, 10);
+			localStorage.pos_eur = data.TRY;
+
+			ucretekle("0");
+		}
+
+		function kurgetir(){
+			if (document.getElementById("doviz_p").innerText.indexOf('USD')>0) usdgetir();
+			else if (document.getElementById("doviz_p").innerText.indexOf('EUR')>0) eurgetir();
+		}
+
+		function kurkaydet(){
+			if (document.getElementById("doviz_p").innerText.indexOf('USD')>0) localStorage.pos_usd = document.getElementById("doviz_input").value;
+			else if (document.getElementById("doviz_p").innerText.indexOf('EUR')>0) localStorage.pos_eur = document.getElementById("doviz_input").value;
+
+			ucretekle("0");
+		}
+
+
+
+
+
+
+
+
+
+
+		function bilgilerigetir(){
+			$.ajax({
+				async: false,
+				type: 'post',
+				url: "https://pos.posula.com/api/pos/yonetimbilgigetir",
+				dataType: 'json',
+				contentType: 'application/json; charset=utf-8',
+				success: function (gelenveri) {
+				
+					if (gelenveri.length>0){
+						document.getElementById("gunsonu_yn").innerText = gelenveri[0]["gunsonu_yn"];
+						if (gelenveri[0]["gunsonu_yn"] == "0") document.getElementById("gunsonufooter").style.display='none';
+						else document.getElementById("gunsonufooter").style.display='';
+						document.getElementById("masaacikkengunsonu_yn").innerText = gelenveri[0]["masaacikkengunsonu_yn"];
+						document.getElementById("firma").innerText = gelenveri[0]["firmaadi"];
+						document.getElementById("sube").innerText = gelenveri[0]["subeadi"];
+						if (gelenveri[0]["firmalogo"]!="") document.getElementById("firmalogo").src = "images/"+ gelenveri[0]["firmalogo"];
+						
+						var week = ['PAZAR', 'PAZARTESİ', 'SALI', 'ÇARŞAMBA', 'PERŞEMBE', 'CUMA', 'CUMARTESİ'];
+						document.getElementById("date1").innerText = gelenveri[0]["tarih"] + " " + week[gelenveri[0]["gun"]];
+					}
+				
+				}
+				
+			});
+		}
+
+		function kullanicikontrol(){
+			var _userno = localStorage.pos_userno;
+			var _userpassword = localStorage.pos_password;
+			
+			document.body.className = "loading";
+
+			$.ajax({
+				type: 'post',
+				url: "https://pos.posula.com/api/pos/kullanicikontrol",
+				dataType: 'json',
+				contentType: 'application/json; charset=utf-8',
+				data: JSON.stringify({ username: _userno, password: _userpassword }),
+				success: function (data, textStatus, xhr) {
+					document.body.className ="";  
+					if (xhr.status == "200")
+					{
+						if (data.length>0){
+							document.getElementById("kullanici").innerHTML = data[0]["ad"];
+						}
+						else{
+							localStorage.pos_userno = "";
+							localStorage.pos_password = "";
+							window.location = "index.html";
+						}
+					}
+					
+				},
+				error: function (hata) {
+					document.body.className ="";
+					alertify.error("Sistem yöneticisine başvurunuz");
+				}
+			});
+		}
+
+		function kisimgetir(){
+
+			document.body.className = "loading";
+
+			$.ajax({
+				type: 'post',
+				url: "https://pos.posula.com/api/pos/kisimgetir",
+				dataType: 'json',
+				contentType: 'application/json; charset=utf-8',
+				success: function (data, textStatus, xhr) {
+					document.body.className ="";  
+					if (xhr.status == "200")
+					{
+						if (data.length>0){
+							var _html="";
+							$.each(data,
+							function (key, item) {
+								if (key==0 && (localStorage.pos_secilikisim == undefined || localStorage.pos_secilikisim == null || localStorage.pos_secilikisim == "")) //İlk kısım seçili geliyor ve masa listeleme fonksiyonuna da gidiyor.
+								{
+									_html += "<button class='btn btn-secondary btn-block my-2 p-0 kisimbtncss' style='width: 100%;min-height: 50px; font-weight:700; border: 1px solid lightgrey;' data-kisimbtn='"+item.KISIM+"' data-kisisayisi='"+item.KISISAYISI+"' onclick='vazgec(); kisimsec(this);'>"+item.KISIM+"</button>";
+									localStorage.pos_kisim_kisisayisi = item.KISISAYISI;
+									localStorage.pos_secilikisim = item.KISIM;
+									masagetir(item.KISIM);
+								}
+								else if (localStorage.pos_secilikisim != undefined && localStorage.pos_secilikisim != null && localStorage.pos_secilikisim != "" && localStorage.pos_secilikisim == item.KISIM)
+								{
+									_html += "<button class='btn btn-secondary btn-block my-2 p-0 kisimbtncss' style='width: 100%;min-height: 50px; font-weight:700; border: 1px solid lightgrey;' data-kisimbtn='"+item.KISIM+"' data-kisisayisi='"+item.KISISAYISI+"' onclick='vazgec(); kisimsec(this);'>"+item.KISIM+"</button>";
+									localStorage.pos_kisim_kisisayisi = item.KISISAYISI;
+									localStorage.pos_secilikisim = item.KISIM;
+									masagetir(item.KISIM);
+								}
+								else _html += "<button class='btn btn-outline-secondary btn-block my-2 p-0 kisimbtncss' style='width: 100%;min-height: 50px; font-weight:700; border: 1px solid lightgrey;' data-kisimbtn='"+item.KISIM+"' data-kisisayisi='"+item.KISISAYISI+"' onclick='vazgec(); kisimsec(this);'>"+item.KISIM+"</button>";
+							});
+							var genislik = $('#kisim').width();
+							_html += "<div id='barkoddiv' class='input-group' style='position: absolute; left:0;bottom:10px; width: "+genislik+"px; margin-left:7px;'></i></span><input id='barkod' autocomplete='off' type='' class='form-control shadow-none' placeholder='(-------)' style='background-color:whitesmoke; min-height: 30px;' aria-describedby='barkodspan' onkeyup='barkodokut(event);' ></div>";
+							document.getElementById("kisim").innerHTML = _html;
+							//alert(genislik);
+						}
+						else{
+							document.getElementById("kisim").innerHTML = "";
+						}
+					}
+					
+				},
+				error: function (hata) {
+					document.body.className ="";
+					alertify.error("Sistem yöneticisine başvurunuz");
+				}
+			});
+		}
+
+		function barkodokut(e){
+			if (e.code == "Enter"){
+				var kisim = document.getElementById('barkod').value.split('|')[0];
+				const el1 = document.querySelector('[data-kisimbtn="'+kisim+'"]');
+				kisimsec(el1);
+				var masano = document.getElementById('barkod').value.split('|')[2];
+				setTimeout(function() {
+					masaac(masano);
+				}, 250);
+				setTimeout(function() {
+					masaac(masano);
+				}, 500);
+				
+				
+			}
+		}
+
+
+		function kisimsec(el){
+			const kisimbtn = document.querySelectorAll('[data-kisimbtn]');
+			kisimbtn.forEach(element => {
+				element.classList.remove('btn-secondary');
+				element.classList.add('btn-outline-secondary');
+				element.style.color='gray';
+				element.style.fontWeight='700';
+			});
+
+			el.classList.add('btn-secondary');
+			el.style.color='white';
+			el.style.fontWeight='700';
+
+			localStorage.pos_kisim_kisisayisi = el.dataset.kisisayisi;
+			localStorage.pos_secilikisim = el.dataset.kisimbtn;
+
+			masagetir(el.dataset.kisimbtn);
+		}
+
+		function masagetir(_kisim){
+			document.body.className = "loading";
+
+			$.ajax({
+				type: 'post',
+				url: "https://pos.posula.com/api/pos/masagetir",
+				dataType: 'json',
+				contentType: 'application/json; charset=utf-8',
+				data: JSON.stringify({ kisim: _kisim }),
+				success: function (data, textStatus, xhr) {
+					document.body.className ="";  
+					if (xhr.status == "200")
+					{
+						if (data.length>0){
+								var _html="";
+								localStorage.pos_kisimtipi=data[0]["SIPARISTIPI"];
+								$.each(data,
+								function (key, item) {
+									var tutar = " ";
+									if (localStorage.pos_useryetki.split(',')[5]=="1"){
+										tutar = item.TUTAR;
+									}
+									if (item.RENK=="#5df18a"){//BOŞ
+										if (item.LOCKDURUM=="1") _html += "<div class='col-xl-2 col-lg-3 col-md-3 col-sm-4 col-6 my-2 px-1' style='min-height: 140px; text-align: center;'><div onclick='masaac(`"+item.KAYITSIRANO+"`);' data-masaid='"+item.KAYITSIRANO+"' data-durum='bos' data-kilit='1' data-kisim='"+item.KISIM+"' data-masa='"+item.MASAISMI+"' data-renk='"+item.RENK+"' data-guid='"+item.ISLEMYAPAN+"' data-adisyon='"+item.ADISYONNO+"' data-cari='"+item.CARINO+"' style=' padding-top:50px;font-size:24px; margin: 2px;border-radius: 10px; border:3px solid black; height: 100%; background-color: "+item.RENK+"; box-shadow: 0px 0px 8px rgba(0,0,0,0.3);'>"+item.MASAISMI+"</div></div>";
+										else _html += "<div class='col-xl-2 col-lg-3 col-md-3 col-sm-4 col-6 my-2 px-1' style='min-height: 140px; text-align: center;'><div onclick='masaac(`"+item.KAYITSIRANO+"`);' data-masaid='"+item.KAYITSIRANO+"' data-durum='bos' data-kilit='0' data-kisim='"+item.KISIM+"' data-masa='"+item.MASAISMI+"' data-renk='"+item.RENK+"' data-guid='"+item.ISLEMYAPAN+"' data-adisyon='"+item.ADISYONNO+"' data-cari='"+item.CARINO+"' style=' padding-top:50px;font-size:24px; margin: 2px;border-radius: 10px; border:1px solid rgb(192, 192, 192); height: 100%; background-color: "+item.RENK+"; box-shadow: 0px 0px 8px rgba(0,0,0,0.3);'>"+item.MASAISMI+"</div></div>";
+									}
+									else{ //DOLU
+										var renk = item.RENK;
+										if (item.FATURAYAZDIMI == "1") renk = "#FAF352";
+										if (item.SAAT=="0") 
+										{
+											if (item.LOCKDURUM=="1") _html += "<div class='col-xl-2 col-lg-3 col-md-3 col-sm-4 col-6 my-2 px-1' style='min-height: 140px; text-align: center;'><div onclick='masaac(`"+item.KAYITSIRANO+"`);' data-masaid='"+item.KAYITSIRANO+"' data-durum='dolu' data-kilit='1' data-kisim='"+item.KISIM+"' data-masa='"+item.MASAISMI+"' data-renk='"+renk+"' data-guid='"+item.ISLEMYAPAN+"' data-adisyon='"+item.ADISYONNO+"' data-cari='"+item.CARINO+"' style='margin: 2px;border-radius: 10px; border:3px solid black; height: 100%; background-color: "+renk+";box-shadow: 0px 0px 8px rgba(0,0,0,0.3); padding-top:5px;'><span style='font-size:20px;'>"+item.MASAISMI+"</span><br>"+parabirimi_locale(tutar)+"<br>"+item.GARSON+"<br>"+item.DK+" Dk.<br>"+item.FIRMAISMI.substr(0,10)+"</div></div>";
+											else _html += "<div class='col-xl-2 col-lg-3 col-md-3 col-sm-4 col-6 my-2 px-1' style='min-height: 140px; text-align: center;'><div onclick='masaac(`"+item.KAYITSIRANO+"`);' data-masaid='"+item.KAYITSIRANO+"' data-durum='dolu' data-kilit='0' data-kisim='"+item.KISIM+"' data-masa='"+item.MASAISMI+"' data-renk='"+renk+"' data-guid='"+item.ISLEMYAPAN+"' data-adisyon='"+item.ADISYONNO+"' data-cari='"+item.CARINO+"' style='margin: 2px;border-radius: 10px; border:1px solid rgb(192, 192, 192); height: 100%; background-color: "+renk+";box-shadow: 0px 0px 8px rgba(0,0,0,0.3); padding-top:5px;'><span style='font-size:20px;'>"+item.MASAISMI+"</span><br>"+parabirimi_locale(tutar)+"<br>"+item.GARSON+"<br>"+item.DK+" Dk.<br>"+item.FIRMAISMI.substr(0,10)+"</div></div>";
+										}
+										else {
+											if (item.LOCKDURUM=="1") _html += "<div class='col-xl-2 col-lg-3 col-md-3 col-sm-4 col-6 my-2 px-1' style='min-height: 140px; text-align: center;'><div onclick='masaac(`"+item.KAYITSIRANO+"`);' data-masaid='"+item.KAYITSIRANO+"' data-durum='dolu' data-kilit='1' data-kisim='"+item.KISIM+"' data-masa='"+item.MASAISMI+"' data-renk='"+renk+"' data-guid='"+item.ISLEMYAPAN+"' data-adisyon='"+item.ADISYONNO+"' data-cari='"+item.CARINO+"' style='margin: 2px;border-radius: 10px; border:3px solid black; height: 100%; background-color: "+renk+";box-shadow: 0px 0px 8px rgba(0,0,0,0.3); padding-top:5px;'><span style='font-size:20px;'>"+item.MASAISMI+"</span><br>"+parabirimi_locale(tutar)+"<br>"+item.GARSON+"<br>"+item.SAAT+" Sa. "+item.DK+" Dk.<br>"+item.FIRMAISMI.substr(0,10)+"</div></div>";
+											else _html += "<div class='col-xl-2 col-lg-3 col-md-3 col-sm-4 col-6 my-2 px-1' style='min-height: 140px; text-align: center;'><div onclick='masaac(`"+item.KAYITSIRANO+"`);' data-masaid='"+item.KAYITSIRANO+"' data-durum='dolu' data-kilit='0' data-kisim='"+item.KISIM+"' data-masa='"+item.MASAISMI+"' data-renk='"+renk+"' data-guid='"+item.ISLEMYAPAN+"' data-adisyon='"+item.ADISYONNO+"' data-cari='"+item.CARINO+"' style='margin: 2px;border-radius: 10px; border:1px solid rgb(192, 192, 192); height: 100%; background-color: "+renk+";box-shadow: 0px 0px 8px rgba(0,0,0,0.3); padding-top:5px;'><span style='font-size:20px;'>"+item.MASAISMI+"</span><br>"+parabirimi_locale(tutar)+"<br>"+item.GARSON+"<br>"+item.SAAT+" Sa. "+item.DK+" Dk.<br>"+item.FIRMAISMI.substr(0,10)+"</div></div>";
+										}
+									}
+								});
+								document.getElementById("masa").innerHTML = _html;
+						
+						}
+						else{
+							document.getElementById("masa").innerHTML = "";
+						}
+					}
+					
+				},
+				error: function (hata) {
+					document.body.className ="";
+					alertify.error("Sistem yöneticisine başvurunuz");
+				}
+			});
+		}
+
+		function masakontrol(){
+			$.ajax({
+				type: 'post',
+				async: false,
+				url: "https://pos.posula.com/api/pos/yazarkasaloggetir",
+				dataType: 'json',
+				contentType: 'application/json; charset=utf-8',
+				data: JSON.stringify({ terminal: window.location.hostname, islem: '%', kisim: localStorage.pos_secilikisim, masaismi: '%' }),
+				success: function (data, textStatus, xhr) {  
+					if (xhr.status == "200")
+					{
+						if (data.length>0){
+							masagetir(localStorage.pos_secilikisim);
+
+							$.ajax({
+								type: 'post',
+								async: false,
+								url: "https://pos.posula.com/api/pos/yazarkasalogtemizle",
+								dataType: 'json',
+								contentType: 'application/json; charset=utf-8',
+								data: JSON.stringify({ terminal: window.location.hostname, islem: '%', kisim: localStorage.pos_secilikisim, masaismi: '%' })
+							});
+
+						}
+					}
+					
+				},
+				error: function (hata) {
+					document.body.className ="";
+					alertify.error("Sistem yöneticisine başvurunuz");
+				}
+			});
+		}
+
+		function masagetir1(_kisim){
+
+			return new Promise((resolve) => {
+				document.body.className = "loading";
+
+				$.ajax({
+					type: 'post',
+					url: "https://pos.posula.com/api/pos/masagetir",
+					dataType: 'json',
+					async: false,
+					contentType: 'application/json; charset=utf-8',
+					data: JSON.stringify({ kisim: _kisim }),
+					success: function (data, textStatus, xhr) {
+						document.body.className ="";  
+						if (xhr.status == "200")
+						{
+							if (data.length>0){
+								var _html="";
+								var tutar="";
+								$.each(data,
+								function (key, item) {
+
+									if (localStorage.pos_useryetki.split(',')[5]=="1"){
+										tutar = item.TUTAR.toFixed(2).replace(".",",");
+									}
+
+									if (item.RENK=="#5df18a"){//BOŞ
+										if (item.LOCKDURUM=="1") _html += "<div class='col-xl-2 col-lg-3 col-md-3 col-sm-4 col-6 my-2 px-1' style='min-height: 140px; text-align: center;'><div onclick='masaac(`"+item.KAYITSIRANO+"`);' data-masaid='"+item.KAYITSIRANO+"' data-durum='bos' data-kilit='1' data-kisim='"+item.KISIM+"' data-masa='"+item.MASAISMI+"' data-renk='"+item.RENK+"' data-guid='"+item.ISLEMYAPAN+"' data-adisyon='"+item.ADISYONNO+"' data-cari='"+item.CARINO+"' style=' padding-top:50px;font-size:24px; margin: 2px;border-radius: 10px; border:3px solid black; height: 100%; background-color: "+item.RENK+"; box-shadow: 0px 0px 8px rgba(0,0,0,0.3);'>"+item.MASAISMI+"</div></div>";
+										else _html += "<div class='col-xl-2 col-lg-3 col-md-3 col-sm-4 col-6 my-2 px-1' style='min-height: 140px; text-align: center;'><div onclick='masaac(`"+item.KAYITSIRANO+"`);' data-masaid='"+item.KAYITSIRANO+"' data-durum='bos' data-kilit='0' data-kisim='"+item.KISIM+"' data-masa='"+item.MASAISMI+"' data-renk='"+item.RENK+"' data-guid='"+item.ISLEMYAPAN+"' data-adisyon='"+item.ADISYONNO+"' data-cari='"+item.CARINO+"' style=' padding-top:50px;font-size:24px; margin: 2px;border-radius: 10px; border:1px solid rgb(192, 192, 192); height: 100%; background-color: "+item.RENK+"; box-shadow: 0px 0px 8px rgba(0,0,0,0.3);'>"+item.MASAISMI+"</div></div>";
+									}
+									else{ //DOLU
+										var renk = item.RENK;
+										if (item.FATURAYAZDIMI == "1") renk = "#FAF352";
+										if (item.SAAT=="0") 
+										{
+											if (item.LOCKDURUM=="1") _html += "<div class='col-xl-2 col-lg-3 col-md-3 col-sm-4 col-6 my-2 px-1' style='min-height: 140px; text-align: center;'><div onclick='masaac(`"+item.KAYITSIRANO+"`);' data-masaid='"+item.KAYITSIRANO+"' data-durum='dolu' data-kilit='1' data-kisim='"+item.KISIM+"' data-masa='"+item.MASAISMI+"' data-renk='"+renk+"' data-guid='"+item.ISLEMYAPAN+"' data-adisyon='"+item.ADISYONNO+"' data-cari='"+item.CARINO+"' style='margin: 2px;border-radius: 10px; border:3px solid black; height: 100%; background-color: "+renk+";box-shadow: 0px 0px 8px rgba(0,0,0,0.3); padding-top:5px;'><span style='font-size:20px;'>"+item.MASAISMI+"</span><br>"+tutar+"<br>"+item.GARSON+"<br>"+item.DK+" Dk.<br>"+item.FIRMAISMI.substr(0,10)+"</div></div>";
+											else _html += "<div class='col-xl-2 col-lg-3 col-md-3 col-sm-4 col-6 my-2 px-1' style='min-height: 140px; text-align: center;'><div onclick='masaac(`"+item.KAYITSIRANO+"`);' data-masaid='"+item.KAYITSIRANO+"' data-durum='dolu' data-kilit='0' data-kisim='"+item.KISIM+"' data-masa='"+item.MASAISMI+"' data-renk='"+renk+"' data-guid='"+item.ISLEMYAPAN+"' data-adisyon='"+item.ADISYONNO+"' data-cari='"+item.CARINO+"' style='margin: 2px;border-radius: 10px; border:1px solid rgb(192, 192, 192); height: 100%; background-color: "+renk+";box-shadow: 0px 0px 8px rgba(0,0,0,0.3); padding-top:5px;'><span style='font-size:20px;'>"+item.MASAISMI+"</span><br>"+tutar+"<br>"+item.GARSON+"<br>"+item.DK+" Dk.<br>"+item.FIRMAISMI.substr(0,10)+"</div></div>";
+										}
+										else {
+											if (item.LOCKDURUM=="1") _html += "<div class='col-xl-2 col-lg-3 col-md-3 col-sm-4 col-6 my-2 px-1' style='min-height: 140px; text-align: center;'><div onclick='masaac(`"+item.KAYITSIRANO+"`);' data-masaid='"+item.KAYITSIRANO+"' data-durum='dolu' data-kilit='1' data-kisim='"+item.KISIM+"' data-masa='"+item.MASAISMI+"' data-renk='"+renk+"' data-guid='"+item.ISLEMYAPAN+"' data-adisyon='"+item.ADISYONNO+"' data-cari='"+item.CARINO+"' style='margin: 2px;border-radius: 10px; border:3px solid black; height: 100%; background-color: "+renk+";box-shadow: 0px 0px 8px rgba(0,0,0,0.3); padding-top:5px;'><span style='font-size:20px;'>"+item.MASAISMI+"</span><br>"+tutar+"<br>"+item.GARSON+"<br>"+item.SAAT+" Sa. "+item.DK+" Dk.<br>"+item.FIRMAISMI.substr(0,10)+"</div></div>";
+											else _html += "<div class='col-xl-2 col-lg-3 col-md-3 col-sm-4 col-6 my-2 px-1' style='min-height: 140px; text-align: center;'><div onclick='masaac(`"+item.KAYITSIRANO+"`);' data-masaid='"+item.KAYITSIRANO+"' data-durum='dolu' data-kilit='0' data-kisim='"+item.KISIM+"' data-masa='"+item.MASAISMI+"' data-renk='"+renk+"' data-guid='"+item.ISLEMYAPAN+"' data-adisyon='"+item.ADISYONNO+"' data-cari='"+item.CARINO+"' style='margin: 2px;border-radius: 10px; border:1px solid rgb(192, 192, 192); height: 100%; background-color: "+renk+";box-shadow: 0px 0px 8px rgba(0,0,0,0.3); padding-top:5px;'><span style='font-size:20px;'>"+item.MASAISMI+"</span><br>"+tutar+"<br>"+item.GARSON+"<br>"+item.SAAT+" Sa. "+item.DK+" Dk.<br>"+item.FIRMAISMI.substr(0,10)+"</div></div>";
+										}
+									}
+								});
+								document.getElementById("masa").innerHTML = _html;
+								resolve("1");
+							}
+							else{
+								document.getElementById("masa").innerHTML = "";
+							}
+						}
+						
+					},
+					error: function (hata) {
+						document.body.className ="";
+						alertify.error("Sistem yöneticisine başvurunuz");
+					}
+				});
+			});
+
+			
+		}
+
+		async function masaac(masaid){
+
+			const element = document.querySelectorAll('[data-masaid="'+masaid+'"]')[0];
+			var kisim = element.dataset.kisim;
+			var masaismi = element.dataset.masa;
+			var durum = element.dataset.durum;
+			var kilit = element.dataset.kilit;
+			var adisyonno = element.dataset.adisyon;
+			var carino = element.dataset.cari;
+			renk = element.style.backgroundColor;
+			kitleyen = element.dataset.guid;
+
+			const sonuc = await vazgec(); // Bizim kilitlediğimiz her masanın kilidini kaldırıyor
+			
+			
+
+			if (kitleyen == localStorage.pos_userguid) //Daha önce biz kitlediysek tekrar kitliyoruz
+			{
+				const kilitle = await masakilitle(kisim,masaismi);
+			}
+
+
+			const sonuc1 = await masagetir1(kisim); 
+
+
+			const element1 = document.querySelectorAll('[data-masaid="'+masaid+'"]')[0];
+			kisim = element1.dataset.kisim;
+			masaismi = element1.dataset.masa;
+			durum = element1.dataset.durum;
+			kilit = element1.dataset.kilit;
+			adisyonno = element1.dataset.adisyon;
+			carino = element1.dataset.cari;
+
+			if (localStorage.pos_dataid == ""){
+				//Daha önce hiç masa seçmediysek seçime alıyoruz.
+				localStorage.pos_dataid = element.dataset.masaid;
+				localStorage.pos_datarenk = element.dataset.renk;		
+			}
+			else{
+				//Önceden tıkladığımız masa varsa normale döndürüyoruz
+				const elem1 = document.querySelectorAll('[data-masaid="'+localStorage.pos_dataid+'"]')[0];
+				if (elem1!=undefined && elem1!=element){
+					elem1.style.backgroundColor = localStorage.pos_datarenk;
+					elem1.style.color = "black";
+
+					//Yenisini seçime alıyoruz.
+					localStorage.pos_dataid = element.dataset.masaid;
+					localStorage.pos_datarenk = element.dataset.renk;
+				}
+				
+			}
+
+			
+
+			if (durum == "dolu")//Masa doluysa sağ tarafta içerik göstereceğiz
+			{
+				if (renk != 'dodgerblue') //Masaya ilk defa tıklanıyor
+				{
+
+					document.getElementById("masadetayboscard").style.display='none';
+					document.getElementById("masabutonboscard").style.display='none';
+					document.getElementById("masadetaycard").style.display='';
+					document.getElementById("masabutoncard").style.display='';
+					const sonuc3 = await masasec(masaid);
+
+					//Üst taraf için her türlü masa bilgisini getiriyoruz. Alt taraftaki butonlar için kilit durumunu kontrol ediyoruz.
+					const sonuc2 = await masadetaygetir(kisim,masaismi);
+
+					var islemyapan = localStorage.pos_userguid;
+					
+
+					if (kilit == "1") //MASA KİLİTLİYSE
+					{
+						$.ajax({
+							type: 'post',
+							async: false,
+							url: "https://pos.posula.com/api/pos/guidGetir",
+							dataType: 'json',
+							contentType: 'application/json; charset=utf-8',
+							data: JSON.stringify({ kisim: kisim, masaismi: masaismi }),
+							success: function (data, textStatus, xhr) {
+								if (xhr.status == "200")
+								{
+									//var _htmlmb = "<br><p style='font-weight:500;'>"+ data+" KULLANICISI<br>MASADA İŞLEM YAPIYOR</p><div class='row m-0 p-0' style='max-width:100%;'><div class='col-12'><button class='btn btn-light shadow-sm' style='min-width:140px; min-height:90px; margin-top:20px; margin-bottom:30px; border:1px solid lightgray;' onclick='masakilidiac(`"+kisim+"`,`"+masaismi+"`,`"+masaid+"`);'>Masayı Aç</button></div><div class='col-12'><button class='btn btn-light shadow-sm' style='min-width:140px; min-height:90px; border:1px solid lightgray;' onclick='vazgec();'>Vazgeç</button></div></div>";
+									var _htmlmb = "<br><p style='font-weight:500;'>BAŞKA BİR KULLANICI<br>MASADA İŞLEM YAPIYOR</p><div class='row m-0 p-0' style='max-width:100%;'><div class='col-12'><button class='btn btn-light shadow-sm' style='min-width:140px; min-height:90px; margin-top:20px; margin-bottom:30px; border:1px solid lightgray;' onclick='masakilidiac(`"+kisim+"`,`"+masaismi+"`,`"+masaid+"`);'>Masayı Aç</button></div><div class='col-12'><button class='btn btn-light shadow-sm' style='min-width:140px; min-height:90px; border:1px solid lightgray;' onclick='vazgec();'>Vazgeç</button></div></div>";
+									document.getElementById("masabuton").innerHTML = _htmlmb;
+								}
+								
+							},
+							error: function (hata) {
+								alertify.error("Sistem yöneticisine başvurunuz");
+							}
+						});
+					}
+					else{ //Masayı biz kitliyoruz
+						//#region Masaya kullanıcı atama
+
+						const kilitle1 = await masakilitle(kisim,masaismi);
+
+						var _htmlmb = "<div class='row m-0 p-0' style='max-width:100%;'>";
+						
+						_htmlmb += "<div class='col-6 mb-2 p-1'>";
+						_htmlmb += "<button class='btn btn-light shadow-sm' style='height:100%; width:100%; border:1px solid lightgray;' onclick='adisyonyazdir(`"+kisim+"`,`"+masaismi+"`);''>Adisyon<br>Yazdır</button>";
+						_htmlmb += "</div>";
+
+						_htmlmb += "<div class='col-6 mb-2 p-1'>";
+						_htmlmb += "<button class='btn btn-light shadow-sm' style='height:100%; width:100%; border:1px solid lightgray;' data-bs-whatever='"+kisim+"|"+masaismi+"|"+masaid+"|"+adisyonno+"' data-bs-toggle='modal' data-bs-target='#aciklamaModal'>Açıklama</button>";
+						_htmlmb += "</div>";
+						
+						if (localStorage.pos_kisimtipi!="3")
+						{
+						
+							if (localStorage.pos_useryetki.split(',')[14]=="1"){
+								_htmlmb += "<div class='col-6 mb-2 p-1'>";
+								_htmlmb += "<button class='btn btn-light shadow-sm' style='height:100%; width:100%; border:1px solid lightgray;' data-bs-whatever='"+kisim+"|"+masaismi+"|"+masaid+"|"+adisyonno+"' data-bs-toggle='modal' data-bs-target='#masatasiModal'>Masa<br>Taşı</button>";
+								_htmlmb += "</div>";
+							}
+							else{
+								_htmlmb += "<div class='col-6 mb-2 p-1'>";
+								_htmlmb += "<button disabled class='btn btn-light shadow-sm' style='height:100%; width:100%; border:1px solid lightgray;' data-bs-whatever='"+kisim+"|"+masaismi+"|"+masaid+"|"+adisyonno+"' data-bs-toggle='modal' data-bs-target='#masatasiModal'>Masa<br>Taşı</button>";
+								_htmlmb += "</div>";
+							}
+							/*
+							if (localStorage.pos_useryetki.split(',')[13]=="1"){
+								_htmlmb += "<div class='col-6 mb-2 p-1'>";
+								_htmlmb += "<button class='btn btn-light shadow-sm' style='height:100%; width:100%; border:1px solid lightgray;' data-bs-whatever='"+kisim+"|"+masaismi+"|"+masaid+"|"+adisyonno+"' data-bs-toggle='modal' data-bs-target='#uruntasiModal'>Ürün<br>Taşı</button>";
+								_htmlmb += "</div>";
+							}
+							else{
+								_htmlmb += "<div class='col-6 mb-2 p-1'>";
+								_htmlmb += "<button disabled class='btn btn-light shadow-sm' style='height:100%; width:100%; border:1px solid lightgray;' data-bs-whatever='"+kisim+"|"+masaismi+"|"+masaid+"|"+adisyonno+"' data-bs-toggle='modal' data-bs-target='#uruntasiModal'>Ürün<br>Taşı</button>";
+								_htmlmb += "</div>";
+							}
+							*/
+							
+							if (localStorage.pos_useryetki.split(',')[8]=="1"){
+								_htmlmb += "<div class='col-6 mb-2 p-1'>";
+								_htmlmb += "<button class='btn btn-light shadow-sm' style='height:100%; width:100%; border:1px solid lightgray;' data-bs-whatever='"+kisim+"|"+masaismi+"|"+masaid+"|"+adisyonno+"' data-bs-toggle='modal' data-bs-target='#iskontoModal'>İndirim</button>";
+								_htmlmb += "</div>";
+							}
+							else{
+								_htmlmb += "<div class='col-6 mb-2 p-1'>";
+								_htmlmb += "<button disabled class='btn btn-light shadow-sm' style='height:100%; width:100%; border:1px solid lightgray;' data-bs-whatever='"+kisim+"|"+masaismi+"|"+masaid+"|"+adisyonno+"' data-bs-toggle='modal' data-bs-target='#iskontoModal'>İndirim</button>";
+								_htmlmb += "</div>";
+							}
+
+							if (localStorage.pos_useryetki.split(',')[5]=="1"){
+								_htmlmb += "<div class='col-6 mb-2 p-1'>";
+								_htmlmb += "<button class='btn btn-light shadow-sm' style='height:100%; width:100%; border:1px solid lightgray;' data-bs-toggle='modal' data-bs-target='#kupurModal' data-bs-whatever='Nakit|"+kisim+"|"+masaismi+"|"+sonuc2+"'>Nakit</button>";
+								_htmlmb += "</div>";
+
+								_htmlmb += "<div class='col-6 mb-2 p-1'>";
+								_htmlmb += "<button class='btn btn-light shadow-sm' style='height:100%; width:100%; border:1px solid lightgray;' onclick='alertify.confirm(`UYARI`, `Kredi Kartı kapatmayı onaylıyor musunuz?`, function(){ hesapkapat(`Kredi Kartı`,`"+kisim+"`,`"+masaismi+"`);}, function(){ });'>Kredi<br>Kartı</button>";
+								_htmlmb += "</div>";
+
+								_htmlmb += "<div class='col-6 mb-2 p-1'>";
+								_htmlmb += "<button class='btn btn-light shadow-sm' style='height:100%; width:100%; border:1px solid lightgray;' data-bs-whatever='"+kisim+"|"+masaismi+"|"+masaid+"|"+adisyonno+"|"+carino+"' data-bs-toggle='modal' data-bs-target='#cekbolModal'>Detaylı<br>Ödeme</button>";
+								_htmlmb += "</div>";
+							}
+							else{
+								_htmlmb += "<div class='col-6 mb-2 p-1'>";
+								_htmlmb += "<button disabled class='btn btn-light shadow-sm' style='height:100%; width:100%; border:1px solid lightgray;' onclick='alertify.confirm(`UYARI`, `Nakit kapatmayı onaylıyor musunuz?`, function(){ hesapkapat(`Nakit`,`"+kisim+"`,`"+masaismi+"`);}, function(){ });'>Nakit</button>";
+								_htmlmb += "</div>";
+
+								_htmlmb += "<div class='col-6 mb-2 p-1'>";
+								_htmlmb += "<button disabled class='btn btn-light shadow-sm' style='height:100%; width:100%; border:1px solid lightgray;' onclick='alertify.confirm(`UYARI`, `Kredi Kartı kapatmayı onaylıyor musunuz?`, function(){ hesapkapat(`Kredi Kartı`,`"+kisim+"`,`"+masaismi+"`);}, function(){ });'>Kredi<br>Kartı</button>";
+								_htmlmb += "</div>";
+
+								_htmlmb += "<div class='col-6 mb-2 p-1'>";
+								_htmlmb += "<button disabled class='btn btn-light shadow-sm' style='height:100%; width:100%; border:1px solid lightgray;' data-bs-whatever='"+kisim+"|"+masaismi+"|"+masaid+"|"+adisyonno+"|"+carino+"' data-bs-toggle='modal' data-bs-target='#cekbolModal'>Detaylı<br>Ödeme</button>";
+								_htmlmb += "</div>";
+							}
+
+						}
+						else{
+							_htmlmb += "<div class='col-6 mb-2 p-1'>";
+							_htmlmb += "<button class='btn btn-light shadow-sm' style='height:100%; min-height:62px; width:100%; border:1px solid lightgray;' data-bs-whatever='"+kisim+"|"+masaismi+"|"+masaid+"|"+adisyonno+"' data-bs-toggle='modal' data-bs-target='#misafirlerModal'>Misafirler</button>";
+							_htmlmb += "</div>";
+						}
+						
+						
+						
+
+						_htmlmb += "<div class='col-6 mb-2 p-1'>";
+						_htmlmb += "<button class='btn btn-light shadow-sm' style='height:100%; min-height:62px; width:100%; border:1px solid lightgray;' onclick='vazgecmasa(`"+kisim+"`);'>Vazgeç</button>";
+						_htmlmb += "</div>";
+
+
+						_htmlmb += "</div>";
+						
+						
+						
+						
+						document.getElementById("masabuton").innerHTML = _htmlmb;
+
+						//#endregion
+					}
+
+					const sonuc1 = await masagetir1(kisim); 
+					
+					const sonuc4 = await masasec(masaid);
+
+					element.style.backgroundColor = "dodgerblue";
+					element.style.color = "white";
+				}
+				else{//Masaya içerik göstermek için tıklanmış şimdi masaya giriş yapılacak.
+
+					//const sonuc1 = await masagetir1(kisim); 
+
+					//const sonuc3 = await masasec(masaid);
+
+					//var info = localStorage.pos_userguid;
+					//var islemyapan1 = '%' + info.substr(info.indexOf('@'),info.length);
+
+					if (kitleyen == localStorage.pos_userguid){ //Masayı biz kitlemişsek kilitliyken içine girebiliyoruz
+						localStorage.pos_masa = kisim+"|"+masaismi+"|"+durum+"|"+kilit;
+						window.location="table.html";
+					}
+					
+
+				}
+			}
+
+
+
+
+
+			else{ //Masa boş
+				if (kilit == "1")
+				{
+					document.getElementById("masadetayboscard").style.display='none';
+					document.getElementById("masabutonboscard").style.display='none';
+					document.getElementById("masadetaycard").style.display='';
+					document.getElementById("masabutoncard").style.display='';
+					const sonuc3 = await masasec(masaid);
+
+					//Üst taraf için her türlü masa bilgisini getiriyoruz. Alt taraftaki butonlar için kilit durumunu kontrol ediyoruz.
+
+					var islemyapan = localStorage.pos_userguid;
+					
+
+					if (kilit == "1") //Başkası masayı kitlemiş
+					{
+						$.ajax({
+							type: 'post',
+							async: false,
+							url: "https://pos.posula.com/api/pos/guidGetir",
+							dataType: 'json',
+							contentType: 'application/json; charset=utf-8',
+							data: JSON.stringify({ kisim: kisim, masaismi: masaismi }),
+							success: function (data, textStatus, xhr) {
+								if (xhr.status == "200")
+								{
+									var _htmlmb = "<br><p style='font-weight:500;'>BAŞKA BİR KULLANICI<br>MASADA İŞLEM YAPIYOR</p><div class='row m-0 p-0' style='max-width:100%;'><div class='col-12'><button class='btn btn-light shadow-sm' style='min-width:140px; min-height:90px; margin-top:20px; margin-bottom:30px; border:1px solid lightgray;' onclick='masakilidiac(`"+kisim+"`,`"+masaismi+"`,`"+masaid+"`);'>Masayı Aç</button></div><div class='col-12'><button class='btn btn-light shadow-sm' style='min-width:140px; min-height:90px; border:1px solid lightgray;' onclick='vazgec();'>Vazgeç</button></div></div>";
+									document.getElementById("masabuton").innerHTML = _htmlmb;
+									masadetaygetir(kisim,masaismi);
+								}
+								
+							},
+							error: function (hata) {
+								alertify.error("Sistem yöneticisine başvurunuz");
+							}
+						});
+					}
+				}
+				else{ //MASA KİLİTLİ DEĞİL
+					//#region Masaya kullanıcı atama
+
+					var islemyapan = localStorage.pos_userguid;
+
+					$.ajax({
+						type: 'post',
+						url: "https://pos.posula.com/api/pos/masakilitle",
+						dataType: 'json',
+						async: false,
+						contentType: 'application/json; charset=utf-8',
+						data: JSON.stringify({ kisim: kisim, masaismi: masaismi, islemyapan: islemyapan }),
+						success: function (data, textStatus, xhr) {
+							document.body.className ="";  
+							if (xhr.status == "200")
+							{
+								if (data=="OK"){
+									localStorage.pos_masa = kisim+"|"+masaismi+"|"+durum+"|"+kilit;
+									
+									if (localStorage.pos_kisim_kisisayisi=="1") $('#kisisayisiModal').modal('show');
+									else
+									{
+										localStorage.pos_masa = localStorage.pos_masa + "|1";
+										window.location="table.html";
+									}
+
+								}
+								else alertify.error("Sistem yöneticisine başvurunuz");
+							}
+							
+						},
+						error: function (hata) {
+							document.body.className ="";
+							alertify.error("Sistem yöneticisine başvurunuz");
+						}
+					});
+
+					//#endregion
+				}
+			}
+			
+		}
+
+
+
+
+
+		function adisyonyazdir(kisim,masaismi) {
+
+		
+			$.ajax({
+				async:false,
+				type: 'post',
+				url: "https://pos.posula.com/api/pos/adisyonyazdir",
+				dataType: 'json',
+				contentType: 'application/json; charset=utf-8',
+				data: JSON.stringify({ kisim: kisim, masaismi: masaismi, cihaz: window.location.hostname }),
+				success: function(data){
+					if (data=="OK") console.log("Adisyon yazdırıldı");
+					else console.log("HATA: " + data);
+				}
+			});
+			
+
+			/*
+			$.ajax({
+				async:false,
+				type: 'post',
+				url: "https://pos.posula.com/api/pos/pcname",
+				dataType: 'json',
+				contentType: 'application/json; charset=utf-8',
+				success: function (cihaz){
+					$.ajax({
+						async:false,
+						type: 'post',
+						url: "https://pos.posula.com/api/pos/adisyonyazdir",
+						dataType: 'json',
+						contentType: 'application/json; charset=utf-8',
+						data: JSON.stringify({ kisim: kisim, masaismi: masaismi, cihaz: window.location.hostname }),
+						success: function(data){
+							if (data=="OK") console.log("Adisyon yazdırıldı");
+							else console.log("HATA: " + data);
+						}
+					});
+				}
+			});
+			*/
+
+		}
+
+		function kisimcolor(){
+			const elem1 = document.querySelectorAll('[data-kisimbtn]');
+			elem1.forEach(element => {
+				if (element.style.backgroundColor == "#6c757d") element.style.color="#fff";
+			});
+		}
+
+		function vazgec(){
+
+			kisimcolor();
+
+			if (localStorage.pos_dataid!=""){
+				try{
+					const elem1 = document.querySelectorAll('[data-masaid="'+localStorage.pos_dataid+'"]')[0];
+					elem1.style.backgroundColor = localStorage.pos_datarenk;
+					elem1.style.color = "black";
+					
+					document.getElementById("masadetayboscard").style.display='';
+					document.getElementById("masabutonboscard").style.display='';
+					document.getElementById("masadetaycard").style.display='none';
+					document.getElementById("masabutoncard").style.display='none';
+
+					document.getElementById("masadetay").innerHTML = "";
+					document.getElementById("masabuton").innerHTML = "";
+
+					var islemyapan = localStorage.pos_userguid;
+
+
+					$.ajax({
+						type: 'post',
+						async: false,
+						url: "https://pos.posula.com/api/pos/masakilitkaldirself",
+						dataType: 'json',
+						contentType: 'application/json; charset=utf-8',
+						data: JSON.stringify({ islemyapan: islemyapan }),
+						success: function(data){
+							
+						}
+					});
+
+					return new Promise.resolve("OK");
+
+				}
+				catch{
+					console.log("Not found");
+				}
+				
+			}
+			
+		}
+
+		function vazgecmasa(kisim){
+			if (localStorage.pos_dataid!=""){
+				try{
+					const elem1 = document.querySelectorAll('[data-masaid="'+localStorage.pos_dataid+'"]')[0];
+					elem1.style.backgroundColor = localStorage.pos_datarenk;
+					elem1.style.color = "black";
+					
+					document.getElementById("masadetayboscard").style.display='';
+					document.getElementById("masabutonboscard").style.display='';
+					document.getElementById("masadetaycard").style.display='none';
+					document.getElementById("masabutoncard").style.display='none';
+
+					document.getElementById("masadetay").innerHTML = "";
+					document.getElementById("masabuton").innerHTML = "";
+
+					var info = localStorage.pos_userguid;
+					var islemyapan = '%' + info.substr(info.indexOf('@'),info.length);
+					$.ajax({
+						type: 'post',
+						async: false,
+						url: "https://pos.posula.com/api/pos/masakilitkaldirself",
+						dataType: 'json',
+						contentType: 'application/json; charset=utf-8',
+						data: JSON.stringify({ islemyapan: info, masaid: localStorage.pos_dataid }),
+						success: function(data){
+							masagetir1(kisim);
+						}
+					});
+
+					return new Promise.resolve("OK");
+
+				}
+				catch{
+					console.log("Not found");
+				}
+				
+			}
+			
+		}
+
+		function masasec(masaid){
+			return new Promise((resolve) => {
+				const masabtn1 = document.querySelectorAll('[data-masaid="'+masaid+'"]')[0];
+				masabtn1.style.backgroundColor = "dodgerblue";
+				masabtn1.style.color = "white";
+				resolve("3");
+			});
+		}
+
+		function masadetaygetir(kisim, masa){
+			localStorage.pos_entegrasyon_kontrol = "";
+			return new Promise((resolve) => {
+				$.ajax({
+					type: 'post',
+					url: "https://pos.posula.com/api/pos/masaicerikgetir",
+					dataType: 'json',
+					contentType: 'application/json; charset=utf-8',
+					data: JSON.stringify({ kisim: kisim, masa: masa }),
+					success: function (data, textStatus, xhr) {
+						document.body.className ="";  
+						var _html = "";
+						if (xhr.status == "200")
+						{
+							if (data.length>0){
+
+								localStorage.pos_fatura_durum = data[0]["FATURAYAZDIMI"];
+								localStorage.pos_tutar = data[0]["TUTAR"];
+								var _html = "<div class='card m-1' style='max-width: 100%;'>";
+								_html += "<div class='card-body py-1 px-0'>";
+								_html += "<div class='row m-0' style='font-weight:600; font-size:14px;'><div class='col-6 px-1 py-0'>Adisyon No: "+data[0]["ADISYONNO"]+"</div><div class='col-6 px-1 py-0 text-right' style='text-align:right !important;'>Garson: "+data[0]["GARSON"]+"</div></div>";
+								if (data[0]["FIRMAISMI"]!="") _html += "<hr class='p-0 m-0 my-1'><div class='row m-0' style='font-weight:600; font-size:14px;'><div class='col-12 px-1 py-0'>Cari/Üye: "+data[0]["FIRMAISMI"]+"</div></div>";
+								if (data[0]["ACIKLAMA"]!="") _html += "<hr class='p-0 m-0 my-1'><div class='row m-0' style='font-weight:600; font-size:14px;'><div class='col-12 px-1 py-0'>Açıklama: "+data[0]["ACIKLAMA"]+"</div></div>";
+								_html += "</div>";
+								_html += "</div>";
+
+
+
+
+								
+								_html += "<div class='row m-0 pt-2 bg-secondary text-white' style='border-top-left-radius:5px;border-top-right-radius:5px; font-weight:600; font-size:14px; min-height: 40px;'><div class='col-7 px-1 py-0'>Ürün</div><div class='col-2 px-1 py-0 text-center'>Mktr</div><div class='col-3 px-1 py-0' style='text-align:right;'>Tutar</div></div>";
+								var _renk = "";
+								var _sonref = "";
+								$.each(data,
+								function (key, item) {
+									if (key % 2 == 1) _renk = "lightgrey";
+									else _renk = "#fff";
+
+									if (item.STOKADI.indexOf('==>') < 0) _sonref = item.GRUPADI;
+
+									if (item.STOKADI.indexOf('==>')>-1){ //Ürün notu
+										_html += "<div class='row m-0 p-0' style='font-size:14px; background-color:"+_renk+"; min-height: 28px; color:red;'><div class='col-12 px-1 py-0'>&nbsp;&nbsp;&nbsp;"+item.STOKADI+"</div></div>";
+									}
+									else _html += "<div class='row m-0 p-0' style='font-size:14px; background-color:"+_renk+"; min-height: 28px;'><div class='col-7 px-1 py-0'>"+item.STOKADI+"</div><div class='col-2 px-1 py-0 text-center'>"+item.ADET+"</div><div class='col-3 px-1 py-0' style='text-align:right;'>"+item.SATIRTUTAR.toFixed(2).replace('.',',')+"</div></div>";
+									
+									
+								});
+								document.getElementById("masadetay").innerHTML = _html;
+								//resolve("2");
+								resolve(data[0]["TUTAR"]);
+							}
+							else{
+								document.getElementById("masadetay").innerHTML = "<div class='row m-0 pt-2' style='font-weight:600; font-size:14px; background-color:#e1fae9; min-height: 40px;'><div class='col-7 px-1 py-0'>Ürün</div><div class='col-2 px-1 py-0 text-center'>Mktr</div><div class='col-3 px-1 py-0' style='text-align:right;'>Tutar</div></div>";
+							}
+							
+							
+						}
+						
+					},
+					error: function (hata) {
+						document.body.className ="";
+						alertify.error("Sistem yöneticisine başvurunuz");
+					}
+				});
+			});
+
+			
+		}
+		
+		function masakilitle(kisim,masaismi){
+			return new Promise((resolve) => {
+				$.ajax({
+					type: 'post',
+					url: "https://pos.posula.com/api/pos/masakilitle",
+					dataType: 'json',
+					contentType: 'application/json; charset=utf-8',
+					data: JSON.stringify({ kisim: kisim, masaismi: masaismi, islemyapan: localStorage.pos_userguid }),
+					success: function(data, textStatus, xhr){
+						resolve("OK");
+					}
+				});
+			});	
+		}
+		
+		function masakilidiac(kisim,masaismi, masaid){
+			return new Promise((resolve) => {
+				$.ajax({
+					type: 'post',
+					url: "https://pos.posula.com/api/pos/masakilitkaldir",
+					dataType: 'json',
+					contentType: 'application/json; charset=utf-8',
+					data: JSON.stringify({ kisim: kisim, masaismi: masaismi }),
+					success: function(data, textStatus, xhr){
+						masagetir1(kisim);
+						masaac(masaid);
+					}
+				});
+			});	
+		}
+
+
+		
+		
+
+
+		const aciklamaModal = document.getElementById('aciklamaModal')
+		aciklamaModal.addEventListener('show.bs.modal', event => {
+			const button = event.relatedTarget
+			const recipient = button.getAttribute('data-bs-whatever')
+			document.getElementById("ac_masaid").value = recipient;
+		});
+
+
+		function aciklamaekle(){
+
+			document.body.className = "loading";
+
+			var masa = document.getElementById("ac_masaid").value;
+			var aciklama = document.getElementById("ac_aciklama").value;
+
+			$.ajax({
+				type: 'post',
+				url: "https://pos.posula.com/api/pos/aciklamaekle",
+				dataType: 'json',
+				contentType: 'application/json; charset=utf-8',
+				data: JSON.stringify({ masa: masa, aciklama: aciklama }),
+				success: function (data, textStatus, xhr) {
+					document.body.className ="";  
+					if (xhr.status == "200")
+					{
+						if (data == "OK"){
+							alertify.success("Açıklama eklendi");
+							document.getElementById("ac_masaid").value="";
+							//"KONAKLAMA|Mavi Bng|1|17"
+							
+							masadetaygetir(masa.split('|')[0],masa.split('|')[1]);
+						}
+						else{
+							alertify.error("Açıklama eklenemedi");
+							document.getElementById("ac_masaid").value="";
+						}
+					}
+					
+				},
+				error: function (hata) {
+					document.body.className ="";
+					alertify.error("Açıklama eklenemedi");
+					document.getElementById("ac_masaid").value="";
+				}
+			});
+		}
+
+
+		const masatasiModal = document.getElementById('masatasiModal')
+		masatasiModal.addEventListener('show.bs.modal', event => {
+			const button = event.relatedTarget
+			const recipient = button.getAttribute('data-bs-whatever')
+			document.getElementById("mt_masaid").value = recipient;
+
+			kisimgetir_mt();
+		});
+
+		function kisimgetir_mt(){
+
+			document.body.className = "loading";
+
+			$.ajax({
+				type: 'post',
+				url: "https://pos.posula.com/api/pos/kisimgetir",
+				dataType: 'json',
+				contentType: 'application/json; charset=utf-8',
+				success: function (data, textStatus, xhr) {
+					document.body.className ="";  
+					if (xhr.status == "200")
+					{
+						if (data.length>0){
+							var _html="";
+							$.each(data,
+							function (key, item) {
+								if (key==0)
+								{
+									_html += "<button class='btn btn-secondary btn-block my-2 p-0' style='width: 100%;min-height: 50px;' data-kisimbtnmt='"+item.KISIM+"' onclick='kisimsec_mt(this);'>"+item.KISIM+"</button>";
+									masagetir_mt(item.KISIM);
+								}
+								else _html += "<button class='btn btn-outline-secondary btn-block my-2 p-0' style='width: 100%;min-height: 50px;' data-kisimbtnmt='"+item.KISIM+"' onclick='kisimsec_mt(this);'>"+item.KISIM+"</button>";
+							});
+							document.getElementById("masatasi_kisimlar").innerHTML = _html;
+						}
+						else{
+							document.getElementById("masatasi_kisimlar").innerHTML = "";
+						}
+					}
+					
+				},
+				error: function (hata) {
+					document.body.className ="";
+					alertify.error("Sistem yöneticisine başvurunuz");
+				}
+			});
+		}
+
+		function kisimsec_mt(el){
+			const kisimbtn = document.querySelectorAll('[data-kisimbtnmt]');
+			kisimbtn.forEach(element => {
+				element.classList.remove('btn-secondary');
+				element.classList.add('btn-outline-secondary');
+			});
+
+			el.classList.add('btn-secondary');
+
+			masagetir_mt(el.dataset.kisimbtnmt);
+		}
+
+		function masagetir_mt(_kisim){
+			document.body.className = "loading";
+
+			$.ajax({
+				type: 'post',
+				url: "https://pos.posula.com/api/pos/masagetir",
+				dataType: 'json',
+				contentType: 'application/json; charset=utf-8',
+				data: JSON.stringify({ kisim: _kisim }),
+				success: function (data, textStatus, xhr) {
+					document.body.className ="";  
+					if (xhr.status == "200")
+					{
+						if (data.length>0){
+							var _html="";
+							$.each(data,
+							function (key, item) {
+								if (item.RENK=="#5df18a"){//BOŞ
+									if (item.LOCKDURUM=="1") 
+									{//localStorage.pos_dataid
+										if (localStorage.pos_dataid == item.KAYITSIRANO) //Taşımak için seçtiğimiz masa mı?	
+										{
+											_html += "<div class='col-xl-2 col-lg-3 col-md-3 col-sm-4 col-6 my-2 px-1' style='height: 140px; min-height: 140px; text-align: center;display:inline-block;'><div onclick='vazgec_mt(); alertify.error(`Bu masayı taşıyorsunuz.`);' data-masaid='"+item.KAYITSIRANO+"' data-durum='bos' data-kilit='1' data-kisim='"+item.KISIM+"' data-masamt='"+item.MASAISMI+"' data-renk='"+item.RENK+"' data-guid='"+item.ISLEMYAPAN+"' style=' padding-top:50px;font-size:24px; margin: 2px;border-radius: 10px; border:3px solid black; height: 100%; background-color: dodgerblue; color:white; box-shadow: 0px 0px 8px rgba(0,0,0,0.3);'>"+item.MASAISMI+"</div></div>";
+										}
+										else _html += "<div class='col-xl-2 col-lg-3 col-md-3 col-sm-4 col-6 my-2 px-1' style='height: 140px; min-height: 140px; text-align: center;display:inline-block;'><div onclick='vazgec_mt(); alertify.error(`Masada "+item.ISLEMYAPAN.substr(item.ISLEMYAPAN.indexOf('@')+1,item.ISLEMYAPAN.length)+" kullanıcısı işlem yapıyor.`);' data-masaid='"+item.KAYITSIRANO+"' data-durum='bos' data-kilit='1' data-kisim='"+item.KISIM+"' data-masamt='"+item.MASAISMI+"' data-renk='"+item.RENK+"' data-guid='"+item.ISLEMYAPAN+"' style=' padding-top:50px;font-size:24px; margin: 2px;border-radius: 10px; border:3px solid black; height: 100%; background-color: "+item.RENK+"; box-shadow: 0px 0px 8px rgba(0,0,0,0.3);'>"+item.MASAISMI+"</div></div>";
+									}
+									else _html += "<div class='col-xl-2 col-lg-3 col-md-3 col-sm-4 col-6 my-2 px-1' style='height: 140px; min-height: 140px; text-align: center;display:inline-block;'><div onclick='vazgec_mt(); document.getElementById(`mt_masaidyeni`).value=`"+item.KISIM+"|"+item.MASAISMI+"|"+item.KAYITSIRANO+"`; (this).style.backgroundColor=`dodgerblue`; (this).style.color=`white`;' data-masaid='"+item.KAYITSIRANO+"' data-durum='bos' data-kilit='0' data-kisim='"+item.KISIM+"' data-masamt='"+item.MASAISMI+"' data-renk='"+item.RENK+"' data-guid='"+item.ISLEMYAPAN+"' style=' padding-top:50px;font-size:24px; margin: 2px;border-radius: 10px; border:1px solid rgb(192, 192, 192); height: 100%; background-color: "+item.RENK+"; box-shadow: 0px 0px 8px rgba(0,0,0,0.3);'>"+item.MASAISMI+"</div></div>";
+								}
+								else{ //DOLU
+									if (item.SAAT=="0") 
+									{
+										if (item.LOCKDURUM=="1")
+										{
+											if (localStorage.pos_dataid == item.KAYITSIRANO) //Taşımak için seçtiğimiz masa mı?	
+											{
+												_html += "<div class='col-xl-2 col-lg-3 col-md-3 col-sm-4 col-6 my-2 px-1' style='height: 140px; min-height: 140px; text-align: center;display:inline-block;'><div onclick='vazgec_mt(); alertify.error(`Bu masayı taşıyorsunuz.`);' data-masaid='"+item.KAYITSIRANO+"' data-durum='dolu' data-kilit='1' data-kisim='"+item.KISIM+"' data-masamt='"+item.MASAISMI+"' data-renk='"+item.RENK+"' data-guid='"+item.ISLEMYAPAN+"' style='margin: 2px;border-radius: 10px; border:3px solid black; height: 100%; background-color: dodgerblue; color:white; box-shadow: 0px 0px 8px rgba(0,0,0,0.3); padding-top:5px;'><span style='font-size:20px;'>"+item.MASAISMI+"</span><br>"+item.TUTAR.toFixed(2).replace(".",",")+"<br>"+item.GARSON+"<br>"+item.DK+" Dk.<br>"+item.FIRMAISMI.substr(0,10)+"</div></div>";
+											}
+											else _html += "<div class='col-xl-2 col-lg-3 col-md-3 col-sm-4 col-6 my-2 px-1' style='height: 140px; min-height: 140px; text-align: center;display:inline-block;'><div onclick='vazgec_mt(); alertify.error(`Masada "+item.ISLEMYAPAN.substr(item.ISLEMYAPAN.indexOf('@')+1,item.ISLEMYAPAN.length)+" kullanıcısı işlem yapıyor.`);' data-masaid='"+item.KAYITSIRANO+"' data-durum='dolu' data-kilit='1' data-kisim='"+item.KISIM+"' data-masamt='"+item.MASAISMI+"' data-renk='"+item.RENK+"' data-guid='"+item.ISLEMYAPAN+"' style='margin: 2px;border-radius: 10px; border:3px solid black; height: 100%; background-color: "+item.RENK+";box-shadow: 0px 0px 8px rgba(0,0,0,0.3); padding-top:5px;'><span style='font-size:20px;'>"+item.MASAISMI+"</span><br>"+item.TUTAR.toFixed(2).replace(".",",")+"<br>"+item.GARSON+"<br>"+item.DK+" Dk.<br>"+item.FIRMAISMI.substr(0,10)+"</div></div>";
+										} 
+										else _html += "<div class='col-xl-2 col-lg-3 col-md-3 col-sm-4 col-6 my-2 px-1' style='height: 140px; min-height: 140px; text-align: center;display:inline-block;'><div onclick='vazgec_mt(); document.getElementById(`mt_masaidyeni`).value=`"+item.KISIM+"|"+item.MASAISMI+"|"+item.KAYITSIRANO+"`; (this).style.backgroundColor=`dodgerblue`; (this).style.color=`white`;' data-masaid='"+item.KAYITSIRANO+"' data-durum='dolu' data-kilit='0' data-kisim='"+item.KISIM+"' data-masamt='"+item.MASAISMI+"' data-renk='"+item.RENK+"' data-guid='"+item.ISLEMYAPAN+"' style='margin: 2px;border-radius: 10px; border:1px solid rgb(192, 192, 192); height: 100%; background-color: "+item.RENK+";box-shadow: 0px 0px 8px rgba(0,0,0,0.3); padding-top:5px;'><span style='font-size:20px;'>"+item.MASAISMI+"</span><br>"+item.TUTAR.toFixed(2).replace(".",",")+"<br>"+item.GARSON+"<br>"+item.DK+" Dk.<br>"+item.FIRMAISMI.substr(0,10)+"</div></div>";
+									}
+									else {
+										if (item.LOCKDURUM=="1"){
+											if (localStorage.pos_dataid == item.KAYITSIRANO) //Taşımak için seçtiğimiz masa mı?	
+											{
+												_html += "<div class='col-xl-2 col-lg-3 col-md-3 col-sm-4 col-6 my-2 px-1' style='height: 140px; min-height: 140px; text-align: center;display:inline-block;'><div onclick='vazgec_mt(); alertify.error(`Bu masayı taşıyorsunuz.`);' data-masaid='"+item.KAYITSIRANO+"' data-durum='dolu' data-kilit='1' data-kisim='"+item.KISIM+"' data-masamt='"+item.MASAISMI+"' data-renk='"+item.RENK+"' data-guid='"+item.ISLEMYAPAN+"' style='margin: 2px;border-radius: 10px; border:3px solid black; height: 100%; background-color: dodgerblue; color:white; box-shadow: 0px 0px 8px rgba(0,0,0,0.3); padding-top:5px;'><span style='font-size:20px;'>"+item.MASAISMI+"</span><br>"+item.TUTAR.toFixed(2).replace(".",",")+"<br>"+item.GARSON+"<br>"+item.SAAT+" Sa. "+item.DK+" Dk.<br>"+item.FIRMAISMI.substr(0,10)+"</div></div>";
+											}
+											else _html += "<div class='col-xl-2 col-lg-3 col-md-3 col-sm-4 col-6 my-2 px-1' style='height: 140px; min-height: 140px; text-align: center;display:inline-block;'><div onclick='vazgec_mt(); alertify.error(`Masada "+item.ISLEMYAPAN.substr(item.ISLEMYAPAN.indexOf('@')+1,item.ISLEMYAPAN.length)+" kullanıcısı işlem yapıyor.`);' data-masaid='"+item.KAYITSIRANO+"' data-durum='dolu' data-kilit='1' data-kisim='"+item.KISIM+"' data-masamt='"+item.MASAISMI+"' data-renk='"+item.RENK+"' data-guid='"+item.ISLEMYAPAN+"' style='margin: 2px;border-radius: 10px; border:3px solid black; height: 100%; background-color: "+item.RENK+";box-shadow: 0px 0px 8px rgba(0,0,0,0.3); padding-top:5px;'><span style='font-size:20px;'>"+item.MASAISMI+"</span><br>"+item.TUTAR.toFixed(2).replace(".",",")+"<br>"+item.GARSON+"<br>"+item.SAAT+" Sa. "+item.DK+" Dk.<br>"+item.FIRMAISMI.substr(0,10)+"</div></div>";
+										} 
+										else _html += "<div class='col-xl-2 col-lg-3 col-md-3 col-sm-4 col-6 my-2 px-1' style='height: 140px; min-height: 140px; text-align: center;display:inline-block;'><div onclick='vazgec_mt(); document.getElementById(`mt_masaidyeni`).value=`"+item.KISIM+"|"+item.MASAISMI+"|"+item.KAYITSIRANO+"`; (this).style.backgroundColor=`dodgerblue`; (this).style.color=`white`;' data-masaid='"+item.KAYITSIRANO+"' data-durum='dolu' data-kilit='0' data-kisim='"+item.KISIM+"' data-masamt='"+item.MASAISMI+"' data-renk='"+item.RENK+"' data-guid='"+item.ISLEMYAPAN+"' style='margin: 2px;border-radius: 10px; border:1px solid rgb(192, 192, 192); height: 100%; background-color: "+item.RENK+";box-shadow: 0px 0px 8px rgba(0,0,0,0.3); padding-top:5px;'><span style='font-size:20px;'>"+item.MASAISMI+"</span><br>"+item.TUTAR.toFixed(2).replace(".",",")+"<br>"+item.GARSON+"<br>"+item.SAAT+" Sa. "+item.DK+" Dk.<br>"+item.FIRMAISMI.substr(0,10)+"</div></div>";
+									}
+								}
+							});
+							document.getElementById("masatasi_masalar").innerHTML = _html;
+						}
+						else{
+							document.getElementById("masatasi_masalar").innerHTML = "";
+						}
+					}
+					
+				},
+				error: function (hata) {
+					document.body.className ="";
+					alertify.error("Sistem yöneticisine başvurunuz");
+				}
+			});
+		}
+	
+		
+
+
+		function masatasi(){
+
+			if (localStorage.pos_fatura_durum=="1"){
+				alertify.error("Fatura yazdırılan adisyonda değişiklik yapılamaz");
+			}
+			else{
+				var eski = document.getElementById("mt_masaid").value;
+				var yeni = document.getElementById("mt_masaidyeni").value;
+
+				document.body.className = "loading";
+
+				$.ajax({
+					type: 'post',
+					url: "https://pos.posula.com/api/pos/masatasi",
+					dataType: 'json',
+					contentType: 'application/json; charset=utf-8',
+					data: JSON.stringify({ eski: eski, yeni: yeni, user: localStorage.pos_userno }),
+					success: function (data, textStatus, xhr) {
+						document.body.className ="";  
+						if (xhr.status == "200")
+						{
+							if (data=="OK"){
+								alertify.success("Masa taşındı");
+								const kisimbtn = document.querySelectorAll('[data-kisimbtn]');
+								kisimbtn.forEach(element => {
+									if (element.classList.contains("btn-secondary")) masagetir(element.dataset.kisimbtn);
+								});
+								vazgec();
+								localStorage.pos_dataid = "";
+
+							}
+							else{
+								alertify.error("Masa taşınamadı");
+							}
+						}
+						
+					},
+					error: function (hata) {
+						document.body.className ="";
+						alertify.error("Masa taşınamadı");
+					}
+				});
+			}
+			
+			
+		}
+
+		
+		function vazgec_mt(){
+			const elem1 = document.querySelectorAll('[data-masamt]');
+			elem1.forEach(element => {
+				if (element.dataset.masaid != localStorage.pos_dataid && element.style.backgroundColor == "dodgerblue")
+				{
+					element.style.backgroundColor = element.dataset.renk;
+					element.style.color = "black";
+				}
+			});
+		}
+	
+	
+		const uruntasiModal = document.getElementById('uruntasiModal')
+		uruntasiModal.addEventListener('show.bs.modal', event => {
+			const button = event.relatedTarget
+			const recipient = button.getAttribute('data-bs-whatever')
+			document.getElementById("ut_masaid").value = recipient;
+
+			masadetaygetir_mt(recipient.split('|')[0], recipient.split('|')[1]);
+		});
+
+
+		
+	
+	
+		function masadetaygetir_mt(kisim, masa){
+
+			return new Promise((resolve) => {
+				$.ajax({
+					type: 'post',
+					url: "https://pos.posula.com/api/pos/masaicerikgetir",
+					dataType: 'json',
+					contentType: 'application/json; charset=utf-8',
+					data: JSON.stringify({ kisim: kisim, masa: masa }),
+					success: function (data, textStatus, xhr) {
+						document.body.className ="";  
+						var _html = "";
+						if (xhr.status == "200")
+						{
+							if (data.length>0){
+								
+								var _html="<div class='row m-0 pt-2' style='font-weight:600; font-size:14px; background-color:#e1fae9; min-height: 40px;'><div class='col-1 px-1 py-1 text-center'>Seç</div><div class='col-7 px-1 py-0'>Ürün</div><div class='col-2 px-1 py-0 text-center'>Miktar</div><div class='col-2 px-1 py-0' style='text-align:right;'>Tutar</div></div>";
+								var _renk = "";
+								var _sonref = "";
+								$.each(data,
+								function (key, item) {
+									if (key % 2 == 1) _renk = "#e1fae9";
+									else _renk = "#fff";
+
+									if (item.STOKADI.indexOf('==>') < 0) _sonref = item.GRUPADI;
+
+									if (item.STOKADI.indexOf('==>')>-1){ //Ürün notu
+										_html += "<div class='row m-0 p-0' style='font-size:14px; background-color:"+_renk+"; min-height: 28px; color:red;'><div class='col-1 px-1 py-0 text-center'><input class='form-check-input' style='margin-top:3px; margin-left:-10px; width:25px; height:25px;' type='checkbox' value='"+item.SIRANO+"' id='check"+item.SIRANO+"' name='checkurun'></td></div><div class='col-11 px-1 py-1'>&nbsp;&nbsp;&nbsp;"+item.STOKADI+"</div></div>";
+									}
+									else _html += "<div class='row m-0 p-0' style='font-size:14px; background-color:"+_renk+"; min-height: 28px;'><div class='col-1 px-1 py-0 text-center'><input class='form-check-input' style='margin-top:3px; margin-left:-10px; width:25px; height:25px;' type='checkbox' value='"+item.SIRANO+"' id='check"+item.SIRANO+"' name='checkurun'></div><div class='col-7 px-1 py-1'>"+item.STOKADI+"</div><div class='col-2 px-1 py-1 text-center'>"+item.ADET+"</div><div class='col-2 px-1 py-1' style='text-align:right;'>"+item.SATIRTUTAR.toFixed(2).replace('.',',')+"</div></div>";
+									
+									
+								});
+								document.getElementById("uruntasi_urundiv").innerHTML = _html;
+								resolve("2");
+							}
+							else{
+								document.getElementById("uruntasi_urundiv").innerHTML = "<div class='row m-0 pt-2' style='font-weight:600; font-size:14px; background-color:#e1fae9; min-height: 40px;'><div class='col-1 px-1 py-0'></div><div class='col-7 px-1 py-0'>Ürün</div><div class='col-2 px-1 py-0 text-center'>Mktr</div><div class='col-2 px-1 py-0' style='text-align:right;'>Tutar</div></div>";
+							}
+							
+							
+						}
+						
+					},
+					error: function (hata) {
+						document.body.className ="";
+						alertify.error("Sistem yöneticisine başvurunuz");
+					}
+				});
+			});
+
+
+		}
+		
+		const uruntasiModal1 = document.getElementById('uruntasiModal')
+		uruntasiModal1.addEventListener('hidden.bs.modal', event => {
+			
+			document.getElementById('uruntasi_masasec').style.display='none'; 
+			document.getElementById('uruntasi_urunsec').style.display=''; 
+			document.getElementById('uruntasi_geribtn').style.display='none'; 
+			document.getElementById('uruntasi_ileribtn').style.display='inline-block'; 
+			document.getElementById('uruntasi_onaybtn').style.display='none'; 
+			document.getElementById('uruntasi_baslik').innerText = 'Taşınacak ürünleri seçiniz';
+		});
+
+		function kisimgetir_ut(){
+
+			document.body.className = "loading";
+
+			$.ajax({
+				type: 'post',
+				url: "https://pos.posula.com/api/pos/kisimgetir",
+				dataType: 'json',
+				contentType: 'application/json; charset=utf-8',
+				success: function (data, textStatus, xhr) {
+					document.body.className ="";  
+					if (xhr.status == "200")
+					{
+						if (data.length>0){
+							var _html="";
+							$.each(data,
+							function (key, item) {
+								if (key==0)
+								{
+									_html += "<button class='btn btn-secondary btn-block my-2 p-0' style='width: 100%;min-height: 50px;' data-kisimbtnut='"+item.KISIM+"' onclick='kisimsec_ut(this);'>"+item.KISIM+"</button>";
+									masagetir_ut(item.KISIM);
+								}
+								else _html += "<button class='btn btn-outline-secondary btn-block my-2 p-0' style='width: 100%;min-height: 50px;' data-kisimbtnut='"+item.KISIM+"' onclick='kisimsec_ut(this);'>"+item.KISIM+"</button>";
+							});
+							document.getElementById("uruntasi_kisimlar").innerHTML = _html;
+						}
+						else{
+							document.getElementById("uruntasi_kisimlar").innerHTML = "";
+						}
+					}
+					
+				},
+				error: function (hata) {
+					document.body.className ="";
+					alertify.error("Sistem yöneticisine başvurunuz");
+				}
+			});
+		}
+
+
+		function kisimsec_ut(el){
+			const kisimbtn = document.querySelectorAll('[data-kisimbtnut]');
+			kisimbtn.forEach(element => {
+				element.classList.remove('btn-secondary');
+				element.classList.add('btn-outline-secondary');
+			});
+
+			el.classList.add('btn-secondary');
+
+			masagetir_ut(el.dataset.kisimbtnut);
+		}
+	
+	
+		function masagetir_ut(_kisim){
+			document.body.className = "loading";
+
+			$.ajax({
+				type: 'post',
+				url: "https://pos.posula.com/api/pos/masagetir",
+				dataType: 'json',
+				contentType: 'application/json; charset=utf-8',
+				data: JSON.stringify({ kisim: _kisim }),
+				success: function (data, textStatus, xhr) {
+					document.body.className ="";  
+					if (xhr.status == "200")
+					{
+						if (data.length>0){
+							var _html="";
+							$.each(data,
+							function (key, item) {
+								if (item.RENK=="#5df18a"){//BOŞ
+									if (item.LOCKDURUM=="1") 
+									{
+										console.log(item);
+										//localStorage.pos_dataid
+										if (localStorage.pos_dataid == item.KAYITSIRANO) //Taşımak için seçtiğimiz masa mı?	
+										{
+											_html += "<div class='col-xl-2 col-lg-3 col-md-3 col-sm-4 col-6 my-2 px-1' style='height: 140px; min-height: 140px; text-align: center;display:inline-block;'><div onclick='vazgec_ut(); alertify.error(`Bu masayı taşıyorsunuz.`);' data-masaid='"+item.KAYITSIRANO+"' data-durum='bos' data-kilit='1' data-kisim='"+item.KISIM+"' data-masaut='"+item.MASAISMI+"' data-renk='"+item.RENK+"' data-guid='"+item.ISLEMYAPAN+"' style=' padding-top:50px;font-size:24px; margin: 2px;border-radius: 10px; border:3px solid black; height: 100%; background-color: dodgerblue; color:white; box-shadow: 0px 0px 8px rgba(0,0,0,0.3);'>"+item.MASAISMI+"</div></div>";
+										}
+										else _html += "<div class='col-xl-2 col-lg-3 col-md-3 col-sm-4 col-6 my-2 px-1' style='height: 140px; min-height: 140px; text-align: center;display:inline-block;'><div onclick='vazgec_ut(); alertify.error(`Masada "+item.ISLEMYAPAN.substr(item.ISLEMYAPAN.indexOf('@')+1,item.ISLEMYAPAN.length)+" kullanıcısı işlem yapıyor.`);' data-masaid='"+item.KAYITSIRANO+"' data-durum='bos' data-kilit='1' data-kisim='"+item.KISIM+"' data-masaut='"+item.MASAISMI+"' data-renk='"+item.RENK+"' data-guid='"+item.ISLEMYAPAN+"' style=' padding-top:50px;font-size:24px; margin: 2px;border-radius: 10px; border:3px solid black; height: 100%; background-color: "+item.RENK+"; box-shadow: 0px 0px 8px rgba(0,0,0,0.3);'>"+item.MASAISMI+"</div></div>";
+									}
+									else _html += "<div class='col-xl-2 col-lg-3 col-md-3 col-sm-4 col-6 my-2 px-1' style='height: 140px; min-height: 140px; text-align: center;display:inline-block;'><div onclick='vazgec_ut(); document.getElementById(`ut_masaidyeni`).value=`"+item.KISIM+"|"+item.MASAISMI+"|"+item.KAYITSIRANO+"`; (this).style.backgroundColor=`dodgerblue`; (this).style.color=`white`;' data-masaid='"+item.KAYITSIRANO+"' data-durum='bos' data-kilit='0' data-kisim='"+item.KISIM+"' data-masaut='"+item.MASAISMI+"' data-renk='"+item.RENK+"' data-guid='"+item.ISLEMYAPAN+"' style=' padding-top:50px;font-size:24px; margin: 2px;border-radius: 10px; border:1px solid rgb(192, 192, 192); height: 100%; background-color: "+item.RENK+"; box-shadow: 0px 0px 8px rgba(0,0,0,0.3);'>"+item.MASAISMI+"</div></div>";
+								}
+								else{ //DOLU
+									if (item.SAAT=="0") 
+									{
+										if (item.LOCKDURUM=="1")
+										{
+											console.log(item);
+											if (localStorage.pos_dataid == item.KAYITSIRANO) //Taşımak için seçtiğimiz masa mı?	
+											{
+												_html += "<div class='col-xl-2 col-lg-3 col-md-3 col-sm-4 col-6 my-2 px-1' style='height: 140px; min-height: 140px; text-align: center;display:inline-block;'><div onclick='vazgec_ut(); alertify.error(`Bu masayı taşıyorsunuz.`);' data-masaid='"+item.KAYITSIRANO+"' data-durum='dolu' data-kilit='1' data-kisim='"+item.KISIM+"' data-masaut='"+item.MASAISMI+"' data-renk='"+item.RENK+"' data-guid='"+item.ISLEMYAPAN+"' style='margin: 2px;border-radius: 10px; border:3px solid black; height: 100%; background-color: dodgerblue; color:white; box-shadow: 0px 0px 8px rgba(0,0,0,0.3); padding-top:5px;'><span style='font-size:20px;'>"+item.MASAISMI+"</span><br>"+item.TUTAR.toFixed(2).replace(".",",")+"<br>"+item.GARSON+"<br>"+item.DK+" Dk.<br>"+item.FIRMAISMI.substr(0,10)+"</div></div>";
+											}
+											else _html += "<div class='col-xl-2 col-lg-3 col-md-3 col-sm-4 col-6 my-2 px-1' style='height: 140px; min-height: 140px; text-align: center;display:inline-block;'><div onclick='vazgec_ut(); alertify.error(`Masada "+item.ISLEMYAPAN.substr(item.ISLEMYAPAN.indexOf('@')+1,item.ISLEMYAPAN.length)+" kullanıcısı işlem yapıyor.`);' data-masaid='"+item.KAYITSIRANO+"' data-durum='dolu' data-kilit='1' data-kisim='"+item.KISIM+"' data-masaut='"+item.MASAISMI+"' data-renk='"+item.RENK+"' data-guid='"+item.ISLEMYAPAN+"' style='margin: 2px;border-radius: 10px; border:3px solid black; height: 100%; background-color: "+item.RENK+";box-shadow: 0px 0px 8px rgba(0,0,0,0.3); padding-top:5px;'><span style='font-size:20px;'>"+item.MASAISMI+"</span><br>"+item.TUTAR.toFixed(2).replace(".",",")+"<br>"+item.GARSON+"<br>"+item.DK+" Dk.<br>"+item.FIRMAISMI.substr(0,10)+"</div></div>";
+										} 
+										else _html += "<div class='col-xl-2 col-lg-3 col-md-3 col-sm-4 col-6 my-2 px-1' style='height: 140px; min-height: 140px; text-align: center;display:inline-block;'><div onclick='vazgec_ut(); document.getElementById(`ut_masaidyeni`).value=`"+item.KISIM+"|"+item.MASAISMI+"|"+item.KAYITSIRANO+"`; (this).style.backgroundColor=`dodgerblue`; (this).style.color=`white`;' data-masaid='"+item.KAYITSIRANO+"' data-durum='dolu' data-kilit='0' data-kisim='"+item.KISIM+"' data-masaut='"+item.MASAISMI+"' data-renk='"+item.RENK+"' data-guid='"+item.ISLEMYAPAN+"' style='margin: 2px;border-radius: 10px; border:1px solid rgb(192, 192, 192); height: 100%; background-color: "+item.RENK+";box-shadow: 0px 0px 8px rgba(0,0,0,0.3); padding-top:5px;'><span style='font-size:20px;'>"+item.MASAISMI+"</span><br>"+item.TUTAR.toFixed(2).replace(".",",")+"<br>"+item.GARSON+"<br>"+item.DK+" Dk.<br>"+item.FIRMAISMI.substr(0,10)+"</div></div>";
+									}
+									else {
+										if (item.LOCKDURUM=="1")
+										{
+											console.log(item);
+											if (localStorage.pos_dataid == item.KAYITSIRANO) //Taşımak için seçtiğimiz masa mı?	
+											{
+												_html += "<div class='col-xl-2 col-lg-3 col-md-3 col-sm-4 col-6 my-2 px-1' style='height: 140px; min-height: 140px; text-align: center;display:inline-block;'><div onclick='vazgec_ut(); alertify.error(`Bu masayı taşıyorsunuz.`);' data-masaid='"+item.KAYITSIRANO+"' data-durum='dolu' data-kilit='1' data-kisim='"+item.KISIM+"' data-masaut='"+item.MASAISMI+"' data-renk='"+item.RENK+"' data-guid='"+item.ISLEMYAPAN+"' style='margin: 2px;border-radius: 10px; border:3px solid black; height: 100%; background-color: dodgerblue; color:white; box-shadow: 0px 0px 8px rgba(0,0,0,0.3); padding-top:5px;'><span style='font-size:20px;'>"+item.MASAISMI+"</span><br>"+item.TUTAR.toFixed(2).replace(".",",")+"<br>"+item.GARSON+"<br>"+item.SAAT+" Sa. "+item.DK+" Dk.<br>"+item.FIRMAISMI.substr(0,10)+"</div></div>";
+											}
+											else _html += "<div class='col-xl-2 col-lg-3 col-md-3 col-sm-4 col-6 my-2 px-1' style='height: 140px; min-height: 140px; text-align: center;display:inline-block;'><div onclick='vazgec_ut(); alertify.error(`Masada "+item.ISLEMYAPAN.substr(item.ISLEMYAPAN.indexOf('@')+1,item.ISLEMYAPAN.length)+" kullanıcısı işlem yapıyor.`);' data-masaid='"+item.KAYITSIRANO+"' data-durum='dolu' data-kilit='1' data-kisim='"+item.KISIM+"' data-masaut='"+item.MASAISMI+"' data-renk='"+item.RENK+"' data-guid='"+item.ISLEMYAPAN+"' style='margin: 2px;border-radius: 10px; border:3px solid black; height: 100%; background-color: "+item.RENK+";box-shadow: 0px 0px 8px rgba(0,0,0,0.3); padding-top:5px;'><span style='font-size:20px;'>"+item.MASAISMI+"</span><br>"+item.TUTAR.toFixed(2).replace(".",",")+"<br>"+item.GARSON+"<br>"+item.SAAT+" Sa. "+item.DK+" Dk.<br>"+item.FIRMAISMI.substr(0,10)+"</div></div>";
+										} 
+										else _html += "<div class='col-xl-2 col-lg-3 col-md-3 col-sm-4 col-6 my-2 px-1' style='height: 140px; min-height: 140px; text-align: center;display:inline-block;'><div onclick='vazgec_ut(); document.getElementById(`ut_masaidyeni`).value=`"+item.KISIM+"|"+item.MASAISMI+"|"+item.KAYITSIRANO+"`; (this).style.backgroundColor=`dodgerblue`; (this).style.color=`white`;' data-masaid='"+item.KAYITSIRANO+"' data-durum='dolu' data-kilit='0' data-kisim='"+item.KISIM+"' data-masaut='"+item.MASAISMI+"' data-renk='"+item.RENK+"' data-guid='"+item.ISLEMYAPAN+"' style='margin: 2px;border-radius: 10px; border:1px solid rgb(192, 192, 192); height: 100%; background-color: "+item.RENK+";box-shadow: 0px 0px 8px rgba(0,0,0,0.3); padding-top:5px;'><span style='font-size:20px;'>"+item.MASAISMI+"</span><br>"+item.TUTAR.toFixed(2).replace(".",",")+"<br>"+item.GARSON+"<br>"+item.SAAT+" Sa. "+item.DK+" Dk.<br>"+item.FIRMAISMI.substr(0,10)+"</div></div>";
+									}
+								}
+							});
+							document.getElementById("uruntasi_masalar").innerHTML = _html;
+						}
+						else{
+							document.getElementById("uruntasi_masalar").innerHTML = "";
+						}
+					}
+					
+				},
+				error: function (hata) {
+					document.body.className ="";
+					alertify.error("Sistem yöneticisine başvurunuz");
+				}
+			});
+		}
+	
+		function vazgec_ut(){
+			const elem1 = document.querySelectorAll('[data-masaut]');
+			elem1.forEach(element => {
+				if (element.dataset.masaid != localStorage.pos_dataid && element.style.backgroundColor == "dodgerblue")
+				{
+					element.style.backgroundColor = element.dataset.renk;
+					element.style.color = "black";
+				}
+			});
+		}
+	
+
+		function uruntasi(){
+
+			var isaretliler = document.querySelectorAll('input[name=checkurun]:checked');
+			if (isaretliler.length>0){
+				if (document.getElementById("ut_masaidyeni").value!=""){
+					
+					var urunler = "";
+					
+					isaretliler.forEach(item => {
+						urunler += item.value + ",";
+					});
+
+					urunler = urunler.slice(0,-1);
+
+					$("#uruntasiModal").modal("hide");
+
+					var eski = document.getElementById("ut_masaid").value;
+					var yeni = document.getElementById("ut_masaidyeni").value;
+
+					document.body.className = "loading";
+
+					$.ajax({
+						type: 'post',
+						url: "https://pos.posula.com/api/pos/uruntasi",
+						dataType: 'json',
+						contentType: 'application/json; charset=utf-8',
+						data: JSON.stringify({ eski: eski, yeni: yeni, user: localStorage.pos_userno, urunler: urunler }),
+						success: function (data, textStatus, xhr) {
+							document.body.className ="";  
+							if (xhr.status == "200")
+							{
+								if (data=="OK"){
+									alertify.success("Ürünler taşındı");
+									const kisimbtn = document.querySelectorAll('[data-kisimbtn]');
+									kisimbtn.forEach(element => {
+										if (element.classList.contains("btn-secondary")) masagetir(element.dataset.kisimbtn);
+									});
+									vazgec();
+									localStorage.pos_dataid = "";
+
+								}
+								else{
+									alertify.error("Ürünler taşınamadı");
+								}
+							}
+							
+						},
+						error: function (hata) {
+							document.body.className ="";
+							alertify.error("Ürünler taşınamadı");
+						}
+					});
+
+				}
+				else{
+					alertify.error("Masa seçiniz");
+				}
+			}
+			else{
+				alertify.error("Ürün seçiniz");
+			}
+
+			
+		}
+	
+	
+		function okcentegrasyonkontrol(_kasa, _kisim, _masa, _tutar, _detay){
+
+			$.ajax({
+				async:false,
+				type: 'post',
+				url: "https://pos.posula.com/api/pos/entegrasyonkontrol",
+				dataType: 'json',
+				contentType: 'application/json; charset=utf-8',
+				data: JSON.stringify({ kasa: _kasa, kisim: _kisim, masa: _masa, tutar: _tutar, detay: _detay, user: localStorage.pos_userno, cihaz: window.location.hostname }),
+				success: function (data, textStatus, xhr) {
+					var _html = "";
+					if (xhr.status == "200")
+					{
+						if (data=="YOK"){
+							localStorage.pos_entegrasyon_kontrol = "";
+							return false;	
+						}
+						else{
+							localStorage.pos_entegrasyon_kontrol = data;
+							return true;
+						}
+					}
+					
+				},
+				error: function (hata) {
+					return false;
+				}
+			});
+		}
+
+		function mevcutokcentegrasyonkontrol(){
+			
+			$.ajax({
+				async:false,
+				type: 'post',
+				url: "https://pos.posula.com/api/pos/mevcutentegrasyonkontrol",
+				dataType: 'json',
+				contentType: 'application/json; charset=utf-8',
+				data: JSON.stringify({ id: localStorage.pos_entegrasyon_kontrol }),
+				success: function (data, textStatus, xhr) {
+					var _html = "";
+					if (xhr.status == "200")
+					{
+						if (data=="OK"){
+							
+							document.body.className = "";
+							localStorage.pos_entegrasyon_kontrol = "OK";
+							//hesapkapat(document.getElementById("kupur_recipient").value);
+
+							//localStorage.pos_entegrasyon_kasa = _kasa;
+							//localStorage.pos_entegrasyon_islemtipi = "sohesapkapat";
+
+							if (localStorage.pos_entegrasyon_islemtipi=="hesapkapat") hesapkapat(localStorage.pos_entegrasyon_kasa, localStorage.pos_entegrasyon_kisim, localStorage.pos_entegrasyon_masa);
+							//else if (localStorage.pos_entegrasyon_islemtipi=="sohesapkapat") sohesapkapat(localStorage.pos_entegrasyon_kasa);
+							else if (localStorage.pos_entegrasyon_islemtipi=="hesapkapatcekbol") hesapkapatcekbol();
+							else if (localStorage.pos_entegrasyon_islemtipi=="zraporu") raporyazdir("zraporu");
+						}
+					}
+					
+				},
+				error: function (hata) {
+					return false;
+				}
+			});
+		}
+
+		function fisiptal(){
+
+$.ajax({
+	async:false,
+	type: 'post',
+	url: "https://pos.posula.com/api/pos/fisiptal",
+	dataType: 'json',
+	contentType: 'application/json; charset=utf-8',
+	data: JSON.stringify({ id: localStorage.pos_entegrasyon_kontrol }),
+	success: function (data, textStatus, xhr) {
+		var _html = "";
+		if (xhr.status == "200")
+		{
+			if (data=="OK"){
+				clearInterval(timerID);
+				document.body.className = "";
+				localStorage.pos_entegrasyon_kontrol = "";
+			}
+		}
+		
+	},
+	error: function (hata) {
+		return false;
+	}
+});
+}
+
+	
+
+		function hesapkapat(kasa, kisim, masa){
+
+			if (localStorage.pos_fatura_durum=="0" && parseFloat(localStorage.pos_tutar)>4400)
+			{
+				alertify.error("Tutar fiş limitini aştığı için önce fatura kesilmelidir");
+			}
+			else{
+				localStorage.pos_entegrasyon_kasa = kasa;
+				localStorage.pos_entegrasyon_kisim = kisim;
+				localStorage.pos_entegrasyon_masa = masa;
+				localStorage.pos_entegrasyon_islemtipi = "hesapkapat";
+
+				if (localStorage.pos_entegrasyon_kontrol=="") okcentegrasyonkontrol(kasa, kisim, masa, localStorage.pos_tutar, "");
+
+				if (localStorage.pos_entegrasyon_kontrol!="" && localStorage.pos_entegrasyon_kontrol!="OK"){
+					document.body.className = "okc";
+					timerID = setInterval(mevcutokcentegrasyonkontrol, 2000)
+				}
+				else{
+					clearInterval(timerID);
+
+					document.body.className = "loading";
+
+					$.ajax({
+						async:false,
+						type: 'post',
+						url: "https://pos.posula.com/api/pos/hesapkapattektip",
+						dataType: 'json',
+						contentType: 'application/json; charset=utf-8',
+						data: JSON.stringify({ kasa: kasa, kisim: kisim, masa: masa, user: localStorage.pos_userno, cihaz: window.location.hostname }),
+						success: function (data, textStatus, xhr) {
+							document.body.className ="";  
+							var _html = "";
+							if (xhr.status == "200")
+							{
+								if (data=="OK"){
+									document.body.className ="";  
+									localStorage.pos_entegrasyon_kontrol = "";
+									alertify.success("Hesap " + kasa + " ile kapatıldı");
+									const kisimbtn = document.querySelectorAll('[data-kisimbtn]');
+									kisimbtn.forEach(element => {
+										if (element.classList.contains("btn-secondary")) masagetir(element.dataset.kisimbtn);
+									});
+									vazgec();
+									localStorage.pos_dataid = "";
+									
+								}
+								else{
+									alertify.error("Hesap kapatılamadı");
+								}
+								
+								
+							}
+							
+						},
+						error: function (hata) {
+							document.body.className ="";
+							alertify.error("Hesap kapatılamadı");
+						}
+					});
+				}
+			}
+
+			
+
+		}
+	
+	
+
+		const iskontoModal = document.getElementById('iskontoModal')
+		iskontoModal.addEventListener('show.bs.modal', event => {
+			const button = event.relatedTarget
+			const recipient = button.getAttribute('data-bs-whatever')
+			document.getElementById("is_masaid").value = recipient;
+		});
+
+		const adetcekbolModal = document.getElementById('adetcekbolModal')
+		adetcekbolModal.addEventListener('shown.bs.modal', event => {
+			
+			document.getElementById("m_adetcekbol").select();
+
+		})
+
+
+		function iskontogetir(){
+
+			$.ajax({
+				type: 'post',
+				url: "https://pos.posula.com/api/pos/iskontolarigetir",
+				dataType: 'json',
+				contentType: 'application/json; charset=utf-8',
+				success: function (data, textStatus, xhr) {
+					document.body.className ="";  
+					var _html = "";
+					if (xhr.status == "200")
+					{
+						if (data.length>0){
+							
+							$.each(data,
+							function (key, item) {
+								_html += "<div class='col-4 mb-2 p-1'><div class='container text-center' style='min-height: 150px; min-height:150px; padding-top:60px; border: 1px solid gray; border-radius: 5px; font-size:18px;' onclick='iskontouygula(`"+item.ISKONTOORANI+"`);'>"+item.ISKONTOISMI+"</div></div>";
+								
+							});
+							_html += "<div class='col-12 mb-2 p-1'><div class='container text-center' style='min-height: 50px; min-height:50px; padding-top:10px; border: 1px solid gray; border-radius: 5px; font-size:18px;' onclick='iskontouygula(`0`);'>İndirimi iptal et</div></div>";
+							document.getElementById("m_iskontocard").innerHTML = _html;
+						}
+						else{
+							document.getElementById("m_iskontocard").innerHTML = "";
+						}
+						
+					}
+					
+				},
+				error: function (hata) {
+					document.body.className ="";
+					alertify.error("Sistem yöneticisine başvurunuz");
+				}
+			});
+
+			document.body.className = "loading";
+		}
+
+		function iskontouygula(_oran){
+
+			if (localStorage.pos_fatura_durum=="1"){
+				alertify.error("Fatura yazdırılan adisyonda değişiklik yapılamaz");
+			}
+			else{
+				var kisim = document.getElementById("is_masaid").value.split('|')[0];
+				var masaismi = document.getElementById("is_masaid").value.split('|')[1];
+
+				document.body.className = "loading";
+
+				$.ajax({
+					type: 'post',
+					url: "https://pos.posula.com/api/pos/iskontouygulasepet",
+					dataType: 'json',
+					contentType: 'application/json; charset=utf-8',
+					data: JSON.stringify({ oran: _oran, kisim: kisim, masa: masaismi }),
+					success: function (data, textStatus, xhr) {
+						document.body.className ="";  
+						var _html = "";
+						if (xhr.status == "200")
+						{
+							if (data=="OK"){
+								$('#iskontoModal').modal('hide');
+								document.body.className ="";  
+								const kisimbtn = document.querySelectorAll('[data-kisimbtn]');
+								kisimbtn.forEach(element => {
+									if (element.classList.contains("btn-secondary")) masagetir(element.dataset.kisimbtn);
+								});
+								//vazgec();
+								masadetaygetir(kisim, masaismi);
+								localStorage.pos_dataid = "";
+							}
+							else{
+								alertify.error("İşlem başarısız");
+							}
+							
+							
+						}
+						
+					},
+					error: function (hata) {
+						document.body.className ="";
+						alertify.error("Sistem yöneticisine başvurunuz");
+					}
+				});
+
+				document.body.className = "loading";
+
+			}
+			
+		}
+	
+	
+		function cekbolgetir(){
+
+			
+			$.ajax({
+				type: 'post',
+				url: "https://pos.posula.com/api/pos/tumkasalarigetir",
+				dataType: 'json',
+				contentType: 'application/json; charset=utf-8',
+				success: function (data, textStatus, xhr) { 
+					var _html = "";
+					if (xhr.status == "200")
+					{
+						if (data.length>0){
+							
+							$.each(data,
+							function (key, item) {
+								_html += "<tr><td style='width:70%;'>"+item.KASAADI+"</td><td style='width:30%;'><input onclick='secimyap(this); localStorage.pos_cekbol=`"+item.KASAADI+"`; kalanhesaplainput(); $(`#adetcekbolModal`).modal(`show`);' class='form-control' data-cekbol='"+item.KASAADI+"' type='number' value='0' style='text-align:right;'></td></tr>";
+								
+							});
+							document.getElementById("cekboltbl").innerHTML = _html;
+						}
+						else{
+							document.getElementById("cekboltbl").innerHTML = "";
+						}
+						
+						
+					}
+					
+				},
+				error: function (hata) {
+					document.body.className ="";
+					alertify.error("Sistem yöneticisine başvurunuz");
+				}
+			});
+
+		}
+
+		function isTextSelected(input){
+			var startPos = input.selectionStart;
+			var endPos = input.selectionEnd;
+			var doc = document.selection;
+
+			if(doc && doc.createRange().text.length != 0){
+				return true;
+			}else if (!doc && input.value.substring(startPos,endPos).length != 0){
+				return true;
+			}
+			return false;
+		}
+
+		const cekbolModal = document.getElementById('cekbolModal')
+		cekbolModal.addEventListener('show.bs.modal', event => {
+			const button = event.relatedTarget
+			const recipient = button.getAttribute('data-bs-whatever')
+
+			const cekbolinput = document.querySelectorAll('[data-cekbol]');
+			cekbolinput.forEach(element => {
+				element.value = "0";
+			});
+			
+
+			document.getElementById("cb_masaid").value = recipient;
+			document.getElementById("cb_musteri").value = recipient.split;
+
+			kalanhesapla();
+		});
+
+		function adetyaz(sayi){
+			if(isTextSelected($('#m_adetcekbol')[0])){
+				document.getElementById("m_adetcekbol").value = sayi;
+			}
+			else document.getElementById("m_adetcekbol").value += sayi;
+		}
+
+		function kisisayisiyaz(sayi){
+			if(isTextSelected($('#m_adetcekbol')[0])){
+				document.getElementById('m_kisisayisi').value = sayi;
+			}
+			document.getElementById('m_kisisayisi').value += sayi;
+		}
+
+		
+	
+		function secimyap(el){
+			document.getElementById("m_adetcekbol").select();
+		}
+	
+		function adetgiriscekbol(){
+
+			if ($('[data-cekbol="'+localStorage.pos_cekbol+'"]')[0].value>0) $('[data-cekbol="'+localStorage.pos_cekbol+'"]')[0].value=0;
+			let toplam1 = 0;
+			const cekbolinput = document.querySelectorAll('[data-cekbol]');
+			cekbolinput.forEach(element => {
+				if (element.value > 0) toplam1 = parseFloat(toplam1) + parseFloat(element.value);
+			});
+
+			let kalan1 = parseFloat(document.getElementById('kalanhesaptxt').value) - toplam1;
+			kalan1 = kalan1.toFixed(2);
+
+			if (document.getElementById("m_adetcekbol").value=="") document.getElementById("m_adetcekbol").value = "0";
+			else if (parseFloat(document.getElementById("m_adetcekbol").value)>parseFloat(kalan1)) document.getElementById("m_adetcekbol").value = kalan1;
+			else if (parseFloat(document.getElementById("m_adetcekbol").value)<0) document.getElementById("m_adetcekbol").value = "0";
+			$('[data-cekbol="'+localStorage.pos_cekbol+'"]')[0].value = document.getElementById('m_adetcekbol').value;
+
+			if (document.getElementById('m_adetcekbol').value.indexOf(',')>0 || document.getElementById('m_adetcekbol').value.indexOf('.')>0)
+			{
+				document.getElementById('m_adetcekbol').value = parseFloat(document.getElementById('m_adetcekbol').value).toFixed(2);
+			}
+			kalanhesaplainput();
+
+		}
+	
+		function kalanhesapla(){
+
+			var kisim = document.getElementById("cb_masaid").value.split('|')[0];
+			var masaismi = document.getElementById("cb_masaid").value.split('|')[1];
+
+			$.ajax({
+				type: 'post',
+				url: "https://pos.posula.com/api/pos/masaicerikgetir",
+				dataType: 'json',
+				contentType: 'application/json; charset=utf-8',
+				data: JSON.stringify({ kisim: kisim, masa: masaismi }),
+				success: function (data, textStatus, xhr) {
+					document.body.className ="";  
+					var _html = "";
+					if (xhr.status == "200")
+					{
+						if (data.length>0){
+
+							document.getElementById("hesapkapatbtn").innerText = "Kalan : " + data[0]["TUTAR"].toFixed(2).replace('.',',') + " ₺";
+							document.getElementById("kalanhesaptxt").value = data[0]["TUTAR"];
+							
+						}
+						else{
+							document.getElementById("hesapkapatbtn").innerText = "Ödemeyi Tamamla";
+						}
+						
+					}
+					
+				},
+				error: function (hata) {
+					alertify.error("Sistem yöneticisine başvurunuz");
+				}
+			});
+
+		}
+	
+		function kalanhesaplainput(){
+			let toplam = 0;
+			const cekbolinput = document.querySelectorAll('[data-cekbol]');
+			cekbolinput.forEach(element => {
+				if (element.value > 0) toplam = parseFloat(toplam) + parseFloat(element.value);
+			});
+			if ($('[data-cekbol="'+localStorage.pos_cekbol+'"]')[0].value>0) document.getElementById("m_adetcekbol").value = $('[data-cekbol="'+localStorage.pos_cekbol+'"]')[0].value;
+			else document.getElementById("m_adetcekbol").value = parseFloat(document.getElementById('kalanhesaptxt').value)-toplam;
+			document.getElementById("hesapkapatbtn").innerText = "Kalan : " + (parseFloat(document.getElementById('kalanhesaptxt').value)-toplam).toFixed(2).replace('.',',') + " ₺";
+			if (document.getElementById("hesapkapatbtn").innerText == "Kalan : 0.00 ₺") document.getElementById("hesapkapatbtn").innerText = "Ödemeyi Tamamla";
+			if (document.getElementById("hesapkapatbtn").innerText == "Kalan : 0,00 ₺") document.getElementById("hesapkapatbtn").innerText = "Ödemeyi Tamamla";
+			if (parseFloat(document.getElementById('kalanhesaptxt').value)-toplam==0) document.getElementById("hesapkapatbtn").disabled=false;
+			else document.getElementById("hesapkapatbtn").disabled=true;
+
+			if (document.getElementById('m_adetcekbol').value.indexOf(',')>0 || document.getElementById('m_adetcekbol').value.indexOf('.')>0)
+			{
+				document.getElementById('m_adetcekbol').value = parseFloat(document.getElementById('m_adetcekbol').value).toFixed(2);
+			}
+
+			document.getElementById("m_adetcekbol").select();
+		}
+
+		function hesapkapatcekbol(){
+
+			if (localStorage.pos_fatura_durum=="0" && parseFloat(localStorage.pos_tutar)>4400)
+			{
+				alertify.error("Tutar fiş limitini aştığı için önce fatura kesilmelidir");
+			}
+			else{
+				var kisim = document.getElementById("cb_masaid").value.split('|')[0];
+				var masaismi = document.getElementById("cb_masaid").value.split('|')[1];
+
+				var _list = "";
+				var _kasa = "";
+				const cekbolinput = document.querySelectorAll('[data-cekbol]');
+				cekbolinput.forEach(element => {
+					if (element.value > 0)
+					{
+						_list += element.dataset.cekbol + "@" + element.value.replace(".",",") + "|";
+						_kasa += '"' + element.dataset.cekbol + '",';
+					}
+				});
+
+				let carikontrolcekbol=true;
+				if (_list.indexOf("Üye Kartı")>=0 || _list.indexOf("Veresiye")>=0){
+					if (document.getElementById("cb_masaid").value.split('|')[4]=="0") carikontrolcekbol=false;
+				}
+
+				localStorage.pos_entegrasyon_kasa = _kasa;
+				localStorage.pos_entegrasyon_islemtipi = "hesapkapatcekbol";
+
+				if (localStorage.pos_entegrasyon_kontrol=="") okcentegrasyonkontrol(_kasa.slice(0,-1), kisim, masaismi, localStorage.pos_tutar, _list.slice(0,-1));
+
+				if (localStorage.pos_entegrasyon_kontrol!="" && localStorage.pos_entegrasyon_kontrol!="OK"){
+					document.body.className = "okc";
+					timerID = setInterval(mevcutokcentegrasyonkontrol, 2000)
+				}
+				else{
+					if (carikontrolcekbol==true){
+
+					document.body.className = "loading";
+
+					$.ajax({
+						async:false,
+						type: 'post',
+						url: "https://pos.posula.com/api/pos/hesapkapatcekbol",
+						dataType: 'json',
+						contentType: 'application/json; charset=utf-8',
+						data: JSON.stringify({ list: _list.slice(0,-1), kisim: kisim, masa: masaismi, user: localStorage.pos_userno, cihaz: window.location.hostname }),
+						success: function (data, textStatus, xhr) {
+							document.body.className ="";  
+							var _html = "";
+							if (xhr.status == "200")
+							{
+								if (data=="OK"){
+									$('#cekbolModal').modal('hide');
+									localStorage.pos_entegrasyon_kontrol = "";
+									document.body.className ="";  
+									carikontrolcekbol=true;
+									alertify.success("Ödeme tamamlandı");
+									
+									const kisimbtn = document.querySelectorAll('[data-kisimbtn]');
+									kisimbtn.forEach(element => {
+										if (element.classList.contains("btn-secondary")) masagetir(element.dataset.kisimbtn);
+									});
+									vazgec();
+									masadetaygetir(kisim, masaismi);
+									localStorage.pos_dataid = "";
+
+									
+								}
+								else if (data=="Yetersiz bakiye"){
+									alertify.error("Yetersiz bakiye");
+								}
+								else{
+									alertify.error("Sistem yöneticisine başvurunuz");
+								}
+								
+								
+							}
+							
+						},
+						error: function (hata) {
+							document.body.className ="";
+							alertify.error("Sistem yöneticisine başvurunuz");
+						}
+					});
+					}
+					else{
+					alertify.error("Veresiye veya Üye Kartı ile kapatabilmek için cari hesap seçiniz")
+					}
+				}
+			}
+		
+
+		}
+
+
+
+		const durumModal = document.getElementById('durumModal')
+		durumModal.addEventListener('show.bs.modal', event => {
+			$.ajax({
+				type: 'post',
+				url: "https://pos.posula.com/api/pos/canlidurum",
+				dataType: 'json',
+				contentType: 'application/json; charset=utf-8',
+				success: function (data, textStatus, xhr) { 
+					var _html = "";
+					if (xhr.status == "200")
+					{
+						if (data.length>0){
+							_html += "<tr><td class='mb-0 pb-0' style='width:100%' colspan='4'><h6>Hesaplar</h6></td></tr>";
+							_html += "<tr><td style='width:40%'>Açık Hesap</td><td style='width:20%; text-align:right; padding-left:0px;'>"+parseFloat(data[0]["TUTAR"]).toLocaleString('tr-TR')+" ₺</td><td style='width:25%; text-align:right;'>"+data[0]["ADISYON"]+" Adisyon</td><td style='width:15%; text-align:right; padding-left:0px;'>"+data[0]["KISI"]+" Kişi</td></tr>";
+							_html += "<tr><td style='width:40%'>Kapanan Hesap</td><td style='width:20%; text-align:right; padding-left:0px;'>"+parseFloat(data[1]["TUTAR"]).toLocaleString('tr-TR')+" ₺</td><td style='width:25%; text-align:right;'>"+data[1]["ADISYON"]+" Adisyon</td><td style='width:15%; text-align:right; padding-left:0px;'>"+data[1]["KISI"]+" Kişi</td></tr>";
+							let a = parseFloat(data[0]["TUTAR"]);
+							let b = parseFloat(data[1]["TUTAR"]);
+							let sonuc = a+b;
+							sonuc = sonuc.toLocaleString('tr-TR');
+
+							let c = parseFloat(data[0]["KISI"]);
+							let d = parseFloat(data[1]["KISI"]);
+							let sonuc1 = c+d;
+
+							let e = parseFloat(data[0]["ADISYON"]);
+							let f = parseFloat(data[1]["ADISYON"]);
+							let sonuc2 = e+f;
+							_html += "<tr style='border:1px solid white;'><td style='width:40%'>Toplam</td><td style='width:20%; text-align:right; padding-left:0px;'>"+sonuc+" ₺</td><td style='width:25%; text-align:right;'>"+sonuc2+" Adisyon</td><td style='width:15%; text-align:right; padding-left:0px;'>"+sonuc1+" Kişi</td></tr>";	
+							_html += "<tr><td class='m-0 p-0' style='border:1px solid white;' colspan='4'></td></tr>";
+							for (var i=2; i< data.length; i++){
+								if (i==2) _html += "<tr><td class='mb-0 pb-0' style='width:100%' colspan='4'><h6>Ödeme Türleri</h6></td></tr>";
+								_html += "<tr><td style='width:40%'>"+data[i]["TUTAR"]+"</td><td style='width:20%; text-align:right; padding-left:0px;'>"+parseFloat(data[i]["ADISYON"]).toLocaleString('tr-TR')+" ₺</td><td style='width:25%; text-align:right;'></td><td style='width:15%'></td></tr>";
+							}
+							
+							document.getElementById("canlidurumtbl").innerHTML = _html;
+						}
+						else{
+							document.getElementById("canlidurumtbl").innerHTML = "";
+						}
+						
+						
+					}
+					
+				},
+				error: function (hata) {
+					document.body.className ="";
+					alertify.error("Sistem yöneticisine başvurunuz");
+				}
+			});
+		});
+	
+		const gunsonuModal = document.getElementById('gunsonuModal')
+		gunsonuModal.addEventListener('show.bs.modal', event => {
+			$.ajax({
+				type: 'post',
+				url: "https://pos.posula.com/api/pos/canlidurum",
+				dataType: 'json',
+				contentType: 'application/json; charset=utf-8',
+				success: function (data, textStatus, xhr) { 
+					var _html = "";
+					if (xhr.status == "200")
+					{
+						if (data.length>0){
+							_html += "<tr><td class='mb-0 pb-0' style='width:100%' colspan='4'><h6>Hesaplar</h6></td></tr>";
+							_html += "<tr><td style='width:40%'>Açık Hesap</td><td style='width:20%; text-align:right; padding-left:0px;'>"+parseFloat(data[0]["TUTAR"]).toFixed(2).replace('.',',')+" ₺</td><td style='width:25%; text-align:right;'>"+data[0]["ADISYON"]+" Adisyon</td><td style='width:15%; text-align:right; padding-left:0px;'>"+data[0]["KISI"]+" Kişi</td></tr>";
+							_html += "<tr><td style='width:40%'>Kapanan Hesap</td><td style='width:20%; text-align:right; padding-left:0px;'>"+parseFloat(data[1]["TUTAR"]).toFixed(2).replace('.',',')+" ₺</td><td style='width:25%; text-align:right;'>"+data[1]["ADISYON"]+" Adisyon</td><td style='width:15%; text-align:right; padding-left:0px;'>"+data[1]["KISI"]+" Kişi</td></tr>";
+							_html += "<tr style='border:1px solid white;'><td style='width:40%'>Toplam</td><td style='width:20%; text-align:right; padding-left:0px;'>"+(parseFloat(data[0]["TUTAR"])+parseFloat(data[1]["TUTAR"])).toFixed(2).replace('.',',')+" ₺</td><td style='width:25%; text-align:right;'>"+parseFloat(data[0]["ADISYON"])+parseFloat(data[1]["ADISYON"])+" Adisyon</td><td style='width:15%; text-align:right; padding-left:0px;'>"+parseFloat(data[0]["KISI"])+parseFloat(data[1]["KISI"])+" Kişi</td></tr>";	
+							_html += "<tr><td class='m-0 p-0' style='border:1px solid white;' colspan='4'></td></tr>";
+							for (var i=2; i< data.length; i++){
+								if (i==2) _html += "<tr><td class='mb-0 pb-0' style='width:100%' colspan='4'><h6>Ödeme Türleri</h6></td></tr>";
+								_html += "<tr><td style='width:40%'>"+data[i]["TUTAR"]+"</td><td style='width:20%; text-align:right; padding-left:0px;'>"+parseFloat(data[i]["ADISYON"]).toFixed(2).replace('.',',')+" ₺</td><td style='width:25%; text-align:right;'></td><td style='width:15%'></td></tr>";
+							}
+							
+							document.getElementById("canlidurumtbl").innerHTML = _html;
+						}
+						else{
+							document.getElementById("canlidurumtbl").innerHTML = "";
+						}
+						
+						
+					}
+					
+				},
+				error: function (hata) {
+					document.body.className ="";
+					alertify.error("Sistem yöneticisine başvurunuz");
+				}
+			});
+		});
+
+		const kisisayisiModal = document.getElementById('kisisayisiModal')
+		
+		kisisayisiModal.addEventListener('show.bs.modal', event => {
+			document.getElementById("kisisayisi_baslik").innerText = localStorage.pos_masa.split('|')[1] + " için misafir sayısı giriniz";
+			
+			document.getElementById("m_kisisayisi").value="";
+		});
+
+		kisisayisiModal.addEventListener('shown.bs.modal', event => {
+			
+			$('#m_kisisayisi')[0].focus();
+			document.getElementById("m_kisisayisi").focus();
+			console.log("focus");
+		});
+		
+		kisisayisiModal.addEventListener('hide.bs.modal', event => {
+			try{
+				if (document.getElementById('m_kisisayisi').value == "0" || document.getElementById('m_kisisayisi').value.length == 0) vazgec();
+			}
+			catch{
+				vazgec();
+			}
+			
+		});
+
+
+
+
+		function odamisafirgetir(){
+			var kisim = document.getElementById("ms_masaid").value.split('|')[0];
+			var masaismi = document.getElementById("ms_masaid").value.split('|')[1];
+			var masano = document.getElementById("ms_masaid").value.split('|')[2];
+			var adisyonno = document.getElementById("ms_masaid").value.split('|')[3];
+
+			
+			$.ajax({
+				async:false,
+				type: 'post',
+				url: "https://pos.posula.com/api/pos/odamisafirgetir",
+				dataType: 'json',
+				contentType: 'application/json; charset=utf-8',
+				data: JSON.stringify({ 
+					kisim: kisim, masaismi: masaismi, masano: masano, adisyonno: adisyonno
+				}),
+				success: function (data, textStatus, xhr) {
+					var _html = "";
+					if (xhr.status == "200")
+					{
+						$.each(data,
+							function (key, item) {
+								_html += "<tr><td>"+item.ADI+"</td><td>"+item.SOYADI+"</td><td>"+item.TELEFON+"</td><td style='text-align:right;'><div class='btn-group'><button type='button' class='btn btn-secondary dropdown-toggle btn-block grupbtn' style='border: 1px solid lightgrey;' data-bs-toggle='dropdown' aria-expanded='false'>İşlemler</button><ul class='dropdown-menu'><li><button class='dropdown-item' data-bs-toggle='modal' data-bs-target='#misafirguncelleModal' data-bs-whatever='"+item.TCKN+"'>Değiştir</button></li><li><button class='dropdown-item' onclick='misafirsil(`"+item.ID+"`)'>Sil</button></li></ul></div></td></tr>";
+							});
+							document.getElementById("misafirtbl").innerHTML = _html;
+					}
+					
+				},
+				error: function (hata) {
+					document.body.className ="";
+					alertify.error("Sistem yöneticisine başvurunuz");
+				}
+			});
+
+
+			$.ajax({
+				async:false,
+				type: 'post',
+				url: "https://pos.posula.com/api/pos/odaplakagetir",
+				dataType: 'json',
+				contentType: 'application/json; charset=utf-8',
+				data: JSON.stringify({ 
+					kisim: kisim, masaismi: masaismi, masano: masano, adisyonno: adisyonno
+				}),
+				success: function (data, textStatus, xhr) {
+					document.body.className ="";  
+					var _html1 = "";
+					if (xhr.status == "200")
+					{
+						$.each(data,
+							function (key, item) {
+								_html1 += "<tr><td>"+item.PLAKA+"</td><td style='text-align:right;'><div class='btn-group'><button type='button' class='btn btn-secondary dropdown-toggle btn-block grupbtn' style='border: 1px solid lightgrey;' data-bs-toggle='dropdown' aria-expanded='false'>İşlemler</button><ul class='dropdown-menu'><li><button class='dropdown-item' data-bs-toggle='modal' data-bs-target='#plakaguncelleModal' data-bs-whatever='"+item.ID+"'>Değiştir</button></li><li><button class='dropdown-item' onclick='plakasil(`"+item.ID+"`)'>Sil</button></li></ul></div></td></tr>";
+							});
+							document.getElementById("plakatbl").innerHTML = _html1;
+					}
+					
+				},
+				error: function (hata) {
+					document.body.className ="";
+					alertify.error("Sistem yöneticisine başvurunuz");
+				}
+			});
+
+		}
+
+
+
+		const misafirlerModal = document.getElementById('misafirlerModal')
+		misafirlerModal.addEventListener('show.bs.modal', event => {
+			const button = event.relatedTarget
+			const recipient = button.getAttribute('data-bs-whatever')
+			document.getElementById("ms_masaid").value = recipient;
+			odamisafirgetir();
+		});
+
+
+
+		function misafirekle(){
+
+			var kisim = document.getElementById("ms_masaid").value.split('|')[0];
+			var masaismi = document.getElementById("ms_masaid").value.split('|')[1];
+			var masano = document.getElementById("ms_masaid").value.split('|')[2];
+			var adisyonno = document.getElementById("ms_masaid").value.split('|')[3];
+
+			var tckn = document.getElementById("misafirtckne").value;
+			var uyruk = document.getElementById("misafiruyruke").value;
+			var adi = document.getElementById("misafiradie").value;
+			var soyadi = document.getElementById("misafirsoyadie").value;
+			var dogumtarihi = document.getElementById("misafirdogumtarihie").value;
+			var dogumyeri = document.getElementById("misafirdogumyerie").value;
+			var adres = document.getElementById("misafiradrese").value;
+			var telefon = document.getElementById("misafirtelefone").value;
+
+			document.body.className = "loading";
+
+			$.ajax({
+				type: 'post',
+				url: "https://pos.posula.com/api/pos/misafirekle",
+				dataType: 'json',
+				contentType: 'application/json; charset=utf-8',
+				data: JSON.stringify({ 
+					kisim: kisim, masaismi: masaismi, masano: masano, adisyonno: adisyonno, 
+					tckn: tckn, uyruk: uyruk, adi: adi, soyadi: soyadi, dogumtarihi: dogumtarihi, 
+					dogumyeri: dogumyeri, adres: adres, telefon: telefon
+				}),
+				success: function (data, textStatus, xhr) {
+					document.body.className ="";  
+					var _html = "";
+					if (xhr.status == "200")
+					{
+						if (data=="OK"){
+							alertify.success("Misafir kaydedildi");
+							odamisafirgetir();
+						}
+						else{
+							alertify.error("İşlem başarısız");
+						}
+					}
+					
+				},
+				error: function (hata) {
+					document.body.className ="";
+					alertify.error("Sistem yöneticisine başvurunuz");
+				}
+			});
+
+			document.body.className = "loading";
+
+		}
+
+		function misafirsil(id){
+
+			document.body.className = "loading";
+
+			$.ajax({
+				type: 'post',
+				url: "https://pos.posula.com/api/pos/misafirsil",
+				dataType: 'json',
+				contentType: 'application/json; charset=utf-8',
+				data: JSON.stringify({ 
+					id:id
+				}),
+				success: function (data, textStatus, xhr) {
+					document.body.className ="";  
+					var _html = "";
+					if (xhr.status == "200")
+					{
+						if (data=="OK"){
+							alertify.success("Misafir silindi");
+							odamisafirgetir();
+						}
+						else{
+							alertify.error("İşlem başarısız");
+						}
+					}
+					
+				},
+				error: function (hata) {
+					document.body.className ="";
+					alertify.error("Sistem yöneticisine başvurunuz");
+				}
+			});
+
+			document.body.className = "loading";
+
+		}
+
+
+		function plakaekle(){
+
+			var kisim = document.getElementById("ms_masaid").value.split('|')[0];
+			var masaismi = document.getElementById("ms_masaid").value.split('|')[1];
+			var masano = document.getElementById("ms_masaid").value.split('|')[2];
+			var adisyonno = document.getElementById("ms_masaid").value.split('|')[3];
+
+			var plaka = document.getElementById("misafirplakae").value;
+
+			document.body.className = "loading";
+
+			$.ajax({
+				type: 'post',
+				url: "https://pos.posula.com/api/pos/plakaekle",
+				dataType: 'json',
+				contentType: 'application/json; charset=utf-8',
+				data: JSON.stringify({ kisim: kisim, masaismi: masaismi, masano: masano, adisyonno: adisyonno, plaka: plaka }),
+				success: function (data, textStatus, xhr) {
+					document.body.className ="";  
+					var _html = "";
+					if (xhr.status == "200")
+					{
+						if (data=="OK"){
+							alertify.success("Plaka kaydedildi");
+						}
+						else{
+							alertify.error("İşlem başarısız");
+						}
+					}
+					
+				},
+				error: function (hata) {
+					document.body.className ="";
+					alertify.error("Sistem yöneticisine başvurunuz");
+				}
+			});
+
+			document.body.className = "loading";
+
+		}
+
+
+		function plakaguncelle(){
+
+			var kisim = document.getElementById("ms_masaid").value.split('|')[0];
+			var masaismi = document.getElementById("ms_masaid").value.split('|')[1];
+			var masano = document.getElementById("ms_masaid").value.split('|')[2];
+			var adisyonno = document.getElementById("ms_masaid").value.split('|')[3];
+
+			var plaka = document.getElementById("misafirplakae").value;
+
+			document.body.className = "loading";
+
+			$.ajax({
+				type: 'post',
+				url: "https://pos.posula.com/api/pos/plakaekle",
+				dataType: 'json',
+				contentType: 'application/json; charset=utf-8',
+				data: JSON.stringify({ kisim: kisim, masaismi: masaismi, masano: masano, adisyonno: adisyonno, plaka: plaka }),
+				success: function (data, textStatus, xhr) {
+					document.body.className ="";  
+					var _html = "";
+					if (xhr.status == "200")
+					{
+						if (data=="OK"){
+							alertify.success("Plaka kaydedildi");
+						}
+						else{
+							alertify.error("İşlem başarısız");
+						}
+					}
+					
+				},
+				error: function (hata) {
+					document.body.className ="";
+					alertify.error("Sistem yöneticisine başvurunuz");
+				}
+			});
+
+			document.body.className = "loading";
+
+		}
+
+	
+		function plakasil(id){
+
+			document.body.className = "loading";
+
+			$.ajax({
+				type: 'post',
+				url: "https://pos.posula.com/api/pos/plakasil",
+				dataType: 'json',
+				contentType: 'application/json; charset=utf-8',
+				data: JSON.stringify({ 
+					id:id
+				}),
+				success: function (data, textStatus, xhr) {
+					document.body.className ="";  
+					var _html = "";
+					if (xhr.status == "200")
+					{
+						if (data=="OK"){
+							alertify.success("Plaka silindi");
+							odamisafirgetir();
+						}
+						else{
+							alertify.error("İşlem başarısız");
+						}
+					}
+					
+				},
+				error: function (hata) {
+					document.body.className ="";
+					alertify.error("Sistem yöneticisine başvurunuz");
+				}
+			});
+
+			document.body.className = "loading";
+
+		}
+
+
+
+		const misafirguncelleModal = document.getElementById('misafirguncelleModal')
+		misafirguncelleModal.addEventListener('show.bs.modal', event => {
+			const button = event.relatedTarget
+			const recipient = button.getAttribute('data-bs-whatever')
+
+			var tckn = recipient;
+			
+			$.ajax({
+				async:false,
+				type: 'post',
+				url: "https://pos.posula.com/api/pos/misafirdetaygetir",
+				dataType: 'json',
+				contentType: 'application/json; charset=utf-8',
+				data: JSON.stringify({ 
+					tckn: tckn
+				}),
+				success: function (data, textStatus, xhr) {
+					var _html = "";
+					if (xhr.status == "200")
+					{
+						document.getElementById("misafirtcknd").value = data[0]["TCKN"];
+						document.getElementById("misafiruyrukd").value = data[0]["UYRUK"];
+						document.getElementById("misafiradid").value = data[0]["ADI"];
+						document.getElementById("misafirsoyadid").value = data[0]["SOYADI"];
+						document.getElementById("misafirdogumtarihid").value = data[0]["DOGUMTARIHI"];
+						document.getElementById("misafirdogumyerid").value = data[0]["DOGUMYERI"];
+						document.getElementById("misafiradresd").value = data[0]["ADRES"];
+						document.getElementById("misafirtelefond").value = data[0]["TELEFON"];
+					}
+				},
+				error: function (hata) {
+					document.body.className ="";
+					alertify.error("Sistem yöneticisine başvurunuz");
+				}
+			});
+
+		});
+
+
+		const plakaguncelleModal = document.getElementById('plakaguncelleModal')
+		plakaguncelleModal.addEventListener('show.bs.modal', event => {
+			const button = event.relatedTarget
+			const recipient = button.getAttribute('data-bs-whatever')
+
+			document.getElementById("ms_plakaid").value = recipient;
+			
+			$.ajax({
+				async:false,
+				type: 'post',
+				url: "https://pos.posula.com/api/pos/plakadetaygetir",
+				dataType: 'json',
+				contentType: 'application/json; charset=utf-8',
+				data: JSON.stringify({ 
+					id: recipient
+				}),
+				success: function (data, textStatus, xhr) {
+					var _html = "";
+					if (xhr.status == "200")
+					{
+						document.getElementById("misafirplakad").value = data[0]["PLAKA"];
+					}
+					
+				},
+				error: function (hata) {
+					document.body.className ="";
+					alertify.error("Sistem yöneticisine başvurunuz");
+				}
+			});
+
+		});
+
+
+		function misafirguncelle(){
+
+			var tckn = document.getElementById("misafirtcknd").value;
+			var uyruk = document.getElementById("misafiruyrukd").value;
+			var adi = document.getElementById("misafiradid").value;
+			var soyadi = document.getElementById("misafirsoyadid").value;
+			var dogumtarihi = document.getElementById("misafirdogumtarihid").value;
+			var dogumyeri = document.getElementById("misafirdogumyerid").value;
+			var adres = document.getElementById("misafiradresd").value;
+			var telefon = document.getElementById("misafirtelefond").value;
+
+			document.body.className = "loading";
+
+			$.ajax({
+				type: 'post',
+				url: "https://pos.posula.com/api/pos/misafirguncelle",
+				dataType: 'json',
+				contentType: 'application/json; charset=utf-8',
+				data: JSON.stringify({ 
+					tckn: tckn, uyruk: uyruk, adi: adi, soyadi: soyadi, dogumtarihi: dogumtarihi, 
+					dogumyeri: dogumyeri, adres: adres, telefon: telefon
+				}),
+				success: function (data, textStatus, xhr) {
+					document.body.className ="";  
+					var _html = "";
+					if (xhr.status == "200")
+					{
+						if (data=="OK"){
+							alertify.success("Misafir güncellendi");
+						}
+						else{
+							alertify.error("İşlem başarısız");
+						}
+					}
+					
+				},
+				error: function (hata) {
+					document.body.className ="";
+					alertify.error("Sistem yöneticisine başvurunuz");
+				}
+			});
+
+			document.body.className = "loading";
+
+		}
+
+
+		function plakaguncelle(){
+
+			var plaka = document.getElementById("misafirplakad").value;
+			var id = document.getElementById("ms_plakaid").value;
+
+			document.body.className = "loading";
+
+			$.ajax({
+				type: 'post',
+				url: "https://pos.posula.com/api/pos/plakaguncelle",
+				dataType: 'json',
+				contentType: 'application/json; charset=utf-8',
+				data: JSON.stringify({ 
+					plaka: plaka, id: id
+				}),
+				success: function (data, textStatus, xhr) {
+					document.body.className ="";  
+					var _html = "";
+					if (xhr.status == "200")
+					{
+						if (data=="OK"){
+							alertify.success("Plaka güncellendi");
+							odamisafirgetir();
+						}
+						else{
+							alertify.error("İşlem başarısız");
+						}
+					}
+					
+				},
+				error: function (hata) {
+					document.body.className ="";
+					alertify.error("Sistem yöneticisine başvurunuz");
+				}
+			});
+
+			document.body.className = "loading";
+
+		}
+
+
+
+
+
+	</script>
+</body>
+</html>

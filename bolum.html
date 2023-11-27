@@ -1,0 +1,952 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <title>POSULA | Yönetim</title>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="icon" type="image/png" href="images/icons/favicon.ico"/>
+  <link rel="stylesheet" type="text/css" href="vendor/bootstrap-5/css/bootstrap.css">
+  <link rel="stylesheet" type="text/css" href="vendor/fontawesome-6/css/all.min.css">
+  <link rel="stylesheet" href="css/adminlte.min.css">
+  <link rel="stylesheet" type="text/css" href="vendor/alertifyJS/alertify.min.css">
+  <link rel="stylesheet" type="text/css" href="vendor/overlayScrollbars/css/OverlayScrollbars.min.css">
+
+  <!-- DataTables -->
+  <link rel="stylesheet" href="vendor/datatables-bs4/css/dataTables.bootstrap4.css">
+  <link rel="stylesheet" href="vendor/datatables-responsive/css/responsive.bootstrap4.min.css">
+  <link rel="stylesheet" href="vendor/datatables-buttons/css/buttons.bootstrap4.min.css">
+  
+<style>
+  .loading-bar{
+      display: none;
+      position: fixed;
+      z-index: 9999;
+      left:0;
+      top:0;
+      width: 100%;
+      height: 100%;
+      background-image: url('images/loading.gif');
+      background-position: 50% 50%;
+      background-color: rgba(255,255,255,0.8);
+      background-repeat: no-repeat;
+    }
+    
+    body.loading{
+      overflow: hidden;
+    }
+    
+    body.loading .loading-bar{
+      display: block;
+    }
+
+    .alertify-notifier {
+                color: #fff;
+            }
+    
+</style>
+
+</head>
+<body class="hold-transition sidebar-mini layout-fixed layout-navbar-fixed layout-footer-fixed ">
+<!-- Site wrapper -->
+<div class="wrapper">
+  <!-- Navbar -->
+  <nav id="navbar" class="main-header navbar navbar-expand navbar-white navbar-light">
+    <!-- Left navbar links -->
+    <ul class="navbar-nav">
+      <li class="nav-item">
+        <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
+      </li>
+      <li class="nav-item">
+        <a id="menuadi" class="nav-link">Bölüm ve Masalar</a>
+      </li>
+    </ul>
+
+  </nav>
+  <!-- /.navbar -->
+
+  <!-- Main Sidebar Container -->
+  <aside id="aside" class="main-sidebar sidebar-light-primary elevation-2">
+    <a class="brand-link">
+      <img src="images/O_small.png" alt="POSULA" class="brand-image img-circle elevation-3" style="opacity: .8">
+      <span class="brand-text" style="color:#312783; font-weight: 600; margin-left: 10px;">POSULA</span>
+    </a>
+    <!-- Sidebar -->
+    <div class="sidebar">
+
+      <!-- Sidebar Menu -->
+      <nav class="mt-2">
+        <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+          <!-- Add icons to the links using the .nav-icon class
+               with font-awesome or any other icon font library -->
+          <li class="nav-item">
+            <a href="yonetim.html" class="nav-link">
+              <i class="nav-icon fas fa-building"></i>
+              <p>
+                İşletme Bilgileri
+              </p>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="tanimlamalar.html" class="nav-link">
+              <i class="nav-icon fas fa-gears"></i>
+              <p>
+                Genel Ayarlar
+              </p>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link active">
+              <i class="nav-icon fas fa-th"></i>
+              <p>
+                Bölüm ve Masalar
+              </p>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="urunler.html" class="nav-link">
+              <i class="nav-icon fas fa-coffee"></i>
+              <p>
+                Ürünler
+              </p>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="kullanicilar.html" class="nav-link">
+              <i class="nav-icon fas fa-user"></i>
+              <p>
+                Kullanıcılar
+              </p>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="javascript:void(0)" onclick="localStorage.pos_userno='';localStorage.pos_password='';window.location='index.html';" class="nav-link">
+              <i class="nav-icon fas fa-power-off"></i>
+              <p>Çıkış</p>
+            </a>
+          </li>
+        </ul>
+      </nav>
+      <!-- /.sidebar-menu -->
+    </div>
+    <!-- /.sidebar -->
+  </aside>
+
+  <!-- Content Wrapper. Contains page content -->
+  <div id="wrapper" class="content-wrapper" style="height: 100%; "> 
+    <div class="row mx-2" style="height: 100%;">
+          
+      <div class="col-12 px-1 mt-2" id="tbl1" style="padding-top:20px; display: none; background-color: white; border:1px solid #ccc; border-radius: 10px; height: 100%;">
+            
+      </div>
+
+    </div>
+  </div>
+  <!-- /.content-wrapper -->
+
+  <footer id="footer" class="main-footer">
+    <div class="float-right">
+      <button class='btn btn-primary py-0' data-bs-toggle='modal' data-bs-target='#bolumekleModal'>Bölüm Ekle</button>
+    </div>
+    <strong><a href="https://posula.com" style="color:royalblue">POSULA</a> &copy; 2023 </strong>
+  </footer>
+
+  <!-- Control Sidebar -->
+  <aside class="control-sidebar control-sidebar-dark">
+    <!-- Control sidebar content goes here -->
+  </aside>
+  <!-- /.control-sidebar -->
+</div>
+<!-- ./wrapper -->
+<div class="loading-bar"></div>
+
+
+<div class="modal fade" id="masalarModal" tabindex="-1" aria-labelledby="masalarModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="masalarModalLabel">Masalar</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div class="row" style="margin-top:10px;margin-bottom: 10px; width: 100%;padding-left: 20px;">
+          
+          <div class="row mb-2">
+          
+            <div class="col-12 px-1" id="tbl2" style="padding-top:20px; display: none; background-color: white; border:1px solid #ccc; border-radius: 10px;">
+                  
+            </div>
+  
+          </div>
+                    
+            
+        </div> 
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger" style="min-width:80px;" onclick="masasil();">Sil</button>
+        <div class="input-group" style="max-width:265px;">
+          <input type="number" id="masaadettxt" class="form-control" placeholder="Adet Giriniz" aria-label="Adet Giriniz" aria-describedby="masaeklebtn" style="display: inline-block; max-width:130px;">
+          <button class="btn btn-primary" type="button" id="masaeklebtn" onclick="masaekle();">Adet Masa Ekle</button>
+        </div>
+        <button class="btn btn-primary" type="button" id="masaduzenlebtn" onclick="masaduzenle();">Masa Adlarını Kaydet</button>
+        <!--<button type="button" class="btn btn-primary" onclick="kategoriguncellemodal();">Kategori Güncelle</button>-->
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+<div class="modal fade" id="bolumekleModal" tabindex="-1" aria-labelledby="bolumekleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="bolumekleModalLabel">Bölüm Ekle</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div class="row" style="margin-top:30px;margin-bottom: 30px; width: 100%;padding-left: 3px;">
+          
+          <div class="row">
+            <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-xs-12" style="display: none;">
+              <div class="form-floating mb-2">
+                <input type="number" class="form-control" min="100" step="10" value="100" id="bolumno" placeholder="Bölüm No">
+                <label for="bolumno" style="font-weight: 500;">Bölüm No</label>
+              </div>
+            </div>
+            <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-xs-12">
+              <div class="form-floating mb-2">
+                <input type="text" class="form-control" id="bolumadi" placeholder="Bölüm Adı" onchange="masabaslangic();">
+                <label for="bolumadi" style="font-weight: 500;">Bölüm Adı</label>
+              </div>
+            </div>
+            <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-xs-12">
+              <div class="form-floating mb-2">
+                <select id="bolumtipi" class="form-control" placeholder="Bölüm Tipi" onchange="bolumkontrol();">
+                  <option value="0" selected>Masa</option>
+                  <option value="1">Kasa</option>
+                  <option value="2">Oyun</option>
+                  <option value="3">Oda</option>
+                </select>
+                <label for="bolumtipi" style="font-weight: 500;">Bölüm Tipi</label>
+              </div>
+            </div>
+            <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-xs-12">
+              <div class="form-floating mb-2">
+                <select id="fiyatturu" class="form-control" placeholder="Fiyat Grubu">
+                  <option value="1" selected>Fiyat 1</option>
+                  <option value="2">Fiyat 2</option>
+                  <option value="3">Fiyat 3</option>
+                  <option value="4">Fiyat 4</option>
+                </select>
+                <label for="fiyatturu" style="font-weight: 500;">Fiyat Grubu</label>
+              </div>
+            </div>
+            <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-xs-12">
+              <div class="form-floating mb-2">
+                <input type="number" class="form-control" id="masaadedi" placeholder="Masa Adedi" step="10" min="0" value="1">
+                <label for="masaadedi" style="font-weight: 500;">Masa Adedi</label>
+              </div>
+            </div>
+            <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-xs-12">
+              <div class="form-floating mb-2">
+                <input type="text" class="form-control" id="masabasadi" placeholder="Masa Başlangıç Adı">
+                <label for="masabasadi" style="font-weight: 500;">Masa Başlangıç Adı</label>
+              </div>
+            </div>
+            <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-xs-12">
+              <div class="form-floating mb-2">
+                <input type="number" class="form-control" id="masabasno" placeholder="Masa Başlangıç No" value="1">
+                <label for="masabasno" style="font-weight: 500;">Masa Başlangıç No</label>
+              </div>
+            </div>
+            <div class="col-12">
+              <div class="form-check form-switch pl-0 mb-2">
+                <label class="form-check-label" style="margin-left: 5px;" for="misafirsayisi">Misafir Sayısı İstensin</label>
+                <input class="form-check-input" style="position:absolute; right:0;height:25px; width:50px;" type="checkbox" role="switch" id="misafirsayisi" checked>
+              </div>
+            </div>
+            <div class="col-12">
+              <div class="form-check form-switch pl-0 mb-2">
+                <label class="form-check-label" style="margin-left: 5px;" for="mutfakyazdir">Mutfaktan Yazdır</label>
+                <input class="form-check-input" style="position:absolute; right:0;height:25px; width:50px;" type="checkbox" role="switch" id="mutfakyazdir" checked>
+              </div>
+            </div>
+            <div class="col-12">
+              <div class="form-check form-switch pl-0">
+                <label class="form-check-label" style="margin-left: 5px;" for="kuverurunu">Kuver Ürünü Eklensin</label>
+                <input class="form-check-input" style="position:absolute; right:0;height:25px; width:50px;" type="checkbox" role="switch" id="kuverurunu">
+              </div>
+            </div>
+            
+            <div class="col-6" style="display: none;">
+              <div class="form-floating mb-2">
+                <input type="text" class="form-control" id="ornek" placeholder="Örnek Masa İsmi" readonly style="background-color: white;">
+                <label for="ornek" style="font-weight: 500;">Örnek Masa İsmi</label>
+              </div>
+            </div>
+
+            
+          </div>
+            
+        </div> 
+      </div>
+      <div class="modal-footer">
+        <button class='btn btn-primary' onclick="bolumekle('devam');">Kaydet ve Devam Et</button>
+        <button class='btn btn-primary' onclick="bolumekle('geri');">Kaydet ve Geri Dön</button>
+        <!--<button type="button" class="btn btn-primary" onclick="kategoriguncellemodal();">Kategori Güncelle</button>-->
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<div class="modal fade" id="bolumduzenleModal" tabindex="-1" aria-labelledby="bolumekleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="bolumekleModalLabel">Bölüm Ekle</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <input type="password" style="display: none;" id="bdbolumno">
+        <div class="row" style="margin-top:30px;margin-bottom: 30px; width: 100%;padding-left: 3px;">
+          
+          <div class="row">
+            <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-xs-12">
+              <div class="form-floating mb-2">
+                <input type="text" class="form-control" id="bdbolumadi" placeholder="Bölüm Adı">
+                <label for="bdbolumadi" style="font-weight: 500;">Bölüm Adı</label>
+              </div>
+            </div>
+            <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-xs-12">
+              <div class="form-floating mb-2">
+                <select id="bdbolumtipi" class="form-control" placeholder="Bölüm Tipi">
+                  <option value="0" selected>Masa</option>
+                  <option value="1">Kasa</option>
+                  <option value="2">Oyun</option>
+                  <option value="3">Oda</option>
+                </select>
+                <label for="bdbolumtipi" style="font-weight: 500;">Bölüm Tipi</label>
+              </div>
+            </div>
+            <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-xs-12">
+              <div class="form-floating mb-2">
+                <select id="bdfiyatturu" class="form-control" placeholder="Fiyat Grubu">
+                  <option value="1" selected>Fiyat 1</option>
+                  <option value="2">Fiyat 2</option>
+                  <option value="3">Fiyat 3</option>
+                  <option value="4">Fiyat 4</option>
+                </select>
+                <label for="bdfiyatturu" style="font-weight: 500;">Fiyat Grubu</label>
+              </div>
+            </div>
+            <div class="col-12">
+              <div class="form-check form-switch pl-0">
+                <label class="form-check-label" style="margin-left: 5px;" for="bdmisafirsayisi">Misafir Sayısı İstensin</label>
+                <input class="form-check-input" style="position:absolute; right:0;height:25px; width:50px;" type="checkbox" role="switch" id="bdmisafirsayisi" checked>
+              </div>
+            </div>
+            <div class="col-12">
+              <div class="form-check form-switch pl-0">
+                <label class="form-check-label" style="margin-left: 5px;" for="bdmutfakyazdir">Mutfaktan Yazdır</label>
+                <input class="form-check-input" style="position:absolute; right:0;height:25px; width:50px;" type="checkbox" role="switch" id="bdmutfakyazdir" checked>
+              </div>
+            </div>
+            <div class="col-12">
+              <div class="form-check form-switch pl-0">
+                <label class="form-check-label" style="margin-left: 5px;" for="bdkuverurunu">Kuver Ürünü Eklensin</label>
+                <input class="form-check-input" style="position:absolute; right:0;height:25px; width:50px;" type="checkbox" role="switch" id="bdkuverurunu">
+              </div>
+            </div>
+
+
+            
+          </div>
+            
+        </div> 
+      </div>
+      <div class="modal-footer">
+        <button id="duzenlebtn" class="btn btn-primary btn-block" onclick="bolumduzenle();">Kaydet</button>
+        <!--<button type="button" class="btn btn-primary" onclick="kategoriguncellemodal();">Kategori Güncelle</button>-->
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- jQuery -->
+<script src="vendor/jquery/jquery-3.2.1.min.js"></script>
+<!-- Bootstrap 5 -->
+<script src="vendor/bootstrap-5/js/bootstrap.min.js"></script>
+
+<script src="vendor/bootstrap-5/js/bootstrap.bundle.min.js"></script>
+
+<script src="vendor/overlayScrollbars/js/OverlayScrollbars.min.js"></script>
+
+<script src="vendor/alertifyJS/alertify.min.js"></script>
+<!-- AdminLTE App -->
+<script src="js/adminlte.min.js"></script>
+
+<!-- DataTables  & Plugins -->
+<script src="vendor/datatables/jquery.dataTables.min.js"></script>
+<script src="vendor/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
+<script src="vendor/datatables-responsive/js/dataTables.responsive.min.js"></script>
+<script src="vendor/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
+<script src="vendor/datatables-buttons/js/dataTables.buttons.min.js"></script>
+<script src="vendor/datatables-buttons/js/buttons.bootstrap4.min.js"></script>
+<script src="vendor/jszip/jszip.min.js"></script>
+<script src="vendor/pdfmake/pdfmake.min.js"></script>
+<script src="vendor/pdfmake/vfs_fonts.js"></script>
+<script src="vendor/datatables-buttons/js/buttons.html5.min.js"></script>
+<script src="vendor/datatables-buttons/js/buttons.print.min.js"></script>
+<script src="vendor/datatables-buttons/js/buttons.colVis.min.js"></script>
+
+<script type="text/javascript">
+
+$(document).ready(function () {
+
+  if (localStorage.pos_userno == "" || localStorage.pos_userno == null || localStorage.pos_userno == undefined) window.location = "index.html";
+  
+  var doc = $(document).width();
+  var aside = $('aside').width();
+  var fark = doc-aside;
+  /*if ($('body').hasClass('sidebar-closed'))
+  {
+    document.getElementById("wrapper").style.width= doc+"px";
+  }
+  else
+  {
+    document.getElementById("wrapper").style.width= fark +"px";
+  }*/
+  bolumnogetir();
+  bolumgetir();
+
+});
+
+function bolumkontrol(){
+  if (document.getElementById("bolumtipi").value=="1"){
+    document.getElementById("misafirsayisi").checked = false;
+    document.getElementById("misafirsayisi").disabled = true;
+  }
+  else{
+    document.getElementById("misafirsayisi").checked = true;
+    document.getElementById("misafirsayisi").disabled=false;
+  }
+}
+
+const masalarModal = document.getElementById('masalarModal')
+masalarModal.addEventListener('show.bs.modal', event => {
+  const button = event.relatedTarget;
+  const recipient = button.getAttribute('data-bs-whatever');
+  document.getElementById("bolumno").value=recipient;
+  masagetir(recipient);
+})
+
+const bolumduzenleModal = document.getElementById('bolumduzenleModal')
+bolumduzenleModal.addEventListener('show.bs.modal', event => {
+  const button = event.relatedTarget;
+  const recipient = button.getAttribute('data-bs-whatever');
+  document.getElementById("bdbolumno").value=recipient;
+  bolumgetirtek(recipient);
+})
+
+window.onresize = function(event) {
+  var doc = $(document).width();
+  var aside = $('aside').width();
+  var fark = doc-aside;
+  fark = fark;
+  if ($('body').hasClass('sidebar-closed'))
+  {
+    document.getElementById("wrapper").style.width= doc+"px";
+  }
+  else
+  {
+    document.getElementById("wrapper").style.width= fark +"px";
+  }
+};
+
+function bolumgetir() {
+  
+  $.ajax({
+      type: 'post',
+      url: "https://pos.posula.com/api/pos/bolumlistegetir",
+      dataType: 'json',
+      contentType: 'application/json; charset=utf-8',
+      beforeSend: function(){
+          $body = $('body'); 
+          $body.addClass('loading'); 
+      },
+      success: function (data, textStatus, xhr) {
+          if (xhr.status == "200")
+          {
+            var _html="<h6>Bölümler</h6><hr><table id='example1' class='table table-bordered table-responsive-xs table-responsive-sm table-responsive-md table-striped'><thead><tr><th style='width:30% !important;min-width:30% !important;max-width:30% !important;'>Bölüm Adı</th><th style='width:28% !important;min-width:28% !important;max-width:28% !important;'>Bölüm Tipi</th><th style='width:27% !important;min-width:27% !important;max-width:27% !important;'>Masa Adet</th><th style='width:15% !important;min-width:15% !important;max-width:15% !important;'>İşlem</th></tr></thead><tbody>";
+            $.each(data,
+              function (key, item) {
+                  _html += "<tr><td class='py-1' style='width:30% !important;min-width:30% !important;max-width:30% !important;'>"+item.KISIM+"</td><td class='py-1' style='width:28% !important;min-width:28% !important;max-width:28% !important;'>"+item.TIP+"</td><td class='py-1' style='width:27% !important;min-width:27% !important;max-width:27% !important;'>"+item.MASAADET+"</td><td class='py-1' style='width:15%;'><div class='dropdown'><button class='btn btn-primary dropdown-toggle btn-block py-0' type='button' data-bs-toggle='dropdown' aria-expanded='false'>İşlemler</button><ul class='dropdown-menu'><li><button class='dropdown-item' type='button' data-bs-toggle='modal' data-bs-target='#masalarModal' data-bs-whatever='"+item.NO+"'>Masalar</button></li><li><button class='dropdown-item' type='button' data-bs-toggle='modal' data-bs-target='#bolumduzenleModal' data-bs-whatever='"+item.NO+"'>Düzenle</button></li><li><button class='dropdown-item' type='button' data-bs-toggle='modal' onclick='bolumsil("+item.NO+");'>Bölümü Sil</button></li></ul></div></td></tr>";
+              });
+              _html += "</tbody></table>";
+              document.getElementById("tbl1").innerHTML = _html;
+              document.getElementById("tbl1").style.display='';
+
+              var doc = $(document).width();
+              var aside = $('aside').width();
+              var fark = doc-aside;
+              fark = fark;
+              if ($('body').hasClass('sidebar-closed'))
+              {
+                document.getElementById("wrapper").style.width= doc+"px";
+              }
+              else
+              {
+                document.getElementById("wrapper").style.width= fark +"px";
+              }
+              
+
+              $("#example1").DataTable({
+                  "paging": false,
+                  "lengthChange": false,
+                  "autoWidth": false,
+                  "buttons": ["excel", "pdf", "print", "colvis"],
+                  "sorting": false,
+                  "dom": "<'row'<'col-sm-12 col-md-6'f>>" +
+                          "<'row'<'col-sm-12'tr>>"
+              }).buttons().container();
+              
+          }
+        
+      },
+      complete: function(data){
+          $body = $('body'); 
+          $body.removeClass('loading'); 
+      },
+      error: function (hata) {
+      }
+  });
+
+  }
+
+function bolumnogetir() {
+  
+  $.ajax({
+      type: 'post',
+      url: "https://pos.posula.com/api/pos/bolumnogetir",
+      dataType: 'json',
+      contentType: 'application/json; charset=utf-8',
+      beforeSend: function(){
+          $body = $('body'); 
+          $body.addClass('loading'); 
+      },
+      success: function (data, textStatus, xhr) {
+          if (xhr.status == "200")
+          {
+            document.getElementById("bolumno").value=data;
+          }
+        
+      },
+      complete: function(data){
+          $body = $('body'); 
+          $body.removeClass('loading'); 
+      },
+      error: function (hata) {
+      }
+  });
+
+}
+
+function masagetir() {
+  
+  var bolumno = document.getElementById("bolumno").value;
+
+  $.ajax({
+      type: 'post',
+      url: "https://pos.posula.com/api/pos/masalistegetir",
+      dataType: 'json',
+      contentType: 'application/json; charset=utf-8',
+      data: JSON.stringify({ bolumno: bolumno }),
+      beforeSend: function(){
+          $body = $('body'); 
+          $body.addClass('loading'); 
+      },
+      success: function (data, textStatus, xhr) {
+          if (xhr.status == "200")
+          {
+            var _html="<table id='example2' class='table table-responsive-sm table-responsive-md table-bordered table-striped'><thead><tr><th style='width:10% !important;min-width:10% !important;max-width:10% !important;'>Seç</th><th style='width:90% !important;min-width:90% !important;max-width:90% !important;'>Masa Adı</th></tr></thead><tbody>";
+            $.each(data,
+              function (key, item) {
+                  _html += "<tr><td class='py-0 text-center m-0' style='width:10% !important;min-width:10% !important;max-width:10% !important;'><input class='form-check-input' style='margin-top:3px; margin-left:-10px; width:25px; height:25px;' type='checkbox' value='"+item.MASANO+"' id='check"+item.MASANO+"' name='checkmasa'></td><td class='py-1 input' style='width:90% !important;min-width:90% !important;max-width:90% !important;' contenteditable id='c"+item.MASANO+"' data-eski='"+item.MASAISMI+"'>"+item.MASAISMI+"</td></tr>";
+              });
+              _html += "</tbody></table><div class='row mt-2 mb-2'>";
+              document.getElementById("tbl2").innerHTML = _html;
+              document.getElementById("tbl2").style.display='';
+
+              $("#example2").DataTable({
+                  "paging": false,
+                  "lengthChange": false,
+                  "autoWidth": false,
+                  "buttons": ["excel", "pdf", "print", "colvis"],
+                  "sorting": false,
+                  "dom": "<'row'<'col-sm-12 col-md-6'f>>" +
+                          "<'row'<'col-sm-12'tr>>"
+              }).buttons().container();
+              
+          }
+        
+      },
+      complete: function(data){
+          $body = $('body'); 
+          $body.removeClass('loading'); 
+      },
+      error: function (hata) {
+      }
+  });
+
+  }
+
+function checkKey(e) {
+    var event = window.event ? window.event : e;
+    if (event.keyCode == 40){
+      console.log("e");
+      $(this).find().next('.input').focus();
+      console.log($(this));
+      console.log($(this).find().next('.input'));
+    }
+  
+
+    $('.input').keydown(function (e) {
+    if (e.which === 40) {
+       $(this).next('.input').focus();
+    }
+ });
+
+}
+
+function bolumekle(tip) {
+  
+var bolumno = document.getElementById("bolumno").value;
+var bolumadi = document.getElementById("bolumadi").value;
+var bolumtipi = document.getElementById("bolumtipi").value;
+var fiyatturu = document.getElementById("fiyatturu").value;
+var misafirsayisi = "0";
+if (document.getElementById("misafirsayisi").checked) misafirsayisi = "1";
+var kuverurunu = "0";
+if (document.getElementById("kuverurunu").checked) kuverurunu = "1";
+var mutfakyazdir = "0";
+if (document.getElementById("mutfakyazdir").checked) mutfakyazdir = "1";
+var masaadet = document.getElementById("masaadedi").value;
+var masabasadi = document.getElementById("masabasadi").value;
+var masabasno = document.getElementById("masabasno").value;
+
+  $.ajax({
+      type: 'post',
+      url: "https://pos.posula.com/api/pos/bolumekle",
+      dataType: 'json',
+      contentType: 'application/json; charset=utf-8',
+      data: JSON.stringify({ bolumno: bolumno, bolumadi: bolumadi, bolumtipi: bolumtipi, fiyatturu: fiyatturu, misafirsayisi: misafirsayisi, kuverurunu: kuverurunu, mutfakyazdir: mutfakyazdir, masaadet: masaadet, masabasadi: masabasadi, masabasno: masabasno }),
+      beforeSend: function(){
+          $body = $('body'); 
+          $body.addClass('loading'); 
+      },
+      success: function (data, textStatus, xhr) {
+          if (xhr.status == "200")
+          {
+            if (data == "OK")
+            {
+              bolumnogetir();
+              bolumgetir();
+              alertify.success("Bölüm eklendi");
+              if (tip=="devam"){ //temizle
+                bolumeklemodaltemizle();
+              }
+              else if (tip == "geri"){ // modal kapat
+                $('#bolumekleModal').modal('hide');
+                $('.modal-backdrop').remove()
+                $(document.body).removeClass("modal-open");
+              }
+
+            }
+            else alertify.error("Bölüm Eklenemedi");
+              
+          }
+        
+      },
+      complete: function(data){
+          $body = $('body'); 
+          $body.removeClass('loading'); 
+      },
+      error: function (hata) {
+        alertify.error("Bölüm Eklenemedi");
+      }
+  });
+
+  }
+
+function bolumeklemodaltemizle(){
+  document.getElementById("bolumadi").value = ""; 
+  document.getElementById("masabasadi").value = ""; 
+  document.getElementById("masaadedi").value = "1"; 
+  document.getElementById("masabasno").value = "1";
+  $('#bolumadi').focus();
+}
+
+function bolumduzenle() {
+  
+  var bolumno = document.getElementById("bdbolumno").value;
+  var bolumadi = document.getElementById("bdbolumadi").value;
+  var bolumtipi = document.getElementById("bdbolumtipi").value;
+  var fiyatturu = document.getElementById("bdfiyatturu").value;
+  var misafirsayisi = "0";
+  if (document.getElementById("bdmisafirsayisi").checked) misafirsayisi = "1";
+  var kuverurunu = "0";
+  if (document.getElementById("bdkuverurunu").checked) kuverurunu = "1";
+  var mutfakyazdir = "0";
+  if (document.getElementById("bdmutfakyazdir").checked) mutfakyazdir = "1";
+  
+    $.ajax({
+        type: 'post',
+        url: "https://pos.posula.com/api/pos/bolumduzenle",
+        dataType: 'json',
+        contentType: 'application/json; charset=utf-8',
+        data: JSON.stringify({ bolumno: bolumno, bolumadi: bolumadi, bolumtipi: bolumtipi, fiyatturu: fiyatturu, misafirsayisi: misafirsayisi, kuverurunu: kuverurunu, mutfakyazdir: mutfakyazdir }),
+        beforeSend: function(){
+            $body = $('body'); 
+            $body.addClass('loading'); 
+        },
+        success: function (data, textStatus, xhr) {
+            if (xhr.status == "200")
+            {
+              if (data == "OK")
+              {
+                bolumgetir();
+                alertify.success("Bölüm Düzenlendi");
+  
+              }
+              else if (data == "USE")
+              {
+                alertify.error("Bölüm düzenlenemedi. Açık masalar var");
+  
+              }
+              else alertify.error("Bölüm düzenlenemedi");
+                
+            }
+          
+        },
+        complete: function(data){
+            $body = $('body'); 
+            $body.removeClass('loading'); 
+        },
+        error: function (hata) {
+          alertify.error("Bölüm düzenlenemedi");
+        }
+    });
+  
+}
+
+function bolumsil(bolumno) {
+  alertify.confirm('UYARI', 'Bölümle birlikte bu bölüme tanımlı tüm masalar da silinecektir. Onaylıyor musunuz?', function(){ bolumsilOK(bolumno);}, function(){return;})
+}
+
+function bolumsilOK(bolumno) {
+  $.ajax({
+      type: 'post',
+      url: "https://pos.posula.com/api/pos/bolumsil",
+      dataType: 'json',
+      contentType: 'application/json; charset=utf-8',
+      data: JSON.stringify({ bolumno: bolumno }),
+      beforeSend: function(){
+          $body = $('body'); 
+          $body.addClass('loading'); 
+      },
+      success: function (data, textStatus, xhr) {
+          if (xhr.status == "200")
+          {
+            if (data == "OK"){
+              alertify.success("Bölüm silindi");
+              bolumgetir();
+            }
+            else if (data == "USE") alertify.error("Bölüm silinemedi. Açık masalar var");
+            else alertify.error("Bölüm silinemedi");
+          }
+        
+      },
+      complete: function(data){
+          $body = $('body'); 
+          $body.removeClass('loading'); 
+      },
+      error: function (hata) {
+        alertify.error("Bölüm silinemedi");
+      }
+  });
+}
+
+function masabaslangic(){
+  var bosluk = 0;
+  document.getElementById("masabasadi").value = document.getElementById("bolumadi").value.substr(0,1);
+  if (document.getElementById("bolumadi").value.indexOf(" ")>-1)
+  {
+    bosluk = document.getElementById("bolumadi").value.indexOf(" ");
+    document.getElementById("masabasadi").value += document.getElementById("bolumadi").value.substr(bosluk+1,1);
+  }
+  document.getElementById("ornek").value = document.getElementById("masabasadi").value + document.getElementById("masabasno").value;
+}
+
+function bolumgetirtek(bolumno) {
+  
+  $.ajax({
+      type: 'post',
+      url: "https://pos.posula.com/api/pos/bolumlistegetirtek",
+      dataType: 'json',
+      contentType: 'application/json; charset=utf-8',
+      data: JSON.stringify({ bolumno: bolumno }),
+      beforeSend: function(){
+          $body = $('body'); 
+          $body.addClass('loading'); 
+      },
+      success: function (data, textStatus, xhr) {
+          if (xhr.status == "200")
+          {
+            document.getElementById("bdbolumadi").value = data[0]["KISIM"];
+            document.getElementById("bdbolumtipi").value = data[0]["SIPARISTIPI"];
+            document.getElementById("bdfiyatturu").value = data[0]["SUBEFIYATGRUBU"];
+            if (data[0]["MISAFIRADETISTE"]=="1") document.getElementById("bdmisafirsayisi").checked = true;
+            else document.getElementById("bdmisafirsayisi").checked = false;
+            if (data[0]["BUGELIRNOKMUTFAKTAYAZSIN"] =="1") document.getElementById("bdmutfakyazdir").checked = true;
+            else document.getElementById("bdmutfakyazdir").checked = false;
+            if (data[0]["KUVER_GETIR"]=="1") document.getElementById("bdkuverurunu").checked=true;
+            else document.getElementById("bdkuverurunu").checked=false;
+          }
+        
+      },
+      complete: function(data){
+          $body = $('body'); 
+          $body.removeClass('loading'); 
+      },
+      error: function (hata) {
+      }
+  });
+
+  }
+
+function masasil(){
+  const checkedBoxes = document.querySelectorAll('input[name=checkmasa]:checked');
+  var chkarr = "";
+  for (var i=0; i<checkedBoxes.length;i++){
+    chkarr += checkedBoxes[i].value+",";
+  }
+  chkarr = chkarr.slice(0,-1); //Seçili masa numaralarını 1,2,3 eklinde mysql sorgusu için uygun hale getirdik. MASANO IN () ile temp'i kontrol edeceğiz. Yine aynı şekilde delete işlemi yapacağız.
+
+  var bolumno = document.getElementById("bolumno").value;
+
+  $.ajax({
+      type: 'post',
+      url: "https://pos.posula.com/api/pos/masasil",
+      dataType: 'json',
+      contentType: 'application/json; charset=utf-8',
+      data: JSON.stringify({ masalar: chkarr, bolumno: bolumno }),
+      beforeSend: function(){
+          $body = $('body'); 
+          $body.addClass('loading'); 
+      },
+      success: function (data, textStatus, xhr) {
+          if (xhr.status == "200")
+          {
+            if (data=="OK"){
+              alertify.success("Masalar silindi");
+              masagetir();
+            }
+            else if (data=="USE") alertify.error("Masalar silinemedi. Silmek istediğiniz bazı masalar açık durumdadır");
+            else alertify.error("Masalar silinemedi");
+          }
+        
+      },
+      complete: function(data){
+          $body = $('body'); 
+          $body.removeClass('loading'); 
+      },
+      error: function (hata) {
+      }
+  });
+
+}
+
+function masaekle(){
+
+  var bolumno = document.getElementById("bolumno").value;
+  var masaadet = document.getElementById("masaadettxt").value;
+  $.ajax({
+      type: 'post',
+      url: "https://pos.posula.com/api/pos/masaekle",
+      dataType: 'json',
+      contentType: 'application/json; charset=utf-8',
+      data: JSON.stringify({ bolumno: bolumno, masaadet: masaadet }),
+      beforeSend: function(){
+          $body = $('body'); 
+          $body.addClass('loading'); 
+      },
+      success: function (data, textStatus, xhr) {
+          if (xhr.status == "200")
+          {
+            if (data=="OK"){
+              alertify.success("Masalar eklendi");
+              masagetir();
+            }
+            else alertify.error("Masalar eklenemedi");
+          }
+        
+      },
+      complete: function(data){
+          $body = $('body'); 
+          $body.removeClass('loading'); 
+      },
+      error: function (hata) {
+        alertify.error("Masalar eklenemedi");
+      }
+  });
+
+}
+
+function masaduzenle(){
+  const checkedBoxes = document.querySelectorAll('input[name=checkmasa]');
+  var chkarr = "";
+  for (var i=0; i<checkedBoxes.length;i++){
+    chkarr += checkedBoxes[i].value+"@"+document.getElementById("c"+checkedBoxes[i].value).innerText + "@" + document.getElementById("c"+checkedBoxes[i].value).dataset.eski + ",";
+  }
+  chkarr = chkarr.slice(0,-1); //Seçili masa numaralarını 1,2,3 eklinde mysql sorgusu için uygun hale getirdik. MASANO IN () ile temp'i kontrol edeceğiz. Yine aynı şekilde delete işlemi yapacağız.
+
+  //alert(chkarr);
+  var bolumno = document.getElementById("bolumno").value;
+
+  $.ajax({
+      type: 'post',
+      url: "https://pos.posula.com/api/pos/masaduzenle",
+      dataType: 'json',
+      contentType: 'application/json; charset=utf-8',
+      data: JSON.stringify({ masalar: chkarr, bolumno: bolumno }),
+      beforeSend: function(){
+          $body = $('body'); 
+          $body.addClass('loading'); 
+      },
+      success: function (data, textStatus, xhr) {
+          if (xhr.status == "200")
+          {
+            if (data=="OK"){
+              alertify.success("Masa isimleri kaydedildi");
+              masagetir();
+            }
+            else alertify.error("Masa isimleri kaydedilemedi");
+          }
+        
+      },
+      complete: function(data){
+          $body = $('body'); 
+          $body.removeClass('loading'); 
+      },
+      error: function (hata) {
+        alertify.error("Masa isimleri kaydedilemedi");
+      }
+  });
+
+}
+</script>
+
+</body>
+</html>

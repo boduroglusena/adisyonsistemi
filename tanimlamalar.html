@@ -1,0 +1,1851 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <title>POSULA | Yönetim</title>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="icon" type="image/png" href="images/icons/favicon.ico"/>
+  <link rel="stylesheet" type="text/css" href="vendor/bootstrap-5/css/bootstrap.min.css">
+  <link rel="stylesheet" type="text/css" href="vendor/fontawesome-6/css/all.min.css">
+  <link rel="stylesheet" href="css/adminlte.min.css">
+  <link rel="stylesheet" type="text/css" href="vendor/alertifyJS/alertify.min.css">
+  <link rel="stylesheet" type="text/css" href="vendor/overlayScrollbars/css/OverlayScrollbars.min.css">
+
+  <!-- DataTables -->
+  <link rel="stylesheet" href="vendor/datatables-bs4/css/dataTables.bootstrap4.css">
+  <link rel="stylesheet" href="vendor/datatables-responsive/css/responsive.bootstrap4.min.css">
+  <link rel="stylesheet" href="vendor/datatables-buttons/css/buttons.bootstrap4.min.css">
+  
+
+  <style>
+    .loading-bar{
+        display: none;
+        position: fixed;
+        z-index: 9999;
+        left:0;
+        top:0;
+        width: 100%;
+        height: 100%;
+        background-image: url('images/loading.gif');
+        background-position: 50% 50%;
+        background-color: rgba(255,255,255,0.8);
+        background-repeat: no-repeat;
+      }
+      
+      body.loading{
+        overflow: hidden;
+      }
+      
+      body.loading .loading-bar{
+        display: block;
+      }
+  
+      .alertify-notifier {
+                  color: #fff;
+              }
+      
+  </style>
+
+</head>
+<body class="hold-transition sidebar-mini layout-fixed layout-navbar-fixed layout-footer-fixed ">
+<!-- Site wrapper -->
+<div class="wrapper">
+  <!-- Navbar -->
+  <nav class="main-header navbar navbar-expand navbar-white navbar-light">
+    <!-- Left navbar links -->
+    <ul class="navbar-nav">
+      <li class="nav-item">
+        <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
+      </li>
+      <li class="nav-item">
+        <a id="menuadi" class="nav-link">Genel Ayarlar</a>
+      </li>
+    </ul>
+
+  </nav>
+  <!-- /.navbar -->
+
+  <!-- Main Sidebar Container -->
+  <aside class="main-sidebar sidebar-light-primary elevation-2">
+    <a class="brand-link">
+      <img src="images/O_small.png" alt="POSULA" class="brand-image img-circle elevation-3" style="opacity: .8">
+      <span class="brand-text" style="color:#312783; font-weight: 600; margin-left: 10px;">POSULA</span>
+    </a>
+    <!-- Sidebar -->
+    <div class="sidebar">
+
+      <!-- Sidebar Menu -->
+      <nav class="mt-2">
+        <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+          <!-- Add icons to the links using the .nav-icon class
+               with font-awesome or any other icon font library -->
+          <li class="nav-item">
+            <a href="yonetim.html" class="nav-link">
+              <i class="nav-icon fas fa-building"></i>
+              <p>
+                İşletme Bilgileri
+              </p>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link active">
+              <i class="nav-icon fas fa-gears"></i>
+              <p>
+                Genel Ayarlar
+              </p>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="bolum.html" class="nav-link">
+              <i class="nav-icon fas fa-th"></i>
+              <p>
+                Bölüm ve Masalar
+              </p>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="urunler.html" class="nav-link">
+              <i class="nav-icon fas fa-coffee"></i>
+              <p>
+                Ürünler
+              </p>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="kullanicilar.html" class="nav-link">
+              <i class="nav-icon fas fa-user"></i>
+              <p>
+                Kullanıcılar
+              </p>
+            </a>
+          </li>
+
+        
+          <li class="nav-item">
+            <a href="javascript:void(0)" onclick="localStorage.pos_userno='';localStorage.pos_password='';window.location='index.html';" class="nav-link">
+              <i class="nav-icon fas fa-power-off"></i>
+              <p>Çıkış</p>
+            </a>
+          </li>
+        </ul>
+      </nav>
+      <!-- /.sidebar-menu -->
+    </div>
+    <!-- /.sidebar -->
+  </aside>
+
+  <!-- Content Wrapper. Contains page content -->
+  <div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+      <div class="container-fluid">
+        <div class="row mb-2">
+          
+          
+
+
+          <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12 px-1 mb-2" id="uruntbl" style="padding-top:20px; background-color: white; border:1px solid #ccc; border-radius: 10px;">
+                
+          </div>
+
+          <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12 px-1 mb-2" id="yazicitbl" style="padding-top:20px; background-color: white; border:1px solid #ccc; border-radius: 10px;">
+                
+          </div>
+
+          <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12 px-1 mb-2" id="kdvtbl" style="padding-top:20px; background-color: white; border:1px solid #ccc; border-radius: 10px;">
+                
+          </div>
+
+          <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12 px-1 mb-2" id="birimtbl" style="padding-top:20px; background-color: white; border:1px solid #ccc; border-radius: 10px;">
+                
+          </div>
+
+          <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12 px-1 mb-2" id="iskontotbl" style="padding-top:20px; background-color: white; border:1px solid #ccc; border-radius: 10px;">
+                
+          </div>
+
+          <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12 px-1 mb-2" id="yazarkasatbl" style="padding-top:20px; background-color: white; border:1px solid #ccc; border-radius: 10px;">
+            <div class="row">
+              <div class="col-6">
+                <h6>Yazarkasa Ayarları</h6>
+              </div>
+              <div class="col-6 text-right"><button class="btn btn-primary" onclick="yazarkasa_kaydet();">Ayarları Kaydet</button></div>
+              <hr>
+              <div class="col-12 mb-1">
+                GMP3 (Kablolu) <input class='form-check-input' style='margin-top:1px; margin-left:5px; width:25px; height:25px;' type='checkbox' name='checkgmp3' id="checkgmp3">
+              </div>
+              <div class="col-6">
+                Cihaz Sicil No <input class='form-control' type='text' id="sicilgmp3" value="">
+              </div>
+              <div class="col-6">
+                Cihaz IP <input class='form-control' type='text' id="ipgmp3" value="">
+              </div>
+              <div class="col-12 mt-3">
+                TSM (Kablosuz) <input class='form-check-input' style='margin-top:1px; margin-left:5px; width:25px; height:25px;' type='checkbox' name='checktsm' id="checktsm">
+              </div>
+              <div class="col-6 my-3">
+                Yazarkasa Fiş Limiti <input class='form-control' type='number' id="fislimiti" value="">
+              </div>
+              
+            </div>
+            
+          </div>
+
+          <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12 px-1 mb-2" id="yazarkasatbl" style="padding-top:20px; background-color: white; border:1px solid #ccc; border-radius: 10px;">
+            <div class="row">
+              <div class="col-6">
+                <h6>Sistem Ayarları</h6>
+              </div>
+              <div class="col-6 text-right"><button class="btn btn-primary" onclick="sistem_kaydet();">Ayarları Kaydet</button></div>
+              <hr>
+              <div class="col-12 mb-1">
+                Yazdırma <input class='form-check-input' style='margin-top:1px; margin-left:5px; width:25px; height:25px;' type='checkbox' name='checkyazdir' id="checkyazdir">
+              </div>
+                            
+            </div>
+            
+          </div>
+
+        </div>
+      </div><!-- /.container-fluid -->
+    </section>
+  </div>
+  <!-- /.content-wrapper -->
+
+
+  <div class="modal fade" id="grupekleModal" tabindex="-1" aria-labelledby="grupekleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+      <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="grupekleModalLabel">Ana Ürün Grubu Ekle</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <div class="row">
+              <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                <div class="form-floating mb-2">
+                  <input type="text" class="form-control" id="grupad" placeholder="Grup Adı">
+                  <label for="grupad" style="font-weight: 500;">Grup Adı</label>
+                </div>
+              </div>
+              
+              <div class="col-12 my-1 text-right mt-3">
+                <button class='btn btn-primary py-1' onclick="grupekle('devam');">Kaydet ve Devam Et</button>
+                <button class='btn btn-primary py-1' onclick="grupekle('geri');">Kaydet ve Geri Dön</button>
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    <div class="modal fade" id="grupguncelleModal" tabindex="-1" aria-labelledby="grupguncelleModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="grupguncelleModalLabel">Ana Ürün Grubu Güncelle</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <div class="row">
+                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                  <div class="form-floating mb-2">
+                    <input type="text" class="form-control" id="mgrupno" placeholder="Grup No">
+                    <label for="mgrupno" style="font-weight: 500;">Grup No</label>
+                  </div>
+                  <div class="form-floating mb-2">
+                    <input type="password" style="display: none;" id="grupno">
+                    <input type="text" class="form-control" id="mgrupad" placeholder="Grup Adı">
+                    <label for="mgrupad" style="font-weight: 500;">Grup Adı</label>
+                  </div>
+                </div>
+                
+                <div class="col-12 my-1 text-right mt-3">
+                  <button class='btn btn-primary py-1' onclick="grupguncelle();">Kaydet</button>
+                </div>
+  
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+
+      <div class="modal fade" id="yaziciekleModal" tabindex="-1" aria-labelledby="yaziciekleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+          <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="yaziciekleModalLabel">Yazıcı Ekle</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+              <div class="modal-body">
+                <div class="row">
+                  <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12" id="yaziciliste">
+                    
+                  </div>
+                  
+                  <div class="col-12 my-1 text-right mt-3">
+                    <button class='btn btn-primary py-1' onclick="yaziciekle();">Seçili Yazıcıları Ekle</button>
+                  </div>
+    
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+    
+    
+        <div class="modal fade" id="yaziciguncelleModal" tabindex="-1" aria-labelledby="yaziciguncelleModalLabel" aria-hidden="true">
+          <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="yaziciguncelleModalLabel">Yazıcı Güncelle</h5>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                  <div class="row">
+                    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                      <div class="form-floating mb-2">
+                        <input type="password" style="display: none;" id="yazicino">
+                        <input type="text" class="form-control" id="myaziciad" placeholder="Yazıcı Adı">
+                        <label for="myaziciad" style="font-weight: 500;">Yazıcı Adı</label>
+                      </div>
+                    </div>
+                    
+                    <div class="col-12 my-1 text-right mt-3">
+                      <button class='btn btn-primary py-1' onclick="yaziciguncelle();">Kaydet</button>
+                    </div>
+      
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+
+
+
+
+          <div class="modal fade" id="kdvekleModal" tabindex="-1" aria-labelledby="kdvekleModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+              <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title" id="kdvekleModalLabel">KDV Ekle</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                  </div>
+                  <div class="modal-body">
+                    <div class="row">
+                      <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                        <div class="form-floating mb-2">
+                          <input type="text" class="form-control" id="kdvad" placeholder="KDV Adı">
+                          <label for="kdvad" style="font-weight: 500;">KDV Adı</label>
+                        </div>
+
+                        <div class="form-floating mb-2">
+                          <input type="number" step="1" min="0" class="form-control" id="kdvoran" placeholder="KDV Oranı">
+                          <label for="kdvoran" style="font-weight: 500;">KDV Oranı</label>
+                        </div>
+                      </div>
+                      
+                      <div class="col-12 my-1 text-right mt-3">
+                        <button class='btn btn-primary py-1' onclick="kdvekle('devam');">Kaydet ve Devam Et</button>
+                        <button class='btn btn-primary py-1' onclick="kdvekle('geri');">Kaydet ve Geri Dön</button>
+                      </div>
+        
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+        
+        
+            <div class="modal fade" id="kdvguncelleModal" tabindex="-1" aria-labelledby="kdvguncelleModalLabel" aria-hidden="true">
+              <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+                <div class="modal-content">
+                    <div class="modal-header">
+                      <h5 class="modal-title" id="kdvguncelleModalLabel">KDV Güncelle</h5>
+                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                      <div class="row">
+                        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                          <div class="form-floating mb-2">
+                            <input type="password" style="display: none;" id="kdvno">
+                            <input type="text" class="form-control" id="mkdvad" placeholder="KDV Adı">
+                            <label for="mkdvad" style="font-weight: 500;">KDV Adı</label>
+                          </div>
+
+                          <div class="form-floating mb-2">
+                            <input type="number" step="1" min="0" class="form-control" id="mkdvoran" placeholder="KDV Oranı">
+                            <label for="mkdvoran" style="font-weight: 500;">KDV Oranı</label>
+                          </div>
+                        </div>
+                        
+                        <div class="col-12 my-1 text-right mt-3">
+                          <button class='btn btn-primary py-1' onclick="kdvguncelle();">Kaydet</button>
+                        </div>
+          
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+
+
+              <div class="modal fade" id="iskontoekleModal" tabindex="-1" aria-labelledby="iskontoekleModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+                  <div class="modal-content">
+                      <div class="modal-header">
+                        <h5 class="modal-title" id="iskontoekleModalLabel">İskonto Ekle</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                      </div>
+                      <div class="modal-body">
+                        <div class="row">
+                          <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                            <div class="form-floating mb-2">
+                              <input type="text" class="form-control" id="iskontoad" placeholder="İskonto Adı">
+                              <label for="iskontoad" style="font-weight: 500;">İskonto Adı</label>
+                            </div>
+    
+                            <div class="form-floating mb-2">
+                              <input type="number" step="1" min="0" class="form-control" id="iskontooran" placeholder="İskonto Oranı">
+                              <label for="iskontooran" style="font-weight: 500;">İskonto Oranı</label>
+                            </div>
+                          </div>
+                          
+                          <div class="col-12 my-1 text-right mt-3">
+                            <button class='btn btn-primary py-1' onclick="iskontoekle('devam');">Kaydet ve Devam Et</button>
+                            <button class='btn btn-primary py-1' onclick="iskontoekle('geri');">Kaydet ve Geri Dön</button>
+                          </div>
+            
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+            
+            
+                <div class="modal fade" id="iskontoguncelleModal" tabindex="-1" aria-labelledby="iskontoguncelleModalLabel" aria-hidden="true">
+                  <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                          <h5 class="modal-title" id="iskontoguncelleModalLabel">İskonto Güncelle</h5>
+                          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                          <div class="row">
+                            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                              <div class="form-floating mb-2">
+                                <input type="password" style="display: none;" id="iskontono">
+                                <input type="text" class="form-control" id="miskontoad" placeholder="İskonto Adı">
+                                <label for="miskontoad" style="font-weight: 500;">İskonto Adı</label>
+                              </div>
+    
+                              <div class="form-floating mb-2">
+                                <input type="number" step="1" min="0" class="form-control" id="miskontooran" placeholder="İskonto Oranı">
+                                <label for="miskontooran" style="font-weight: 500;">İskonto Oranı</label>
+                              </div>
+                            </div>
+                            
+                            <div class="col-12 my-1 text-right mt-3">
+                              <button class='btn btn-primary py-1' onclick="iskontoguncelle();">Kaydet</button>
+                            </div>
+              
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+    
+
+
+
+              <div class="modal fade" id="birimekleModal" tabindex="-1" aria-labelledby="birimekleModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+                  <div class="modal-content">
+                      <div class="modal-header">
+                        <h5 class="modal-title" id="birimekleModalLabel">Birim Ekle</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                      </div>
+                      <div class="modal-body">
+                        <div class="row">
+                          <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                            <div class="form-floating mb-2">
+                              <input type="text" class="form-control" id="birimad" placeholder="Birim Adı">
+                              <label for="birimad" style="font-weight: 500;">Birim Adı</label>
+                            </div>
+                          </div>
+                          
+                          <div class="col-12 my-1 text-right mt-3">
+                            <button class='btn btn-primary py-1' onclick="birimekle('devam');">Kaydet ve Devam Et</button>
+                            <button class='btn btn-primary py-1' onclick="birimekle('geri');">Kaydet ve Geri Dön</button>
+                          </div>
+            
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+            
+            
+                <div class="modal fade" id="birimguncelleModal" tabindex="-1" aria-labelledby="birimguncelleModalLabel" aria-hidden="true">
+                  <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                          <h5 class="modal-title" id="birimguncelleModalLabel">Birim Güncelle</h5>
+                          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                          <div class="row">
+                            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                              <div class="form-floating mb-2">
+                                <input type="password" style="display: none;" id="birimno">
+                                <input type="text" class="form-control" id="mbirimad" placeholder="Birim Adı">
+                                <label for="mbirimad" style="font-weight: 500;">Birim Adı</label>
+                              </div>
+                            </div>
+                            
+                            <div class="col-12 my-1 text-right mt-3">
+                              <button class='btn btn-primary py-1' onclick="birimguncelle();">Kaydet</button>
+                            </div>
+              
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+
+
+
+  <footer id="footer" class="main-footer">
+    <strong><a href="https://posula.com" style="color:royalblue">POSULA</a> &copy; 2023</strong>
+  </footer>
+
+  <!-- Control Sidebar -->
+  <aside class="control-sidebar control-sidebar-dark">
+    <!-- Control sidebar content goes here -->
+  </aside>
+  <!-- /.control-sidebar -->
+</div>
+<!-- ./wrapper -->
+
+
+<div class="loading-bar"></div>
+
+
+<!-- jQuery -->
+<script src="vendor/jquery/jquery-3.2.1.min.js"></script>
+<!-- Bootstrap 4 -->
+<script src="vendor/bootstrap-5/js/bootstrap.min.js"></script>
+
+<script src="vendor/bootstrap-5/js/bootstrap.bundle.min.js"></script>
+
+<script src="vendor/overlayScrollbars/js/OverlayScrollbars.min.js"></script>
+
+<script src="vendor/alertifyJS/alertify.min.js"></script>
+<!-- AdminLTE App -->
+<script src="js/adminlte.min.js"></script> "local
+
+<!-- DataTables  & Plugins -->
+<script src="vendor/datatables/jquery.dataTables.min.js"></script>
+<script src="vendor/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
+<script src="vendor/datatables-responsive/js/dataTables.responsive.min.js"></script>
+<script src="vendor/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
+<script src="vendor/datatables-buttons/js/dataTables.buttons.min.js"></script>
+<script src="vendor/datatables-buttons/js/buttons.bootstrap4.min.js"></script>
+<script src="vendor/jszip/jszip.min.js"></script>
+<script src="vendor/pdfmake/pdfmake.min.js"></script>
+<script src="vendor/pdfmake/vfs_fonts.js"></script>
+<script src="vendor/datatables-buttons/js/buttons.html5.min.js"></script>
+<script src="vendor/datatables-buttons/js/buttons.print.min.js"></script>
+<script src="vendor/datatables-buttons/js/buttons.colVis.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function () {
+
+  if (localStorage.pos_userno == "" || localStorage.pos_userno == null || localStorage.pos_userno == undefined) window.location = "index.html";
+  listelerigetir();
+
+});
+
+function listelerigetir() {
+  
+  $.ajax({
+      type: 'post',
+      url: "https://pos.posula.com/api/pos/urungrubulistegetir",
+      dataType: 'json',
+      contentType: 'application/json; charset=utf-8',
+      beforeSend: function(){
+          $body = $('body'); 
+          $body.addClass('loading'); 
+      },
+      success: function (data, textStatus, xhr) {
+          if (xhr.status == "200")
+          {
+            var _html="<div class='row'><div class='col-6'><h6>Ana Ürün Grupları</h6></div><div class='col-6 text-right'><button class='btn btn-primary' data-bs-toggle='modal' data-bs-target='#grupekleModal'>Ürün Grubu Ekle</button></div></div><hr><table id='example1' class='table table-responsive-sm table-responsive-md table-bordered table-striped'><thead><tr><th style='width:20% !important;min-width:20% !important;max-width:20% !important;'>Grup No</th><th style='width:50% !important;min-width:50% !important;max-width:50% !important;'>Grup Adı</th><th style='width:30% !important;min-width:30% !important;max-width:30% !important;'>İşlem</th></tr></thead><tbody>";
+            $.each(data,
+              function (key, item) {
+                  _html += "<tr><td class='py-1' style='width:20% !important;min-width:20% !important;max-width:20% !important;'>"+item.HAMSTOKNO+"</td><td class='py-1' style='width:50% !important;min-width:50% !important;max-width:50% !important;'>"+item.HAMANAGRUP+"</td><td class='py-1' style='width:30%;'><div class='dropdown'><button class='btn btn-primary dropdown-toggle btn-block py-0' type='button' data-bs-toggle='dropdown' aria-expanded='false'>İşlemler</button><ul class='dropdown-menu'><li><button class='dropdown-item' type='button' onclick='islem(`urunduzenle`, `"+item.HAMSTOKNO+"`, `"+item.HAMANAGRUP+"`);'>Düzenle</button></li><li><button class='dropdown-item' type='button' onclick='islem(`urunsil`, `"+item.HAMSTOKNO+"`, `"+item.HAMANAGRUP+"`);'>Grubu Sil</button></li></ul></div></td></tr>";
+              });
+              _html += "</tbody></table>";
+              document.getElementById("uruntbl").innerHTML = _html;
+              document.getElementById("uruntbl").style.display='';
+
+              $("#example1").DataTable({
+                  "lengthChange": false,
+                  "autoWidth": false,
+                  "buttons": ["excel", "pdf", "print", "colvis"],
+                  "sorting": false,
+                  "dom": "<'row'<'col-sm-12 col-md-6'f>>" +
+                          "<'row'<'col-sm-12'tr>>" + //rows
+                          "<'row'<'col-sm-12'p>>" + //pagination
+                          "<'row'<'col-sm-12 col-md-12'l><'col-sm-12 col-md-12 text-xl-right text-lg-right text-md-right text-sm-center text-xs-center'i>>",
+              }).buttons().container();
+              
+          }
+        
+      },
+      complete: function(data){
+          $body = $('body'); 
+          $body.removeClass('loading'); 
+      },
+      error: function (hata) {
+      }
+  });
+
+
+  $.ajax({
+      type: 'post',
+      url: "https://pos.posula.com/api/pos/yazicilistegetir",
+      dataType: 'json',
+      contentType: 'application/json; charset=utf-8',
+      beforeSend: function(){
+          $body = $('body'); 
+          $body.addClass('loading'); 
+      },
+      success: function (data, textStatus, xhr) {
+          if (xhr.status == "200")
+          {
+            var _html2="<div class='row'><div class='col-6'><h6>Yazıcılar</h6></div><div class='col-6 text-right'><button class='btn btn-primary' data-bs-toggle='modal' data-bs-target='#yaziciekleModal'>Yazıcı Ekle</button></div></div><hr><table id='example2' class='table table-responsive-sm table-responsive-md table-bordered table-striped'><thead><tr><th style='width:20% !important;min-width:20% !important;max-width:20% !important;'>Yazıcı No</th><th style='width:50% !important;min-width:50% !important;max-width:50% !important;'>Yazıcı Adı</th><th style='width:30% !important;min-width:30% !important;max-width:30% !important;'>İşlem</th></tr></thead><tbody>";
+            $.each(data,
+              function (key, item) {
+                  _html2+= "<tr><td class='py-1' style='width:20% !important;min-width:20% !important;max-width:20% !important;'>"+item.no+"</td><td class='py-1' style='width:50% !important;min-width:50% !important;max-width:50% !important;'>"+item.yaziciadi+"</td><td class='py-1' style='width:30%;'><div class='dropdown'><button class='btn btn-primary dropdown-toggle btn-block py-0' type='button' data-bs-toggle='dropdown' aria-expanded='false'>İşlemler</button><ul class='dropdown-menu'><li><button class='dropdown-item' type='button' onclick='islem(`yaziciduzenle`, `"+item.no+"`, `"+item.yaziciadi+"`);'>Düzenle</button></li><li><button class='dropdown-item' type='button' onclick='islem(`yazicisil`, `"+item.no+"`, `"+item.yaziciadi+"`);'>Yazıcıyı Sil</button></li></ul></div></td></tr>";
+              });
+              _html2 += "</tbody></table>";
+              document.getElementById("yazicitbl").innerHTML = _html2;
+              document.getElementById("yazicitbl").style.display='';
+
+              $("#example2").DataTable({
+                  "lengthChange": false,
+                  "autoWidth": false,
+                  "buttons": ["excel", "pdf", "print", "colvis"],
+                  "sorting": false,
+                  "dom": "<'row'<'col-sm-12 col-md-6'f>>" +
+                          "<'row'<'col-sm-12'tr>>" + //rows
+                          "<'row'<'col-sm-12'p>>" + //pagination
+                          "<'row'<'col-sm-12 col-md-12'l><'col-sm-12 col-md-12 text-xl-right text-lg-right text-md-right text-sm-center text-xs-center'i>>",
+              }).buttons().container();
+              
+          }
+        
+      },
+      complete: function(data){
+          $body = $('body'); 
+          $body.removeClass('loading'); 
+      },
+      error: function (hata) {
+      }
+  });
+
+
+  $.ajax({
+      type: 'post',
+      url: "https://pos.posula.com/api/pos/kdvlistegetir",
+      dataType: 'json',
+      contentType: 'application/json; charset=utf-8',
+      beforeSend: function(){
+          $body = $('body'); 
+          $body.addClass('loading'); 
+      },
+      success: function (data, textStatus, xhr) {
+          if (xhr.status == "200")
+          {
+            var _html3="<div class='row'><div class='col-6'><h6>KDV Tanımları</h6></div><div class='col-6 text-right'><button class='btn btn-primary' data-bs-toggle='modal' data-bs-target='#kdvekleModal'>KDV Ekle</button></div></div><hr><table id='example3' class='table table-responsive-sm table-responsive-md table-bordered table-striped'><thead><tr><th style='width:35% !important;min-width:35% !important;max-width:35% !important;'>KDV Adı</th><th style='width:35% !important;min-width:35% !important;max-width:35% !important;'>KDV Oranı</th><th style='width:30% !important;min-width:30% !important;max-width:30% !important;'>İşlem</th></tr></thead><tbody>";
+            $.each(data,
+              function (key, item) {
+                  _html3+= "<tr><td class='py-1' style='width:35% !important;min-width:35% !important;max-width:35% !important;'>"+item.KDVTIPI+"</td><td class='py-1' style='width:35% !important;min-width:35% !important;max-width:35% !important;'>"+item.KDVORANI+"</td><td class='py-1' style='width:30%;'><div class='dropdown'><button class='btn btn-primary dropdown-toggle btn-block py-0' type='button' data-bs-toggle='dropdown' aria-expanded='false'>İşlemler</button><ul class='dropdown-menu'><li><button class='dropdown-item' type='button' onclick='islem(`kdvduzenle`, `"+item.KDVNO+"`, `"+item.KDVTIPI+"`);'>Düzenle</button></li><li><button class='dropdown-item' type='button' onclick='islem(`kdvsil`, `"+item.KDVNO+"`, `"+item.KDVTIPI+"`);'>KDV`yi Sil</button></li></ul></div></td></tr>";
+              });
+              _html3 += "</tbody></table>";
+              document.getElementById("kdvtbl").innerHTML = _html3;
+              document.getElementById("kdvtbl").style.display='';
+
+              $("#example3").DataTable({
+                  "lengthChange": false,
+                  "autoWidth": false,
+                  "buttons": ["excel", "pdf", "print", "colvis"],
+                  "sorting": false,
+                  "dom": "<'row'<'col-sm-12 col-md-6'f>>" +
+                          "<'row'<'col-sm-12'tr>>" + //rows
+                          "<'row'<'col-sm-12'p>>" + //pagination
+                          "<'row'<'col-sm-12 col-md-12'l><'col-sm-12 col-md-12 text-xl-right text-lg-right text-md-right text-sm-center text-xs-center'i>>",
+              }).buttons().container();
+              
+          }
+        
+      },
+      complete: function(data){
+          $body = $('body'); 
+          $body.removeClass('loading'); 
+      },
+      error: function (hata) {
+      }
+  });
+
+
+
+  $.ajax({
+      type: 'post',
+      url: "https://pos.posula.com/api/pos/birimlistegetir",
+      dataType: 'json',
+      contentType: 'application/json; charset=utf-8',
+      beforeSend: function(){
+          $body = $('body'); 
+          $body.addClass('loading'); 
+      },
+      success: function (data, textStatus, xhr) {
+          if (xhr.status == "200")
+          {
+            var _html4="<div class='row'><div class='col-6'><h6>Birimler</h6></div><div class='col-6 text-right'><button class='btn btn-primary' data-bs-toggle='modal' data-bs-target='#birimekleModal'>Birim Ekle</button></div></div><hr><table id='example4' class='table table-responsive-sm table-responsive-md table-bordered table-striped'><thead><tr><th style='width:20% !important;min-width:20% !important;max-width:20% !important;'>Birim No</th><th style='width:50% !important;min-width:50% !important;max-width:50% !important;'>Birim Adı</th><th style='width:30% !important;min-width:30% !important;max-width:30% !important;'>İşlem</th></tr></thead><tbody>";
+            $.each(data,
+              function (key, item) {
+                _html4+= "<tr><td class='py-1' style='width:20% !important;min-width:20% !important;max-width:20% !important;'>"+item.no+"</td><td class='py-1' style='width:50% !important;min-width:50% !important;max-width:50% !important;'>"+item.ad+"</td><td class='py-1' style='width:30%;'><div class='dropdown'><button class='btn btn-primary dropdown-toggle btn-block py-0' type='button' data-bs-toggle='dropdown' aria-expanded='false'>İşlemler</button><ul class='dropdown-menu'><li><button class='dropdown-item' type='button' onclick='islem(`birimduzenle`, `"+item.no+"`, `"+item.ad+"`);'>Düzenle</button></li><li><button class='dropdown-item' type='button' onclick='islem(`birimsil`, `"+item.no+"`, `"+item.ad+"`);'>Birimi Sil</button></li></ul></div></td></tr>";
+              });
+              _html4 += "</tbody></table>";
+              document.getElementById("birimtbl").innerHTML = _html4;
+              document.getElementById("birimtbl").style.display='';
+
+              $("#example4").DataTable({
+                  "lengthChange": false,
+                  "autoWidth": false,
+                  "buttons": ["excel", "pdf", "print", "colvis"],
+                  "sorting": false,
+                  "dom": "<'row'<'col-sm-12 col-md-6'f>>" +
+                          "<'row'<'col-sm-12'tr>>" + //rows
+                          "<'row'<'col-sm-12'p>>" + //pagination
+                          "<'row'<'col-sm-12 col-md-12'l><'col-sm-12 col-md-12 text-xl-right text-lg-right text-md-right text-sm-center text-xs-center'i>>",
+              }).buttons().container();
+              
+          }
+        
+      },
+      complete: function(data){
+          $body = $('body'); 
+          $body.removeClass('loading'); 
+      },
+      error: function (hata) {
+      }
+  });
+
+
+  $.ajax({
+      type: 'post',
+      url: "https://pos.posula.com/api/pos/iskontolistegetir",
+      dataType: 'json',
+      contentType: 'application/json; charset=utf-8',
+      beforeSend: function(){
+          $body = $('body'); 
+          $body.addClass('loading'); 
+      },
+      success: function (data, textStatus, xhr) {
+          if (xhr.status == "200")
+          {
+            var _html5="<div class='row'><div class='col-6'><h6>İskonto Tanımları</h6></div><div class='col-6 text-right'><button class='btn btn-primary' data-bs-toggle='modal' data-bs-target='#iskontoekleModal'>İskonto Ekle</button></div></div><hr><table id='example5' class='table table-responsive-sm table-responsive-md table-bordered table-striped'><thead><tr><th style='width:35% !important;min-width:35% !important;max-width:35% !important;'>İskonto Adı</th><th style='width:35% !important;min-width:35% !important;max-width:35% !important;'>İskonto Oranı</th><th style='width:30% !important;min-width:30% !important;max-width:30% !important;'>İşlem</th></tr></thead><tbody>";
+            $.each(data,
+              function (key, item) {
+                  _html5+= "<tr><td class='py-1' style='width:35% !important;min-width:35% !important;max-width:35% !important;'>"+item.ISKONTOISMI+"</td><td class='py-1' style='width:35% !important;min-width:35% !important;max-width:35% !important;'>"+item.ISKONTOORANI+"</td><td class='py-1' style='width:30%;'><div class='dropdown'><button class='btn btn-primary dropdown-toggle btn-block py-0' type='button' data-bs-toggle='dropdown' aria-expanded='false'>İşlemler</button><ul class='dropdown-menu'><li><button class='dropdown-item' type='button' onclick='islem(`iskontoduzenle`, `"+item.ISKONTONO+"`, `"+item.ISKONTOISMI+"`);'>Düzenle</button></li><li><button class='dropdown-item' type='button' onclick='islem(`iskontosil`, `"+item.ISKONTONO+"`, `"+item.ISKONTOISMI+"`);'>İskontoyu Sil</button></li></ul></div></td></tr>";
+              });
+              _html5 += "</tbody></table>";
+              document.getElementById("iskontotbl").innerHTML = _html5;
+              document.getElementById("iskontotbl").style.display='';
+
+              $("#example5").DataTable({
+                  "lengthChange": false,
+                  "autoWidth": false,
+                  "buttons": ["excel", "pdf", "print", "colvis"],
+                  "sorting": false,
+                  "dom": "<'row'<'col-sm-12 col-md-6'f>>" +
+                          "<'row'<'col-sm-12'tr>>" + //rows
+                          "<'row'<'col-sm-12'p>>" + //pagination
+                          "<'row'<'col-sm-12 col-md-12'l><'col-sm-12 col-md-12 text-xl-right text-lg-right text-md-right text-sm-center text-xs-center'i>>",
+              }).buttons().container();
+              
+          }
+        
+      },
+      complete: function(data){
+          $body = $('body'); 
+          $body.removeClass('loading'); 
+      },
+      error: function (hata) {
+      }
+  });
+
+
+
+  $.ajax({
+      type: 'post',
+      url: "https://pos.posula.com/api/pos/yazarkasaayargetir",
+      dataType: 'json',
+      contentType: 'application/json; charset=utf-8',
+      beforeSend: function(){
+          $body = $('body'); 
+          $body.addClass('loading'); 
+      },
+      success: function (data, textStatus, xhr) {
+          if (xhr.status == "200")
+          {
+            $.each(data,
+              function (key, item) {
+                if (item.gmp3_entegrasyon=="1") document.getElementById("checkgmp3").checked=true;
+                else document.getElementById("checkgmp3").checked=false;
+
+                if (item.tsm_entegrasyon=="1") document.getElementById("checktsm").checked=true;
+                else document.getElementById("checktsm").checked=false;
+
+                document.getElementById("fislimiti").value = item.yazarkasa_fis_limiti;
+                
+                document.getElementById("sicilgmp3").value = item.yazarkasa_id;
+
+                document.getElementById("ipgmp3").value = item.yazarkasa_ip;
+              });
+              
+          }
+        
+      },
+      complete: function(data){
+          $body = $('body'); 
+          $body.removeClass('loading'); 
+      },
+      error: function (hata) {
+      }
+  });
+
+
+  $.ajax({
+      type: 'post',
+      url: "https://pos.posula.com/api/pos/sistemayargetir",
+      dataType: 'json',
+      contentType: 'application/json; charset=utf-8',
+      beforeSend: function(){
+          $body = $('body'); 
+          $body.addClass('loading'); 
+      },
+      success: function (data, textStatus, xhr) {
+          if (xhr.status == "200")
+          {
+            $.each(data,
+              function (key, item) {
+                if (item.yazdir=="1") document.getElementById("checkyazdir").checked=true;
+                else document.getElementById("checkyazdir").checked=false;
+              });
+              
+          }
+        
+      },
+      complete: function(data){
+          $body = $('body'); 
+          $body.removeClass('loading'); 
+      },
+      error: function (hata) {
+      }
+  });
+
+}
+
+const yaziciekleModal = document.getElementById('yaziciekleModal')
+yaziciekleModal.addEventListener('show.bs.modal', event => {
+  yukluyazicilar();
+})
+
+function yazarkasa_kaydet(){
+
+  var gmp="0";
+  if (document.getElementById("checkgmp3").checked == true) gmp ="1";
+  var tsm="0";
+  if (document.getElementById("checktsm").checked == true) tsm ="1";
+
+  var id = document.getElementById("sicilgmp3").value;
+  var ip = document.getElementById("ipgmp3").value;
+  var limit = document.getElementById("fislimiti").value;
+
+  $.ajax({
+      type: 'post',
+      url: "https://pos.posula.com/api/pos/yazarkasaayarkaydet",
+      dataType: 'json',
+      data: JSON.stringify({ gmp: gmp, tsm: tsm, id: id, ip: ip, limit: limit }),
+      contentType: 'application/json; charset=utf-8',
+      beforeSend: function(){
+          $body = $('body'); 
+          $body.addClass('loading'); 
+      },
+      success: function (data, textStatus, xhr) {
+          if (xhr.status == "200")
+          {
+            alertify.success("Ayarlar kaydedildi");
+              
+          }
+        
+      },
+      complete: function(data){
+          $body = $('body'); 
+          $body.removeClass('loading'); 
+      },
+      error: function (hata) {
+      }
+  });
+}
+
+
+function sistem_kaydet(){
+
+  var yazdir="0";
+  if (document.getElementById("checkyazdir").checked == true) yazdir ="1";
+  
+  $.ajax({
+      type: 'post',
+      url: "https://pos.posula.com/api/pos/sistemayarkaydet",
+      dataType: 'json',
+      data: JSON.stringify({ yazdir: yazdir }),
+      contentType: 'application/json; charset=utf-8',
+      beforeSend: function(){
+          $body = $('body'); 
+          $body.addClass('loading'); 
+      },
+      success: function (data, textStatus, xhr) {
+          if (xhr.status == "200")
+          {
+            alertify.success("Ayarlar kaydedildi");
+              
+          }
+        
+      },
+      complete: function(data){
+          $body = $('body'); 
+          $body.removeClass('loading'); 
+      },
+      error: function (hata) {
+      }
+  });
+}
+
+
+function yukluyazicilar(){
+  $.ajax({
+      type: 'post',
+      url: "https://pos.posula.com/api/pos/yukluyazicilar",
+      dataType: 'json',
+      contentType: 'application/json; charset=utf-8',
+      beforeSend: function(){
+          $body = $('body'); 
+          $body.addClass('loading'); 
+      },
+      success: function (data, textStatus, xhr) {
+          if (xhr.status == "200")
+          {
+            var _html="<table id='example1' class='table table-responsive-sm table-responsive-md table-bordered table-striped'><thead><tr><th style='width:10% !important;min-width:10% !important;max-width:10% !important;'>Seç</th><th style='width:80% !important;min-width:80% !important;max-width:80% !important;'>Yazıcı Adı</th></tr></thead><tbody>";
+            $.each(data,
+              function (key, item) {
+                  _html += "<tr><td class='py-1' style='width:10% !important;min-width:10% !important;max-width:10% !important;'><input class='form-check-input' style='margin-top:1px; margin-left:0px; width:25px; height:25px;' type='checkbox' name='checkyazici' data-yazici='"+item+"'></td><td class='py-1' style='width:80% !important;min-width:80% !important;max-width:80% !important;'>"+item+"</td></tr>";
+              });
+              _html += "</tbody></table>";
+              document.getElementById("yaziciliste").innerHTML = _html;
+              document.getElementById("yaziciliste").style.display='';
+              
+          }
+        
+      },
+      complete: function(data){
+          $body = $('body'); 
+          $body.removeClass('loading'); 
+      },
+      error: function (hata) {
+      }
+  });
+}
+
+function islem(tip, userno, username){
+  if (tip == 'urunduzenle'){
+    document.getElementById("grupno").value=userno;
+    grupdetaygetir(userno);
+    $('#grupguncelleModal').modal('show');
+  }
+  else if (tip == 'urunsil'){
+    alertify.confirm('UYARI',  username + ' grubunu silmek istiyor musunuz?',
+     function(){ 
+      grupsil(userno);}, 
+      function(){ });
+  }
+  else if (tip == 'birimduzenle'){
+    document.getElementById("birimno").value=userno;
+    birimdetaygetir(userno);
+    $('#birimguncelleModal').modal('show');
+  }
+  else if (tip == 'birimsil'){
+    alertify.confirm('UYARI',  username + ' birimini silmek istiyor musunuz?',
+     function(){ 
+      birimsil(userno);}, 
+      function(){ });
+  }
+  else if (tip == 'kdvduzenle'){
+    document.getElementById("kdvno").value=userno;
+    kdvdetaygetir(userno);
+    $('#kdvguncelleModal').modal('show');
+  }
+  else if (tip == 'kdvsil'){
+    alertify.confirm('UYARI',  username + ' isimli KDV`yi silmek istiyor musunuz?',
+     function(){ 
+      kdvsil(userno);}, 
+      function(){ });
+  }
+  else if (tip == 'yaziciduzenle'){
+    document.getElementById("yazicino").value=userno;
+    yazicidetaygetir(userno);
+    $('#yaziciguncelleModal').modal('show');
+  }
+  else if (tip == 'yazicisil'){
+    alertify.confirm('UYARI',  username + ' isimli yazıcıyı silmek istiyor musunuz?',
+     function(){ 
+      yazicisil(userno);}, 
+      function(){ });
+  }
+  else if (tip == 'iskontoduzenle'){
+    document.getElementById("iskontono").value=userno;
+    iskontodetaygetir(userno);
+    $('#iskontoguncelleModal').modal('show');
+  }
+  else if (tip == 'iskontosil'){
+    alertify.confirm('UYARI',  username + ' iskontosunu silmek istiyor musunuz?',
+     function(){ 
+      iskontosil(userno);}, 
+      function(){ });
+  }
+}
+
+
+function grupekle(tip){
+  var grupad = document.getElementById("grupad").value;
+  
+  if (grupad!=""){
+    $.ajax({
+        type: 'post',
+        url: "https://pos.posula.com/api/pos/anaurungrubuekle",
+        dataType: 'json',
+        contentType: 'application/json; charset=utf-8',
+        data: JSON.stringify({ grupad: grupad }),
+        beforeSend: function(){
+            $body = $('body'); 
+            $body.addClass('loading'); 
+        },
+        success: function (data, textStatus, xhr) {
+            if (xhr.status == "200")
+            {
+              if (data == "OK")
+              {
+                listelerigetir();
+                alertify.success("Grup eklendi");
+                if (tip == "devam"){
+                  document.getElementById("grupad").value = "";
+                }
+                else{
+                  document.getElementById("grupad").value = "";
+                  $('#grupekleModal').modal('hide');
+                  $('.modal-backdrop').remove();
+                  $(document.body).removeClass("modal-open");
+                }
+  
+              }
+              else alertify.error("Grup eklenemedi");
+                
+            }
+          
+        },
+        complete: function(data){
+            $body = $('body'); 
+            $body.removeClass('loading'); 
+        },
+        error: function (hata) {
+          alertify.error("Grup eklenemedi");
+        }
+    });
+  }
+  else{
+    alertify.error("Grup adı bilgisi zorunludur");
+  }
+
+}
+
+
+function kdvekle(tip){
+  var kdvad = document.getElementById("kdvad").value;
+  var kdvoran = document.getElementById("kdvoran").value;
+  
+  if (kdvad!="" && kdvoran!=""){
+    $.ajax({
+        type: 'post',
+        url: "https://pos.posula.com/api/pos/kdvekle",
+        dataType: 'json',
+        contentType: 'application/json; charset=utf-8',
+        data: JSON.stringify({ kdvad: kdvad, kdvoran: kdvoran}),
+        beforeSend: function(){
+            $body = $('body'); 
+            $body.addClass('loading'); 
+        },
+        success: function (data, textStatus, xhr) {
+            if (xhr.status == "200")
+            {
+              if (data == "OK")
+              {
+                listelerigetir();
+                alertify.success("KDV eklendi");
+                if (tip == "devam"){
+                  document.getElementById("kdvad").value = "";
+                  document.getElementById("kdvoran").value = "";
+                }
+                else{
+                  $('#kdvekleModal').modal('hide');
+                  $('.modal-backdrop').remove()
+                  $(document.body).removeClass("modal-open");
+                }
+  
+              }
+              else alertify.error("KDV eklenemedi");
+                
+            }
+          
+        },
+        complete: function(data){
+            $body = $('body'); 
+            $body.removeClass('loading'); 
+        },
+        error: function (hata) {
+          alertify.error("KDV eklenemedi");
+        }
+    });
+  }
+  else{
+    alertify.error("KDV adı ve KDV oranı bilgisi zorunludur");
+  }
+
+}
+
+function iskontoekle(tip){
+  var iskontoad = document.getElementById("iskontoad").value;
+  var iskontooran = document.getElementById("iskontooran").value;
+  
+  if (iskontoad!="" && iskontooran!=""){
+    $.ajax({
+        type: 'post',
+        url: "https://pos.posula.com/api/pos/iskontoekle",
+        dataType: 'json',
+        contentType: 'application/json; charset=utf-8',
+        data: JSON.stringify({ iskontoad: iskontoad, iskontooran: iskontooran}),
+        beforeSend: function(){
+            $body = $('body'); 
+            $body.addClass('loading'); 
+        },
+        success: function (data, textStatus, xhr) {
+            if (xhr.status == "200")
+            {
+              if (data == "OK")
+              {
+                listelerigetir();
+                alertify.success("İskonto eklendi");
+                if (tip == "devam"){
+                  document.getElementById("iskontoad").value = "";
+                  document.getElementById("iskontooran").value = "";
+                }
+                else{
+                  $('#iskontoekleModal').modal('hide');
+                  $('.modal-backdrop').remove()
+                  $(document.body).removeClass("modal-open");
+                }
+  
+              }
+              else alertify.error("İskonto eklenemedi");
+                
+            }
+          
+        },
+        complete: function(data){
+            $body = $('body'); 
+            $body.removeClass('loading'); 
+        },
+        error: function (hata) {
+          alertify.error("İskonto eklenemedi");
+        }
+    });
+  }
+  else{
+    alertify.error("İskonto adı ve iskonto oranı bilgisi zorunludur");
+  }
+
+}
+
+
+function birimekle(tip){
+  var birimad = document.getElementById("birimad").value;
+  
+  if (birimad!=""){
+    $.ajax({
+        type: 'post',
+        url: "https://pos.posula.com/api/pos/birimekle",
+        dataType: 'json',
+        contentType: 'application/json; charset=utf-8',
+        data: JSON.stringify({ birimad: birimad }),
+        beforeSend: function(){
+            $body = $('body'); 
+            $body.addClass('loading'); 
+        },
+        success: function (data, textStatus, xhr) {
+            if (xhr.status == "200")
+            {
+              if (data == "OK")
+              {
+                listelerigetir();
+                alertify.success("Birim eklendi");
+                if (tip == "devam"){
+                  document.getElementById("birimad").value = "";
+                }
+                else{
+                  $('#birimekleModal').modal('hide');
+                  $('.modal-backdrop').remove()
+                  $(document.body).removeClass("modal-open");
+                }
+  
+              }
+              else alertify.error("Birim eklenemedi");
+                
+            }
+          
+        },
+        complete: function(data){
+            $body = $('body'); 
+            $body.removeClass('loading'); 
+        },
+        error: function (hata) {
+          alertify.error("Birim eklenemedi");
+        }
+    });
+  }
+  else{
+    alertify.error("Birim adı bilgisi zorunludur");
+  }
+
+}
+
+
+function yaziciekle(){
+  const isaretli = document.getElementsByName("checkyazici");
+  if (isaretli.length>0){
+    isaretli.forEach(element => {
+    if (element.checked==true)
+    {
+      //console.log(element.dataset.yazici);
+      $.ajax({
+        type: 'post',
+        url: "https://pos.posula.com/api/pos/yaziciekle",
+        dataType: 'json',
+        contentType: 'application/json; charset=utf-8',
+        data: JSON.stringify({ yaziciad: element.dataset.yazici }),  
+      });
+    } 
+  });
+
+  listelerigetir();
+  alertify.success("Yazıcı eklendi");
+  }
+  
+}
+
+
+function grupsil(no){
+  $.ajax({
+        type: 'post',
+        url: "https://pos.posula.com/api/pos/anaurungrubusil",
+        dataType: 'json',
+        contentType: 'application/json; charset=utf-8',
+        data: JSON.stringify({ no: no }),
+        beforeSend: function(){
+            $body = $('body'); 
+            $body.addClass('loading'); 
+        },
+        success: function (data, textStatus, xhr) {
+            if (xhr.status == "200")
+            {
+              if (data == "OK")
+              {
+                listelerigetir();
+                alertify.success("Grup silindi");
+              }
+              else alertify.error("Grup silinemedi");
+                
+            }
+          
+        },
+        complete: function(data){
+            $body = $('body'); 
+            $body.removeClass('loading'); 
+        },
+        error: function (hata) {
+          alertify.error("Grup silinemedi");
+        }
+    });
+}
+
+
+function kdvsil(no){
+  $.ajax({
+        type: 'post',
+        url: "https://pos.posula.com/api/pos/kdvsil",
+        dataType: 'json',
+        contentType: 'application/json; charset=utf-8',
+        data: JSON.stringify({ no: no }),
+        beforeSend: function(){
+            $body = $('body'); 
+            $body.addClass('loading'); 
+        },
+        success: function (data, textStatus, xhr) {
+            if (xhr.status == "200")
+            {
+              if (data == "OK")
+              {
+                listelerigetir();
+                alertify.success("KDV silindi");
+              }
+              else alertify.error("KDV silinemedi");
+                
+            }
+          
+        },
+        complete: function(data){
+            $body = $('body'); 
+            $body.removeClass('loading'); 
+        },
+        error: function (hata) {
+          alertify.error("KDV silinemedi");
+        }
+    });
+}
+
+function iskontosil(no){
+  $.ajax({
+        type: 'post',
+        url: "https://pos.posula.com/api/pos/iskontosil",
+        dataType: 'json',
+        contentType: 'application/json; charset=utf-8',
+        data: JSON.stringify({ no: no }),
+        beforeSend: function(){
+            $body = $('body'); 
+            $body.addClass('loading'); 
+        },
+        success: function (data, textStatus, xhr) {
+            if (xhr.status == "200")
+            {
+              if (data == "OK")
+              {
+                listelerigetir();
+                alertify.success("İskonto silindi");
+              }
+              else alertify.error("İskonto silinemedi");
+                
+            }
+          
+        },
+        complete: function(data){
+            $body = $('body'); 
+            $body.removeClass('loading'); 
+        },
+        error: function (hata) {
+          alertify.error("İskonto silinemedi");
+        }
+    });
+}
+
+
+function birimsil(no){
+  $.ajax({
+        type: 'post',
+        url: "https://pos.posula.com/api/pos/birimsil",
+        dataType: 'json',
+        contentType: 'application/json; charset=utf-8',
+        data: JSON.stringify({ no: no }),
+        beforeSend: function(){
+            $body = $('body'); 
+            $body.addClass('loading'); 
+        },
+        success: function (data, textStatus, xhr) {
+            if (xhr.status == "200")
+            {
+              if (data == "OK")
+              {
+                listelerigetir();
+                alertify.success("Birim silindi");
+              }
+              else alertify.error("Birim silinemedi");
+                
+            }
+          
+        },
+        complete: function(data){
+            $body = $('body'); 
+            $body.removeClass('loading'); 
+        },
+        error: function (hata) {
+          alertify.error("Birim silinemedi");
+        }
+    });
+}
+
+
+function yazicisil(no){
+  $.ajax({
+        type: 'post',
+        url: "https://pos.posula.com/api/pos/yazicisil",
+        dataType: 'json',
+        contentType: 'application/json; charset=utf-8',
+        data: JSON.stringify({ no: no }),
+        beforeSend: function(){
+            $body = $('body'); 
+            $body.addClass('loading'); 
+        },
+        success: function (data, textStatus, xhr) {
+            if (xhr.status == "200")
+            {
+              if (data == "OK")
+              {
+                listelerigetir();
+                alertify.success("Yazıcı silindi");
+              }
+              else alertify.error("Yazıcı silinemedi");
+                
+            }
+          
+        },
+        complete: function(data){
+            $body = $('body'); 
+            $body.removeClass('loading'); 
+        },
+        error: function (hata) {
+          alertify.error("Yazıcı silinemedi");
+        }
+    });
+}
+
+
+function grupdetaygetir(no){
+  
+  $.ajax({
+      type: 'post',
+      url: "https://pos.posula.com/api/pos/urungrubudetaygetir",
+      dataType: 'json',
+      contentType: 'application/json; charset=utf-8',
+      data: JSON.stringify({ no: no }),
+      beforeSend: function(){
+          $body = $('body'); 
+          $body.addClass('loading'); 
+      },
+      success: function (data, textStatus, xhr) {
+          if (xhr.status == "200")
+          {
+            if (data.length > 0)
+            {
+              document.getElementById("mgrupno").value = data[0]["HAMSTOKNO"];
+              document.getElementById("mgrupad").value = data[0]["HAMANAGRUP"];
+            }
+              
+          }
+        
+      },
+      complete: function(data){
+          $body = $('body'); 
+          $body.removeClass('loading'); 
+      },
+      error: function (hata) {
+        alertify.error("Kullanıcı eklenemedi");
+      }
+  });
+}
+
+
+function kdvdetaygetir(no){
+  
+  $.ajax({
+      type: 'post',
+      url: "https://pos.posula.com/api/pos/kdvdetaygetir",
+      dataType: 'json',
+      contentType: 'application/json; charset=utf-8',
+      data: JSON.stringify({ no: no }),
+      beforeSend: function(){
+          $body = $('body'); 
+          $body.addClass('loading'); 
+      },
+      success: function (data, textStatus, xhr) {
+          if (xhr.status == "200")
+          {
+            if (data.length > 0)
+            {
+              document.getElementById("mkdvoran").value = data[0]["KDVORANI"];
+              document.getElementById("mkdvad").value = data[0]["KDVTIPI"];
+            }
+              
+          }
+        
+      },
+      complete: function(data){
+          $body = $('body'); 
+          $body.removeClass('loading'); 
+      },
+      error: function (hata) {
+        alertify.error("Kullanıcı eklenemedi");
+      }
+  });
+}
+
+
+function iskontodetaygetir(no){
+  
+  $.ajax({
+      type: 'post',
+      url: "https://pos.posula.com/api/pos/iskontodetaygetir",
+      dataType: 'json',
+      contentType: 'application/json; charset=utf-8',
+      data: JSON.stringify({ no: no }),
+      beforeSend: function(){
+          $body = $('body'); 
+          $body.addClass('loading'); 
+      },
+      success: function (data, textStatus, xhr) {
+          if (xhr.status == "200")
+          {
+            if (data.length > 0)
+            {
+              document.getElementById("miskontooran").value = data[0]["ISKONTOORANI"];
+              document.getElementById("miskontoad").value = data[0]["ISKONTOISMI"];
+            }
+              
+          }
+        
+      },
+      complete: function(data){
+          $body = $('body'); 
+          $body.removeClass('loading'); 
+      },
+      error: function (hata) {
+        alertify.error("İskonto eklenemedi");
+      }
+  });
+}
+
+
+function birimdetaygetir(no){
+  
+  $.ajax({
+      type: 'post',
+      url: "https://pos.posula.com/api/pos/birimdetaygetir",
+      dataType: 'json',
+      contentType: 'application/json; charset=utf-8',
+      data: JSON.stringify({ no: no }),
+      beforeSend: function(){
+          $body = $('body'); 
+          $body.addClass('loading'); 
+      },
+      success: function (data, textStatus, xhr) {
+          if (xhr.status == "200")
+          {
+            if (data.length > 0)
+            {
+              document.getElementById("mbirimad").value = data[0]["ad"];
+            }
+              
+          }
+        
+      },
+      complete: function(data){
+          $body = $('body'); 
+          $body.removeClass('loading'); 
+      },
+      error: function (hata) {
+        alertify.error("Kullanıcı eklenemedi");
+      }
+  });
+}
+
+
+function yazicidetaygetir(no){
+  
+  $.ajax({
+      type: 'post',
+      url: "https://pos.posula.com/api/pos/yazicidetaygetir",
+      dataType: 'json',
+      contentType: 'application/json; charset=utf-8',
+      data: JSON.stringify({ no: no }),
+      beforeSend: function(){
+          $body = $('body'); 
+          $body.addClass('loading'); 
+      },
+      success: function (data, textStatus, xhr) {
+          if (xhr.status == "200")
+          {
+            if (data.length > 0)
+            {
+              document.getElementById("myaziciad").value = data[0]["yaziciadi"];
+            }
+              
+          }
+        
+      },
+      complete: function(data){
+          $body = $('body'); 
+          $body.removeClass('loading'); 
+      },
+      error: function (hata) {
+        alertify.error("Kullanıcı eklenemedi");
+      }
+  });
+}
+
+
+
+function grupguncelle(){
+  var no = document.getElementById("grupno").value;
+  var grupno = document.getElementById("mgrupno").value;
+  var grupad = document.getElementById("mgrupad").value;
+  
+  if (grupad!="" && grupno!=""){
+    $.ajax({
+        type: 'post',
+        url: "https://pos.posula.com/api/pos/anaurungrubuguncelle",
+        dataType: 'json',
+        contentType: 'application/json; charset=utf-8',
+        data: JSON.stringify({ no: no, grupad: grupad, grupno: grupno }),
+        beforeSend: function(){
+            $body = $('body'); 
+            $body.addClass('loading'); 
+        },
+        success: function (data, textStatus, xhr) {
+            if (xhr.status == "200")
+            {
+              if (data == "OK")
+              {
+                listelerigetir();
+                alertify.success("Grup güncellendi");
+                
+              }
+              else alertify.error("Grup güncellenemedi");
+                
+            }
+          
+        },
+        complete: function(data){
+            $body = $('body'); 
+            $body.removeClass('loading'); 
+        },
+        error: function (hata) {
+          alertify.error("Grup güncellenemedi");
+        }
+    });
+  }
+  else{
+    alertify.error("Grup no ve grup adı bilgisi zorunludur");
+  }
+
+}
+
+
+function kdvguncelle(){
+  var no = document.getElementById("kdvno").value;
+  var kdvad = document.getElementById("mkdvad").value;
+  var kdvoran = document.getElementById("mkdvoran").value;
+  
+  if (kdvad!="" && kdvoran!=""){
+    $.ajax({
+        type: 'post',
+        url: "https://pos.posula.com/api/pos/kdvguncelle",
+        dataType: 'json',
+        contentType: 'application/json; charset=utf-8',
+        data: JSON.stringify({ no: no, kdvad: kdvad, kdvoran: kdvoran}),
+        beforeSend: function(){
+            $body = $('body'); 
+            $body.addClass('loading'); 
+        },
+        success: function (data, textStatus, xhr) {
+            if (xhr.status == "200")
+            {
+              if (data == "OK")
+              {
+                listelerigetir();
+                alertify.success("KDV güncellendi");  
+              }
+              else alertify.error("KDV güncellenemedi");
+                
+            }
+          
+        },
+        complete: function(data){
+            $body = $('body'); 
+            $body.removeClass('loading'); 
+        },
+        error: function (hata) {
+          alertify.error("KDV güncellenemedi");
+        }
+    });
+  }
+  else{
+    alertify.error("KDV adı ve KDV oranı bilgisi zorunludur");
+  }
+
+}
+
+
+function iskontoguncelle(){
+  var no = document.getElementById("iskontono").value;
+  var iskontoad = document.getElementById("miskontoad").value;
+  var iskontooran = document.getElementById("miskontooran").value;
+  
+  if (kdvad!="" && kdvoran!=""){
+    $.ajax({
+        type: 'post',
+        url: "https://pos.posula.com/api/pos/iskontoguncelle",
+        dataType: 'json',
+        contentType: 'application/json; charset=utf-8',
+        data: JSON.stringify({ no: no, iskontoad: iskontoad, iskontooran: iskontooran}),
+        beforeSend: function(){
+            $body = $('body'); 
+            $body.addClass('loading'); 
+        },
+        success: function (data, textStatus, xhr) {
+            if (xhr.status == "200")
+            {
+              if (data == "OK")
+              {
+                listelerigetir();
+                alertify.success("İskonto güncellendi");  
+              }
+              else alertify.error("İskonto güncellenemedi");
+                
+            }
+          
+        },
+        complete: function(data){
+            $body = $('body'); 
+            $body.removeClass('loading'); 
+        },
+        error: function (hata) {
+          alertify.error("İskonto güncellenemedi");
+        }
+    });
+  }
+  else{
+    alertify.error("İskonto adı ve iskonto oranı bilgisi zorunludur");
+  }
+
+}
+
+
+function birimguncelle(){
+  var no = document.getElementById("birimno").value; 
+  var birimad = document.getElementById("mbirimad").value; 
+  
+  if (birimad!=""){
+    $.ajax({
+        type: 'post',
+        url: "https://pos.posula.com/api/pos/birimguncelle",
+        dataType: 'json',
+        contentType: 'application/json; charset=utf-8',
+        data: JSON.stringify({ no: no, birimad: birimad }),
+        beforeSend: function(){
+            $body = $('body'); 
+            $body.addClass('loading'); 
+        },
+        success: function (data, textStatus, xhr) {
+            if (xhr.status == "200")
+            {
+              if (data == "OK")
+              {
+                listelerigetir();
+                alertify.success("Birim güncellendi");  
+              }
+              else alertify.error("Birim güncellenemedi");
+                
+            }
+          
+        },
+        complete: function(data){
+            $body = $('body'); 
+            $body.removeClass('loading'); 
+        },
+        error: function (hata) {
+          alertify.error("Birim güncellenemedi");
+        }
+    });
+  }
+  else{
+    alertify.error("Birim adı bilgisi zorunludur");
+  }
+
+}
+
+
+function yaziciguncelle(){
+  
+  var no = document.getElementById("yazicino").value; 
+  var yaziciad = document.getElementById("myaziciad").value; 
+  
+  if (yaziciad!=""){
+    $.ajax({
+        type: 'post',
+        url: "https://pos.posula.com/api/pos/yaziciguncelle",
+        dataType: 'json',
+        contentType: 'application/json; charset=utf-8',
+        data: JSON.stringify({ no: no, yaziciad: yaziciad }),
+        beforeSend: function(){
+            $body = $('body'); 
+            $body.addClass('loading'); 
+        },
+        success: function (data, textStatus, xhr) {
+            if (xhr.status == "200")
+            {
+              if (data == "OK")
+              {
+                listelerigetir();
+                alertify.success("Yazıcı güncellendi");  
+              }
+              else alertify.error("Yazıcı güncellenemedi");
+                
+            }
+          
+        },
+        complete: function(data){
+            $body = $('body'); 
+            $body.removeClass('loading'); 
+        },
+        error: function (hata) {
+          alertify.error("Yazıcı güncellenemedi");
+        }
+    });
+  }
+  else{
+    alertify.error("Yazıcı adı bilgisi zorunludur");
+  }
+
+}
+
+</script>
+
+</body>
+</html>

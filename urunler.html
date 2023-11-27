@@ -1,0 +1,2264 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <title>POSULA | Yönetim</title>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="icon" type="image/png" href="images/icons/favicon.ico"/>
+  <link rel="stylesheet" type="text/css" href="vendor/bootstrap-5/css/bootstrap.min.css">
+  <link rel="stylesheet" type="text/css" href="vendor/fontawesome-6/css/all.min.css">
+  <link rel="stylesheet" href="css/adminlte.min.css">
+  <link rel="stylesheet" type="text/css" href="vendor/alertifyJS/alertify.min.css">
+  <link rel="stylesheet" type="text/css" href="vendor/overlayScrollbars/css/OverlayScrollbars.min.css">
+  
+  <!-- DataTables -->
+  <link rel="stylesheet" href="vendor/datatables-bs4/css/dataTables.bootstrap4.css">
+  <link rel="stylesheet" href="vendor/datatables-responsive/css/responsive.bootstrap4.min.css">
+  <link rel="stylesheet" href="vendor/datatables-buttons/css/buttons.bootstrap4.min.css">
+
+  <style>
+    .loading-bar{
+        display: none;
+        position: fixed;
+        z-index: 9999;
+        left:0;
+        top:0;
+        width: 100%;
+        height: 100%;
+        background-image: url('images/loading.gif');
+        background-position: 50% 50%;
+        background-color: rgba(255,255,255,0.8);
+        background-repeat: no-repeat;
+      }
+      
+      body.loading{
+        overflow: hidden;
+      }
+      
+      body.loading .loading-bar{
+        display: block;
+      }
+  
+      .alertify-notifier {
+                  color: #fff;
+              }
+      
+  </style>
+
+
+</head>
+<body class="hold-transition sidebar-mini layout-fixed layout-navbar-fixed layout-footer-fixed ">
+<!-- Site wrapper -->
+<div class="wrapper">
+  <!-- Navbar -->
+  <nav class="main-header navbar navbar-expand navbar-white navbar-light">
+    <!-- Left navbar links -->
+    <ul class="navbar-nav">
+      <li class="nav-item">
+        <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
+      </li>
+      <li class="nav-item">
+        <a id="menuadi" class="nav-link">Ürünler</a>
+      </li>
+    </ul>
+
+  </nav>
+  <!-- /.navbar -->
+
+  <!-- Main Sidebar Container -->
+  <aside class="main-sidebar sidebar-light-primary elevation-2">
+    <a class="brand-link">
+      <img src="images/O_small.png" alt="POSULA" class="brand-image img-circle elevation-3" style="opacity: .8">
+      <span class="brand-text" style="color:#312783; font-weight: 600; margin-left: 10px;">POSULA</span>
+    </a>
+    <!-- Sidebar -->
+    <div class="sidebar">
+
+      <!-- Sidebar Menu -->
+      <nav class="mt-2">
+        <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+          <!-- Add icons to the links using the .nav-icon class
+               with font-awesome or any other icon font library -->
+          <li class="nav-item">
+            <a href="yonetim.html" class="nav-link">
+              <i class="nav-icon fas fa-building"></i>
+              <p>
+                İşletme Bilgieri
+              </p>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="tanimlamalar.html" class="nav-link">
+              <i class="nav-icon fas fa-gears"></i>
+              <p>
+                Gemel Ayarlar
+              </p>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="bolum.html" class="nav-link">
+              <i class="nav-icon fas fa-th"></i>
+              <p>
+                Bölüm ve Masalar
+              </p>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link active">
+              <i class="nav-icon fas fa-coffee"></i>
+              <p>
+                Ürünler
+              </p>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="kullanicilar.html" class="nav-link">
+              <i class="nav-icon fas fa-user"></i>
+              <p>
+                Kullanıcılar
+              </p>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="javascript:void(0)" onclick="localStorage.pos_userno='';localStorage.pos_password='';window.location='index.html';" class="nav-link">
+              <i class="nav-icon fas fa-power-off"></i>
+              <p>Çıkış</p>
+            </a>
+          </li>
+        </ul>
+      </nav>
+      <!-- /.sidebar-menu -->
+    </div>
+    <!-- /.sidebar -->
+  </aside>
+
+  <!-- Content Wrapper. Contains page content -->
+  <div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+      <div class="container-fluid">
+        <div class="row mb-2">
+          
+          <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12 px-1 mb-2" id="tbl1" style="padding-top:20px; display: none; background-color: white; border:1px solid #ccc; border-radius: 10px;">
+                
+          </div>
+        </div>
+      </div><!-- /.container-fluid -->
+    </section>
+  </div>
+  <!-- /.content-wrapper -->
+
+  <footer id="footer" class="main-footer">
+    <div class="float-right">
+      <button class='btn btn-primary py-0' data-bs-toggle='modal' data-bs-target='#grupekleModal'>Ürün Grubu Ekle</button>
+    </div>
+    <strong><a href="https://posula.com" style="color:royalblue">POSULA</a> &copy; 2023</strong>
+  </footer>
+
+  <!-- Control Sidebar -->
+  <aside class="control-sidebar control-sidebar-dark">
+    <!-- Control sidebar content goes here -->
+  </aside>
+  <!-- /.control-sidebar -->
+</div>
+<!-- ./wrapper -->
+
+<div class="loading-bar"></div>
+
+<div class="modal fade" id="grupekleModal" data-bs-backdrop="static" tabindex="-1" aria-labelledby="grupekleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+    <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="grupekleModalLabel">Grup Ekle</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <div class="row">
+            <div class="col-xl-3 col-lg-3 col-md-3 col-sm-12 col-xs-12">
+              <div class="form-floating mb-2">
+                <input type="number" class="form-control" min="100" value="100" step="1" id="grupno" placeholder="Grup No">
+                <label for="grupno" style="font-weight: 500;">Grup No</label>
+              </div>
+            </div>
+            <div class="col-xl-9 col-lg-9 col-md-9 col-sm-12 col-xs-12">
+              <div class="form-floating mb-2">
+                <input type="text" class="form-control" id="grupadi" placeholder="Grup Adı">
+                <label for="grupadi" style="font-weight: 500;">Grup Adı</label>
+              </div>
+            </div>
+            <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-xs-12">
+              <div class="form-check form-switch pl-0">
+                <label class="form-check-label" for="menudegoster">Menüde Gösterilsin mi?</label>
+                <input class="form-check-input" style="position:absolute; right:0;" type="checkbox" role="switch" id="menudegoster" checked>
+              </div>
+            </div>
+            <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-xs-12" style="display:none;">
+              <div class="form-check form-switch pl-0">
+                <label class="form-check-label" for="hizlimenu">Hızlı Menü mü?</label>
+                <input class="form-check-input" style="position:absolute; right:0;" type="checkbox" role="switch" id="hizlimenu">
+              </div>
+            </div>
+            <div class="col-12 my-1 text-right">
+              <button class='btn btn-primary' onclick="grupekle('devam');">Kaydet ve Devam Et</button>
+              <button class='btn btn-primary' onclick="grupekle('geri');">Kaydet ve Geri Dön</button>
+            </div>
+            
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <div class="modal fade" id="grupduzenleModal" data-bs-backdrop="static" tabindex="-1" aria-labelledby="grupduzenleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+      <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="grupduzenleModalLabel">Grup Düzenle</h5>
+            <input type="password" style="display: none;" id="grupduzenlemodalgrupno">
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <div class="row">
+              <div class="col-xl-3 col-lg-3 col-md-3 col-sm-12 col-xs-12">
+                <div class="form-floating mb-2">
+                  <input type="number" class="form-control" min="0" step="10" id="dgrupno" placeholder="Grup No">
+                  <label for="dgrupno" style="font-weight: 500;">Grup No</label>
+                </div>
+              </div>
+              <div class="col-xl-9 col-lg-9 col-md-9 col-sm-12 col-xs-12">
+                <div class="form-floating mb-2">
+                  <input type="text" class="form-control" id="dgrupadi" placeholder="Grup Adı">
+                  <label for="dgrupadi" style="font-weight: 500;">Grup Adı</label>
+                </div>
+              </div>
+              <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                <div class="form-check form-switch pl-0">
+                  <label class="form-check-label" for="dmenudegoster">Menüde Gösterilsin mi?</label>
+                  <input class="form-check-input" style="position:absolute; right:0;" type="checkbox" role="switch" id="dmenudegoster" checked>
+                </div>
+              </div>
+              <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-xs-12" style="display:none;">
+                <div class="form-check form-switch pl-0">
+                  <label class="form-check-label" for="dhizlimenu">Hızlı Menü mü?</label>
+                  <input class="form-check-input" style="position:absolute; right:0;" type="checkbox" role="switch" id="dhizlimenu">
+                </div>
+              </div>
+              <div class="col-12 my-1">
+                <button id="grupduzenlebtn" class="btn btn-primary btn-block" onclick="grupduzenle();">Kaydet</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal fade" id="grupdegistirModal" data-bs-backdrop="static" tabindex="-1" aria-labelledby="grupdegistirModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="grupdegistirModalLabel">Ürün Grubu Değiştir</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <div class="row">
+                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                  <input type="password" style="display: none;" id="urunno">
+                  <div class="form-floating mb-2">
+                    <select id="gdgrupadi" class="form-control" placeholder="Grup Adı">
+                      
+                    </select>
+                    <label for="gdgrupadi" style="font-weight: 500;">Grup Adı</label>
+                  </div>
+                </div>
+                <div class="col-12 my-1">
+                  <button class="btn btn-primary btn-block" onclick="urungrupdegistir();">Ürün Grubu Değiştir</button>
+                </div>
+                
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+  <div class="modal fade" id="urunlerModal" data-bs-backdrop="static" tabindex="-1" aria-labelledby="urunlerModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="duzenleModalLabel">Ürünler</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <div class="row" style="margin-top:10px;margin-bottom: 10px; width: 100%;padding-left: 20px;">
+            <input type="password" style="display: none;" id="urunlermodalgrupno">
+            <div class="row mb-2">
+            
+              <div class="col-12 px-1" id="tbl2" style="padding-top:20px; display: none; background-color: white; border:1px solid #ccc; border-radius: 10px;">
+                  
+              </div>
+   
+            </div>
+                      
+              
+          </div> 
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-primary" type="button" id="uruneklebtn" onclick="hizlimenueklemodalac()">Hızlı Menü Ekle</button>
+          <button class="btn btn-primary" type="button" id="uruneklebtn" onclick="uruneklemodalac()">Ürün Ekle</button>
+          <button class="btn btn-primary" type="button" id="fiyatlarikaydetbtn" onclick="fiyatlarikaydet();">Fiyatları Kaydet</button>
+          <!--<button type="button" class="btn btn-primary" onclick="kategoriguncellemodal();">Kategori Güncelle</button>-->
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+
+
+<div class="modal fade" id="urunekleModal" data-bs-backdrop="static" tabindex="-1" aria-labelledby="urunekleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="urunekleModalLabel">Ürün Ekle</h5>
+        <!--<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>-->
+      </div>
+      <div class="modal-body">
+        <div class="row" style="margin-top:30px;margin-bottom: 30px; width: 100%;padding-left: 3px;">
+          <input type="password" style="display: none;" id="uruneklemodalgrupno">
+          <div class="row">
+            <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-xs-12" style="display: none;">
+              <div class="form-floating mb-2">
+                <input type="number" class="form-control" min="0" step="1" id="urunkodu" placeholder="Ürün Kodu">
+                <label for="urunkodu" style="font-weight: 500;">Ürün Kodu</label>
+              </div>
+            </div>
+            <div class="col-xl-9 col-lg-9 col-md-9 col-sm-6 col-xs-6">
+              <div class="form-floating mb-2">
+                <input type="text" class="form-control" id="urunadi" placeholder="Ürün Adı">
+                <label for="urunadi" style="font-weight: 500;">Ürün Adı</label>
+              </div>
+            </div>
+            <div class="col-xl-3 col-lg-3 col-md-3 col-sm-6 col-xs-6">
+              <div class="form-floating mb-2">
+                <input type="text" class="form-control" id="urunkodu2" placeholder="Ürün Kodu 2">
+                <label for="urunkodu2" style="font-weight: 500;">Ürün Kodu 2</label>
+              </div>
+            </div>
+            <div class="col-xl-3 col-lg-3 col-md-3 col-sm-6 col-xs-6">
+              <div class="form-floating mb-2">
+                <input type="number" class="form-control" id="fiyat1" placeholder="Fiyat 1" value="0" min="0">
+                <label for="fiyat1" style="font-weight: 500;">Fiyat 1</label>
+              </div>
+            </div>
+            <div class="col-xl-3 col-lg-3 col-md-3 col-sm-6 col-xs-6">
+              <div class="form-floating mb-2">
+                <input type="number" class="form-control" id="fiyat2" placeholder="Fiyat 2" value="0" min="0">
+                <label for="fiyat2" style="font-weight: 500;">Fiyat 2</label>
+              </div>
+            </div>
+            <div class="col-xl-3 col-lg-3 col-md-3 col-sm-6 col-xs-6">
+              <div class="form-floating mb-2">
+                <input type="number" class="form-control" id="fiyat3" placeholder="Fiyat 3" value="0" min="0">
+                <label for="fiyat3" style="font-weight: 500;">Fiyat 3</label>
+              </div>
+            </div>
+            <div class="col-xl-3 col-lg-3 col-md-3 col-sm-6 col-xs-6">
+              <div class="form-floating mb-2">
+                <input type="number" class="form-control" id="fiyat4" placeholder="Fiyat 4" value="0" min="0">
+                <label for="fiyat4" style="font-weight: 500;">Fiyat 4</label>
+              </div>
+            </div>
+            <div class="col-xl-3 col-lg-3 col-md-3 col-sm-6 col-xs-6">
+              <div class="form-floating mb-2">
+                <input type="number" class="form-control" id="ceyrek" placeholder="Çeyrek Fiyat" value="0" min="0">
+                <label for="ceyrek" style="font-weight: 500;">Çeyrek Fiyat</label>
+              </div>
+            </div>
+            <div class="col-xl-3 col-lg-3 col-md-3 col-sm-6 col-xs-6">
+              <div class="form-floating mb-2">
+                <input type="number" class="form-control" id="yarim" placeholder="Yarım Fiyat" value="0" min="0">
+                <label for="yarim" style="font-weight: 500;">Yarım Fiyat</label>
+              </div>
+            </div>
+            <div class="col-xl-3 col-lg-3 col-md-3 col-sm-6 col-xs-6">
+              <div class="form-floating mb-2">
+                <input type="number" class="form-control" id="birbucuk" placeholder="Bir Buçuk Fiyat" value="0" min="0">
+                <label for="birbucuk" style="font-weight: 500;">Bir Buçuk Fiyat</label>
+              </div>
+            </div>
+            <div class="col-xl-3 col-lg-3 col-md-3 col-sm-6 col-xs-6">
+              <div class="form-floating mb-2">
+                <input type="number" class="form-control" id="duble" placeholder="Duble Fiyat" value="0" min="0">
+                <label for="duble" style="font-weight: 500;">Duble Fiyat</label>
+              </div>
+            </div>
+            <div class="col-12">
+              <div class="form-floating mb-2">
+                <textarea class="form-control" id="barkod" placeholder="Barkodlar" style="min-height: 100px;"></textarea>
+                <label for="barkod" style="font-weight: 500;">Barkodlar</label>
+              </div>
+            </div>
+            <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-xs-12 text-left" style="max-width: 100%; width:100%;">
+              <div class="form-check form-switch pl-0 pl-0">
+                <label class="form-check-label" for="yazdir">Yazdır</label>
+                <input class="form-check-input" style="position:absolute; right:0;" type="checkbox" role="switch" id="yazdir" checked>
+              </div>
+              
+              <div class="form-check form-switch pl-0 pl-0">
+                <label class="form-check-label" for="terazi">Tartılacak Ürün</label>
+                <input class="form-check-input" style="position:absolute; right:0;" type="checkbox" role="switch" id="terazi">
+              </div>
+            </div>
+            <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-xs-12">
+              <div class="form-floating mb-2">
+                <select id="yaziciadi" class="form-control" placeholder="Yazıcı Adı">
+                  <option value="1" selected>Kasa</option>
+                  <option value="2">Mutfak</option>
+                  <option value="3">İçecek</option>
+                  <option value="4">Bar</option>
+                  <option value="5">Fırın</option>
+                  <option value="6">Soğuk</option>
+                  <option value="7">Sıcak</option>
+                </select>
+                <label for="yaziciadi" style="font-weight: 500;">Yazıcı Adı</label>
+              </div>
+            </div>
+            <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-xs-12">
+              <div class="form-floating mb-2">
+                <input type="number" class="form-control" id="otv" placeholder="ÖTV" value="0" min="0">
+                <label for="otv" style="font-weight: 500;">ÖTV</label>
+              </div>
+            </div>
+            <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-xs-12">
+              <div class="form-floating mb-2">
+                <select id="kdv" class="form-control" placeholder="KDV Oranı">
+                  <option value="8" selected>%8</option>
+                  <option value="18">%18</option>
+                  <option value="26">%26</option>
+                  <option value="1">%1</option>
+                  <option value="0">%0</option>
+                </select>
+                <label for="kdv" style="font-weight: 500;">KDV Oranı</label>
+              </div>
+            </div>
+            <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-xs-12">
+              <div class="form-floating mb-2">
+                <select id="birim" class="form-control" placeholder="Birim">
+                  <option value="1" selected>Adet</option>
+                  <option value="2">Koli</option>
+                  <option value="3">KG</option>
+                  <option value="4">GR</option>
+                  <option value="5">LT</option>
+                  <option value="6">CL</option>
+                  <option value="7">Kutu</option>
+                  <option value="8">Şişe</option>
+                  <option value="9">Paket</option>
+                  <option value="10">Bağ</option>
+                  <option value="11">Kasa</option>
+                  <option value="12">Porsiyon</option>
+                  <option value="13">Demet</option>
+                  <option value="14">Dilim</option>
+                  <option value="15">Çuval</option>
+                  <option value="16">Düzine</option>
+                  <option value="17">Tepsi</option>
+                  <option value="18">Tank</option>
+                  <option value="19">Bardak</option>
+                </select>
+                <label for="birim" style="font-weight: 500;">Birim</label>
+              </div>
+            </div>
+            <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-xs-12">
+              <div class="form-floating mb-2">
+                <select id="anagrup" class="form-control" placeholder="Ürün Ana Grubu">
+                  <option value="Yiyecek" selected>Yiyecek</option>
+                  <option value="İçecek">İçecek</option>
+                  <option value="Alkollü İçecek">Alkollü İçecek</option>
+                  <option value="Ticari Ürün">Ticari Ürün</option>
+                  <option value="Diğer">Diğer</option>
+                </select>
+                <label for="anagrup" style="font-weight: 500;">Ürün Ana Grubu</label>
+              </div>
+            </div>
+          </div>
+                    
+            
+        </div> 
+      </div>
+      <div class="modal-footer">
+        <button id="eklebtn1" class="btn btn-primary btn-block" onclick="urunekle();">Ürün Ekle</button>
+        <button type="button" class="btn btn-secondary" onclick="uruneklemodalkapat();">Kapat</button>
+        <!--<button type="button" class="btn btn-primary" onclick="kategoriguncellemodal();">Kategori Güncelle</button>-->
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+
+<div class="modal fade" id="urunguncelleModal" data-bs-backdrop="static" tabindex="-1" aria-labelledby="urunguncelleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="urunguncelleModalLabel">Ürün Güncelle</h5>
+        <!--<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>-->
+      </div>
+      <div class="modal-body">
+        <div class="row" style="margin-top:30px;margin-bottom: 30px; width: 100%;padding-left: 3px;">
+          <input type="password" style="display: none;" id="urunguncellemodalgrupno">
+          <input type="password" style="display: none;" id="urunguncellemodalno">
+
+              <div class="row">
+                <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-xs-12" style="display: none;">
+                  <div class="form-floating mb-2">
+                    <input type="number" class="form-control" min="0" step="1" id="durunkodu" placeholder="Ürün Kodu">
+                    <label for="durunkodu" style="font-weight: 500;">Ürün Kodu</label>
+                  </div>
+                </div>
+                <div class="col-xl-9 col-lg-9 col-md-9 col-sm-6 col-xs-6">
+                  <div class="form-floating mb-2">
+                    <input type="text" class="form-control" id="durunadi" placeholder="Ürün Adı">
+                    <label for="durunadi" style="font-weight: 500;">Ürün Adı</label>
+                  </div>
+                </div>
+                <div class="col-xl-3 col-lg-3 col-md-3 col-sm-6 col-xs-6">
+                  <div class="form-floating mb-2">
+                    <input type="text" class="form-control" id="durunkodu2" placeholder="Ürün Kodu 2">
+                    <label for="durunkodu2" style="font-weight: 500;">Ürün Kodu 2</label>
+                  </div>
+                </div>
+                <div class="col-xl-3 col-lg-3 col-md-3 col-sm-6 col-xs-6">
+                  <div class="form-floating mb-2">
+                    <input type="number" class="form-control" id="dfiyat1" placeholder="Fiyat 1" value="0" min="0">
+                    <label for="dfiyat1" style="font-weight: 500;">Fiyat 1</label>
+                  </div>
+                </div>
+                <div class="col-xl-3 col-lg-3 col-md-3 col-sm-6 col-xs-6">
+                  <div class="form-floating mb-2">
+                    <input type="number" class="form-control" id="dfiyat2" placeholder="Fiyat 2" value="0" min="0">
+                    <label for="dfiyat2" style="font-weight: 500;">Fiyat 2</label>
+                  </div>
+                </div>
+                <div class="col-xl-3 col-lg-3 col-md-3 col-sm-6 col-xs-6">
+                  <div class="form-floating mb-2">
+                    <input type="number" class="form-control" id="dfiyat3" placeholder="Fiyat 3" value="0" min="0">
+                    <label for="dfiyat3" style="font-weight: 500;">Fiyat 3</label>
+                  </div>
+                </div>
+                <div class="col-xl-3 col-lg-3 col-md-3 col-sm-6 col-xs-6">
+                  <div class="form-floating mb-2">
+                    <input type="number" class="form-control" id="dfiyat4" placeholder="Fiyat 4" value="0" min="0">
+                    <label for="dfiyat4" style="font-weight: 500;">Fiyat 4</label>
+                  </div>
+                </div>
+                <div class="col-xl-3 col-lg-3 col-md-3 col-sm-6 col-xs-6">
+                  <div class="form-floating mb-2">
+                    <input type="number" class="form-control" id="dceyrek" placeholder="Çeyrek Fiyat" value="0" min="0">
+                    <label for="dceyrek" style="font-weight: 500;">Çeyrek Fiyat</label>
+                  </div>
+                </div>
+                <div class="col-xl-3 col-lg-3 col-md-3 col-sm-6 col-xs-6">
+                  <div class="form-floating mb-2">
+                    <input type="number" class="form-control" id="dyarim" placeholder="Yarım Fiyat" value="0" min="0">
+                    <label for="dyarim" style="font-weight: 500;">Yarım Fiyat</label>
+                  </div>
+                </div>
+                <div class="col-xl-3 col-lg-3 col-md-3 col-sm-6 col-xs-6">
+                  <div class="form-floating mb-2">
+                    <input type="number" class="form-control" id="dbirbucuk" placeholder="Bir Buçuk Fiyat" value="0" min="0">
+                    <label for="dbirbucuk" style="font-weight: 500;">Bir Buçuk Fiyat</label>
+                  </div>
+                </div>
+                <div class="col-xl-3 col-lg-3 col-md-3 col-sm-6 col-xs-6">
+                  <div class="form-floating mb-2">
+                    <input type="number" class="form-control" id="dduble" placeholder="Duble Fiyat" value="0" min="0">
+                    <label for="dduble" style="font-weight: 500;">Duble Fiyat</label>
+                  </div>
+                </div>
+                <div class="col-12">
+                  <div class="form-floating mb-2">
+                    <textarea class="form-control" id="dbarkod" placeholder="Barkodlar" style="min-height: 100px;"></textarea>
+                    <label for="dbarkod" style="font-weight: 500;">Barkodlar</label>
+                  </div>
+                </div>
+                <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-xs-12 text-left" style="max-width: 100%; width:100%;">
+                  <div class="form-check form-switch pl-0 pl-0">
+                    <label class="form-check-label" for="dyazdir">Yazdır?</label>
+                    <input class="form-check-input" style="position:absolute; right:0;" type="checkbox" role="switch" id="dyazdir">
+                  </div>
+                  
+                  <div class="form-check form-switch pl-0 pl-0">
+                    <label class="form-check-label" for="dterazi">Tartılacak Ürün?</label>
+                    <input class="form-check-input" style="position:absolute; right:0;" type="checkbox" role="switch" id="dterazi">
+                  </div>
+                </div>
+                <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                  <div class="form-floating mb-2">
+                    <select id="dyaziciadi" class="form-control" placeholder="Yazıcı Adı">
+                      <option value="1" selected>Kasa</option>
+                      <option value="2">Mutfak</option>
+                      <option value="3">İçecek</option>
+                      <option value="4">Bar</option>
+                      <option value="5">Fırın</option>
+                      <option value="6">Soğuk</option>
+                      <option value="7">Sıcak</option>
+                    </select>
+                    <label for="dyaziciadi" style="font-weight: 500;">Yazıcı Adı</label>
+                  </div>
+                </div>
+                <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                  <div class="form-floating mb-2">
+                    <input type="number" class="form-control" id="dotv" placeholder="ÖTV" value="0" min="0">
+                    <label for="dotv" style="font-weight: 500;">ÖTV</label>
+                  </div>
+                </div>
+                <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                  <div class="form-floating mb-2">
+                    <select id="dkdv" class="form-control" placeholder="KDV Oranı">
+                      <option value="8" selected>%8</option>
+                      <option value="18">%18</option>
+                      <option value="26">%26</option>
+                      <option value="1">%1</option>
+                      <option value="0">%0</option>
+                    </select>
+                    <label for="dkdv" style="font-weight: 500;">KDV Oranı</label>
+                  </div>
+                </div>
+                <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                  <div class="form-floating mb-2">
+                    <select id="dbirim" class="form-control" placeholder="Birim">
+                      <option value="1" selected>Adet</option>
+                      <option value="2">Koli</option>
+                      <option value="3">KG</option>
+                      <option value="4">GR</option>
+                      <option value="5">LT</option>
+                      <option value="6">CL</option>
+                      <option value="7">Kutu</option>
+                      <option value="8">Şişe</option>
+                      <option value="9">Paket</option>
+                      <option value="10">Bağ</option>
+                      <option value="11">Kasa</option>
+                      <option value="12">Porsiyon</option>
+                      <option value="13">Demet</option>
+                      <option value="14">Dilim</option>
+                      <option value="15">Çuval</option>
+                      <option value="16">Düzine</option>
+                      <option value="17">Tepsi</option>
+                      <option value="18">Tank</option>
+                      <option value="19">Bardak</option>
+                    </select>
+                    <label for="dbirim" style="font-weight: 500;">Birim</label>
+                  </div>
+                </div>
+                <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                  <div class="form-floating mb-2">
+                    <select id="danagrup" class="form-control" placeholder="Ürün Ana Grubu">
+                      <option value="Yiyecek" selected>Yiyecek</option>
+                      <option value="İçecek">İçecek</option>
+                      <option value="Alkollü İçecek">Alkollü İçecek</option>
+                      <option value="Ticari Ürün">Ticari Ürün</option>
+                      <option value="Diğer">Diğer</option>
+                    </select>
+                    <label for="danagrup" style="font-weight: 500;">Ürün Ana Grubu</label>
+                  </div>
+                </div>
+
+              </div>
+
+                    
+            
+        </div> 
+      </div>
+      <div class="modal-footer">
+        <button id="guncellebtn1" class="btn btn-primary" onclick="urunguncelle();">Ürün Güncelle</button>
+        <button type="button" class="btn btn-secondary" onclick="urunguncellemodalkapat();">Kapat</button>
+        <!--<button type="button" class="btn btn-primary" onclick="kategoriguncellemodal();">Kategori Güncelle</button>-->
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+
+<div class="modal fade" id="hizlimenuekleModal" data-bs-backdrop="static" tabindex="-1" aria-labelledby="hizlimenuekleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="hizlimenuekleModalLabel">Hızlı Menü Ekle</h5>
+        <!--<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>-->
+      </div>
+      <div class="modal-body">
+        <div class="row" style="margin-top:30px;margin-bottom: 30px; width: 100%;padding-left: 3px;">
+          <input type="password" style="display: none;" id="hizlimenueklemodalgrupno">
+          <div class="row">
+            <div class="col-12">
+              <div class="form-floating mb-2">
+                <input type="text" class="form-control" id="hmurunadi" placeholder="Menü Adı">
+                <label for="hmurunadi" style="font-weight: 500;">Menü Adı</label>
+              </div>
+            </div>
+            <div class="col-xl-3 col-lg-3 col-md-3 col-sm-6 col-xs-6">
+              <div class="form-floating mb-2">
+                <input type="number" class="form-control" id="hmfiyat1" placeholder="Fiyat 1" value="0" min="0">
+                <label for="hmfiyat1" style="font-weight: 500;">Fiyat 1</label>
+              </div>
+            </div>
+            <div class="col-xl-3 col-lg-3 col-md-3 col-sm-6 col-xs-6">
+              <div class="form-floating mb-2">
+                <input type="number" class="form-control" id="hmfiyat2" placeholder="Fiyat 2" value="0" min="0">
+                <label for="hmfiyat2" style="font-weight: 500;">Fiyat 2</label>
+              </div>
+            </div>
+            <div class="col-xl-3 col-lg-3 col-md-3 col-sm-6 col-xs-6">
+              <div class="form-floating mb-2">
+                <input type="number" class="form-control" id="hmfiyat3" placeholder="Fiyat 3" value="0" min="0">
+                <label for="hmfiyat3" style="font-weight: 500;">Fiyat 3</label>
+              </div>
+            </div>
+            <div class="col-xl-3 col-lg-3 col-md-3 col-sm-6 col-xs-6">
+              <div class="form-floating mb-2">
+                <input type="number" class="form-control" id="hmfiyat4" placeholder="Fiyat 4" value="0" min="0">
+                <label for="hmfiyat4" style="font-weight: 500;">Fiyat 4</label>
+              </div>
+            </div>
+            <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-xs-12 text-left" style="max-width: 100%; width:100%;">
+              <div class="form-check form-switch pl-0 pl-0">
+                <label class="form-check-label" for="hmyazdir">Yazdır</label>
+                <input class="form-check-input" style="position:absolute; right:0;" type="checkbox" role="switch" id="hmyazdir" checked>
+              </div>
+            </div>
+            <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-xs-12">
+              <div class="form-floating mb-2">
+                <select id="hmyaziciadi" class="form-control" placeholder="Yazıcı Adı">
+                  <option value="1" selected>Kasa</option>
+                  <option value="2">Mutfak</option>
+                  <option value="3">İçecek</option>
+                  <option value="4">Bar</option>
+                  <option value="5">Fırın</option>
+                  <option value="6">Soğuk</option>
+                  <option value="7">Sıcak</option>
+                </select>
+                <label for="hmyaziciadi" style="font-weight: 500;">Yazıcı Adı</label>
+              </div>
+            </div>
+            <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-xs-12">
+              <div class="form-floating mb-2">
+                <input type="number" class="form-control" id="hmotv" placeholder="ÖTV" value="0" min="0">
+                <label for="hmotv" style="font-weight: 500;">ÖTV</label>
+              </div>
+            </div>
+            <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-xs-12">
+              <div class="form-floating mb-2">
+                <select id="hmkdv" class="form-control" placeholder="KDV Oranı">
+                  <option value="8" selected>%8</option>
+                  <option value="18">%18</option>
+                  <option value="26">%26</option>
+                  <option value="1">%1</option>
+                  <option value="0">%0</option>
+                </select>
+                <label for="hmkdv" style="font-weight: 500;">KDV Oranı</label>
+              </div>
+            </div>
+            <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-xs-12">
+              <div class="form-floating mb-2">
+                <select id="hmbirim" class="form-control" placeholder="Birim">
+                  <option value="1" selected>Adet</option>
+                  <option value="2">Koli</option>
+                  <option value="3">KG</option>
+                  <option value="4">GR</option>
+                  <option value="5">LT</option>
+                  <option value="6">CL</option>
+                  <option value="7">Kutu</option>
+                  <option value="8">Şişe</option>
+                  <option value="9">Paket</option>
+                  <option value="10">Bağ</option>
+                  <option value="11">Kasa</option>
+                  <option value="12">Porsiyon</option>
+                  <option value="13">Demet</option>
+                  <option value="14">Dilim</option>
+                  <option value="15">Çuval</option>
+                  <option value="16">Düzine</option>
+                  <option value="17">Tepsi</option>
+                  <option value="18">Tank</option>
+                  <option value="19">Bardak</option>
+                </select>
+                <label for="hmbirim" style="font-weight: 500;">Birim</label>
+              </div>
+            </div>
+            <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-xs-12">
+              <div class="form-floating mb-2">
+                <select id="hmanagrup" class="form-control" placeholder="Ürün Ana Grubu">
+                  <option value="Yiyecek" selected>Yiyecek</option>
+                  <option value="İçecek">İçecek</option>
+                  <option value="Alkollü İçecek">Alkollü İçecek</option>
+                  <option value="Ticari Ürün">Ticari Ürün</option>
+                  <option value="Diğer">Diğer</option>
+                </select>
+                <label for="hmanagrup" style="font-weight: 500;">Ürün Ana Grubu</label>
+              </div>
+            </div>
+
+            <div class="col-xl-8 col-lg-8 col-md-8 col-sm-8 col-xs-8">
+              <table class="table table-responsive">
+                <thead>
+                  <tr>
+                    <th style="width:10%;">
+                      Sıra
+                    </th>
+                    <th style="width:40%;">
+                      Ürün Adı
+                    </th>
+                    <th style="width:10%;">
+                      Miktar
+                    </th>
+                    <th style="width:10%;">
+                      Fyt 1
+                    </th>
+                    <th style="width:10%;">
+                      Fyt 2
+                    </th>
+                    <th style="width:10%;">
+                      Fyt 3
+                    </th>
+                    <th style="width:10%;">
+                      Fyt 4
+                    </th>
+                  </tr>
+                </thead>
+                <tbody id="hizlimenueklenenler">
+
+                </tbody>
+              </table>
+            </div>
+            <div class="col-xl-4 col-lg-4 col-md-4 col-sm-4 col-xs-4" style="overflow-y: auto; max-height:200px !important; height:200px !important;" id="hizlimenueklenecekler">
+              
+            </div>
+
+            
+          </div>
+                    
+            
+        </div> 
+      </div>
+      <div class="modal-footer">
+        <button class='btn btn-primary' onclick="altmenueklemodalac();">Alt Menü Ekle</button>
+        <button class='btn btn-primary' onclick="hizlimenuekle('devam');">Kaydet ve Devam Et</button>
+        <button class='btn btn-primary' onclick="hizlimenuekle('geri');">Kaydet ve Geri Dön</button>
+        <button type="button" class="btn btn-secondary" onclick="hizlimenueklemodalkapat();">Kapat</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+<div class="modal fade" id="altmenuekleModal" data-bs-backdrop="static" tabindex="-1" aria-labelledby="altmenuekleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="altmenuekleModalLabel">Alt Menü Ekle</h5>
+        <!--<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>-->
+      </div>
+      <div class="modal-body">
+        <div class="row" style="margin-top:30px;margin-bottom: 30px; width: 100%;padding-left: 3px;">
+          <input type="password" style="display: none;" id="altmenueklemodalgrupno">
+          <div class="row">
+            <div class="col-12">
+              <div class="form-floating mb-2">
+                <input type="text" class="form-control" id="amurunadi" placeholder="Menü Adı">
+                <label for="amurunadi" style="font-weight: 500;">Menü Adı</label>
+              </div>
+              <div class="col-12 mt-3 mb-2">
+                <div class="form-check form-switch pl-0 pl-0">
+                  <label class="form-check-label" for="hmyazdir">Alt menüden seçilen bir ürünü ana menüye ekle</label>
+                  <input class="form-check-input" style="position:absolute; right:0;" type="radio" name="altmenutipi" role="switch" value="2" id="hmradio1" checked>
+                </div>
+              </div>
+              <div class="col-12 mb-2">
+                <div class="form-check form-switch pl-0 pl-0">
+                  <label class="form-check-label" for="hmyazdir">Alt menüden seçilen tüm ürünleri ana menüye ekle</label>
+                  <input class="form-check-input" style="position:absolute; right:0;" type="radio" name="altmenutipi" role="switch" value="3" id="hmradio2">
+                </div>
+              </div>
+              <div class="col-12 mb-3">
+                <div class="form-check form-switch pl-0 pl-0">
+                  <label class="form-check-label" for="hmyazdir">Alt menünün tümünü ana menüye ekle</label>
+                  <input class="form-check-input" style="position:absolute; right:0;" type="radio" name="altmenutipi" role="switch" value="4" id="hmradio3">
+                </div>
+              </div>
+            </div>
+
+            <div class="col-xl-8 col-lg-8 col-md-8 col-sm-8 col-xs-8">
+              <table class="table table-responsive">
+                <thead>
+                  <tr>
+                    <th style="width:10%;">
+                      Sıra
+                    </th>
+                    <th style="width:40%;">
+                      Ürün Adı
+                    </th>
+                    <th style="width:10%;">
+                      Miktar
+                    </th>
+                    <th style="width:10%;">
+                      Fyt 1
+                    </th>
+                    <th style="width:10%;">
+                      Fyt 2
+                    </th>
+                    <th style="width:10%;">
+                      Fyt 3
+                    </th>
+                    <th style="width:10%;">
+                      Fyt 4
+                    </th>
+                  </tr>
+                </thead>
+                <tbody id="altmenueklenenler">
+
+                </tbody>
+              </table>
+            </div>
+            <div class="col-xl-4 col-lg-4 col-md-4 col-sm-4 col-xs-4" style="overflow-y: auto; max-height:200px !important; height:200px !important;" id="altmenueklenecekler">
+              
+            </div>
+            
+          </div>
+                    
+            
+        </div> 
+      </div>
+      <div class="modal-footer">
+        <button class='btn btn-primary' onclick="altmenuekle();">Kaydet</button>
+        <button type="button" class="btn btn-secondary" onclick="altmenueklemodalkapat();">Kapat</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+<!-- jQuery -->
+<script src="vendor/jquery/jquery-3.2.1.min.js"></script>
+<!-- Bootstrap 4 -->
+<script src="vendor/bootstrap-5/js/bootstrap.min.js"></script>
+
+<script src="vendor/bootstrap-5/js/bootstrap.bundle.min.js"></script>
+
+<script src="vendor/overlayScrollbars/js/OverlayScrollbars.min.js"></script>
+
+<script src="vendor/alertifyJS/alertify.min.js"></script>
+<!-- AdminLTE App -->
+<script src="js/adminlte.min.js"></script>
+
+<!-- DataTables  & Plugins -->
+<script src="vendor/datatables/jquery.dataTables.min.js"></script>
+<script src="vendor/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
+<script src="vendor/datatables-responsive/js/dataTables.responsive.min.js"></script>
+<script src="vendor/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
+<script src="vendor/datatables-buttons/js/dataTables.buttons.min.js"></script>
+<script src="vendor/datatables-buttons/js/buttons.bootstrap4.min.js"></script>
+<script src="vendor/jszip/jszip.min.js"></script>
+<script src="vendor/pdfmake/pdfmake.min.js"></script>
+<script src="vendor/pdfmake/vfs_fonts.js"></script>
+<script src="vendor/datatables-buttons/js/buttons.html5.min.js"></script>
+<script src="vendor/datatables-buttons/js/buttons.print.min.js"></script>
+<script src="vendor/datatables-buttons/js/buttons.colVis.min.js"></script>
+
+<script type="text/javascript">
+
+function urunlermodalac(){
+    $('#urunlerModal').modal('show');
+  }
+
+
+function uruneklemodalac(){
+    document.getElementById('uruneklemodalgrupno').value = document.getElementById('urunlermodalgrupno').value;
+    $('#urunlerModal').modal('hide');
+    $('#urunekleModal').modal('show');
+  }
+
+
+function uruneklemodalkapat(){
+    urungetir(document.getElementById('urunlermodalgrupno').value);
+    $('#urunekleModal').modal('hide'); 
+    $('#urunlerModal').modal('show');
+  }
+
+
+function hizlimenueklemodalac(){
+    document.getElementById('hizlimenueklemodalgrupno').value = document.getElementById('urunlermodalgrupno').value;
+    urungetirhizlimenu();
+    $('#urunlerModal').modal('hide');
+    $('#hizlimenuekleModal').modal('show');
+  }
+
+
+function hizlimenueklemodalkapat(){
+    urungetir(document.getElementById('urunlermodalgrupno').value);
+    $('#hizlimenuekleModal').modal('hide'); 
+    $('#urunlerModal').modal('show');
+  }
+
+
+function altmenueklemodalac(){
+  document.getElementById('altmenueklemodalgrupno').value = document.getElementById('urunlermodalgrupno').value;
+  urungetiraltmenu();
+  $('#hizlimenuekleModal').modal('hide');
+  $('#altmenuekleModal').modal('show');
+}
+
+function altmenueklemodalkapat(){
+    $('#altmenuekleModal').modal('hide'); 
+    $('#hizlimenuekleModal').modal('show');
+  }
+
+  
+
+
+function urunguncellemodalac(){
+    document.getElementById('urunguncellemodalgrupno').value = document.getElementById('urunlermodalgrupno').value;
+    $('#urunlerModal').modal('hide');
+    $('#urunguncelleModal').modal('show');
+  }
+
+  
+function urunguncellemodalkapat(){
+    urungetir(document.getElementById('urunlermodalgrupno').value);
+    $('#urunguncelleModal').modal('hide'); 
+    $('#urunlerModal').modal('show');
+  }
+
+
+function urungrubuguncellemodalac(no){
+    document.getElementById("urunno").value = no;
+    $('#urunlerModal').modal('hide');
+    $('#grupdegistirModal').modal('show');
+  }
+
+
+function urungrubuguncellemodalkapat(){
+    urungetir(document.getElementById('urunlermodalgrupno').value);
+    $('#grupdegistirModal').modal('hide'); 
+    $('#urunlerModal').modal('show');
+  }
+
+
+$(document).ready(function () {
+
+  if (localStorage.pos_userno == "" || localStorage.pos_userno == null || localStorage.pos_userno == undefined) window.location = "index.html";
+  grupnogetir();
+  grupgetir();
+  yazicigetir();
+  kdvgetir();
+  anaurungrubugetir();
+  birimgetir();
+});
+
+
+function grupgetir() {
+  
+  $.ajax({
+      type: 'post',
+      url: "https://pos.posula.com/api/pos/gruplistegetir",
+      dataType: 'json',
+      contentType: 'application/json; charset=utf-8',
+      beforeSend: function(){
+          $body = $('body'); 
+          $body.addClass('loading'); 
+      },
+      success: function (data, textStatus, xhr) {
+          if (xhr.status == "200")
+          {
+            var _html="<h6>Ürün Grupları</h6><hr><table id='example1' class='table table-responsive-sm table-responsive-md table-bordered table-striped'><thead><tr><th style='width:20% !important;min-width:20% !important;max-width:20% !important;'>Ürün Grubu No</th><th style='width:60% !important;min-width:60% !important;max-width:60% !important;'>Ürün Grubu Adı</th><th style='width:20% !important;min-width:20% !important;max-width:20% !important;'>İşlem</th></tr></thead><tbody>";
+            var _html2="";
+            $.each(data,
+              function (key, item) {
+                if (item.Sira_no=="999") _html += "<tr><td class='py-1' style='width:20% !important;min-width:20% !important;max-width:20% !important;'></td><td class='py-1' style='width:60% !important;min-width:60% !important;max-width:60% !important;'>"+item.SCRNAME+"</td><td class='py-1' style='width:20%;'><div class='dropdown'><button class='btn btn-primary dropdown-toggle btn-block py-0' type='button' data-bs-toggle='dropdown' aria-expanded='false'>İşlemler</button><ul class='dropdown-menu'><li><button class='dropdown-item' type='button' onclick='urunlermodalac(); urungetir(`"+item.Sira_no+"`)' >Ürünler</button></li></ul></div></td></tr>";
+                else _html += "<tr><td class='py-1' style='width:20% !important;min-width:20% !important;max-width:20% !important;'>"+item.Sira_no+"</td><td class='py-1' style='width:60% !important;min-width:60% !important;max-width:60% !important;'>"+item.SCRNAME+"</td><td class='py-1' style='width:20%;'><div class='dropdown'><button class='btn btn-primary dropdown-toggle btn-block py-0' type='button' data-bs-toggle='dropdown' aria-expanded='false'>İşlemler</button><ul class='dropdown-menu'><li><button class='dropdown-item' type='button' onclick='urunlermodalac(); urungetir(`"+item.Sira_no+"`)' >Ürünler</button></li><li><button class='dropdown-item' type='button' data-bs-toggle='modal' data-bs-target='#grupduzenleModal' data-bs-whatever='"+item.Sira_no+"'>Düzenle</button></li><li><button class='dropdown-item' type='button' data-bs-toggle='modal' onclick='grupsil("+item.Sira_no+");'>Grubu Sil</button></li></ul></div></td></tr>";
+
+                if (item.Sira_no!="999"){
+                  if (key==0) _html2 += "<option value='"+item.Sira_no+"' selected>"+item.SCRNAME+"</option>";
+                  else _html2 += "<option value='"+item.Sira_no+"'>"+item.SCRNAME+"</option>";
+                }
+                
+              });
+              _html += "</tbody></table>";
+              document.getElementById("tbl1").innerHTML = _html;
+              document.getElementById("gdgrupadi").innerHTML = _html2;
+              document.getElementById("tbl1").style.display='';
+
+              $("#example1").DataTable({
+                  "paging": false,
+                  "lengthChange": false,
+                  "autoWidth": false,
+                  "buttons": ["excel", "pdf", "print", "colvis"],
+                  "sorting": false,
+                  "dom": "<'row'<'col-sm-12 col-md-6'f>>" +
+                          "<'row'<'col-sm-12'tr>>"
+              }).buttons().container();
+              
+          }
+        
+      },
+      complete: function(data){
+          $body = $('body'); 
+          $body.removeClass('loading'); 
+      },
+      error: function (hata) {
+      }
+  });
+
+}
+
+
+function yazicigetir() {
+  
+  $.ajax({
+      type: 'post',
+      url: "https://pos.posula.com/api/pos/yazicilistegetir",
+      dataType: 'json',
+      contentType: 'application/json; charset=utf-8',
+      beforeSend: function(){
+          $body = $('body'); 
+          $body.addClass('loading'); 
+      },
+      success: function (data, textStatus, xhr) {
+          if (xhr.status == "200")
+          {
+            var _html="";
+            $.each(data,
+              function (key, item) {
+                  if (key==0) _html += "<option value='"+item.no+"' selected>"+item.yaziciadi+"</option>";
+                  else _html += "<option value='"+item.no+"'>"+item.yaziciadi+"</option>";
+              });
+              document.getElementById("yaziciadi").innerHTML = _html;
+              document.getElementById("dyaziciadi").innerHTML = _html;
+              document.getElementById("hmyaziciadi").innerHTML = _html;
+          }
+        
+      },
+      complete: function(data){
+          $body = $('body'); 
+          $body.removeClass('loading'); 
+      },
+      error: function (hata) {
+      }
+  });
+
+}
+
+
+function anaurungrubugetir() {
+  
+  $.ajax({
+      type: 'post',
+      url: "https://pos.posula.com/api/pos/urungrubulistegetir",
+      dataType: 'json',
+      contentType: 'application/json; charset=utf-8',
+      beforeSend: function(){
+          $body = $('body'); 
+          $body.addClass('loading'); 
+      },
+      success: function (data, textStatus, xhr) {
+          if (xhr.status == "200")
+          {
+            var _html="";
+            $.each(data,
+              function (key, item) {
+                  if (key==0) _html += "<option value='"+item.HAMANAGRUP+"' selected>"+item.HAMANAGRUP+"</option>";
+                  else _html += "<option value='"+item.HAMANAGRUP+"'>"+item.HAMANAGRUP+"</option>";
+              });
+              document.getElementById("anagrup").innerHTML = _html;
+              document.getElementById("danagrup").innerHTML = _html;
+              document.getElementById("hmanagrup").innerHTML = _html;
+          }
+        
+      },
+      complete: function(data){
+          $body = $('body'); 
+          $body.removeClass('loading'); 
+      },
+      error: function (hata) {
+      }
+  });
+
+}
+
+
+function kdvgetir() {
+  
+  $.ajax({
+      type: 'post',
+      url: "https://pos.posula.com/api/pos/kdvlistegetir",
+      dataType: 'json',
+      contentType: 'application/json; charset=utf-8',
+      beforeSend: function(){
+          $body = $('body'); 
+          $body.addClass('loading'); 
+      },
+      success: function (data, textStatus, xhr) {
+          if (xhr.status == "200")
+          {
+            var _html="";
+            $.each(data,
+              function (key, item) {
+                  if (key==0) _html += "<option value='"+item.KDVORANI+"' selected>"+item.KDVTIPI+"</option>";
+                  else _html += "<option value='"+item.KDVORANI+"'>"+item.KDVTIPI+"</option>";
+              });
+              document.getElementById("kdv").innerHTML = _html;
+              document.getElementById("dkdv").innerHTML = _html;
+              document.getElementById("hmkdv").innerHTML = _html;
+          }
+        
+      },
+      complete: function(data){
+          $body = $('body'); 
+          $body.removeClass('loading'); 
+      },
+      error: function (hata) {
+      }
+  });
+
+}
+
+
+function birimgetir() {
+  
+  $.ajax({
+      type: 'post',
+      url: "https://pos.posula.com/api/pos/birimlistegetir",
+      dataType: 'json',
+      contentType: 'application/json; charset=utf-8',
+      beforeSend: function(){
+          $body = $('body'); 
+          $body.addClass('loading'); 
+      },
+      success: function (data, textStatus, xhr) {
+          if (xhr.status == "200")
+          {
+            var _html="";
+            $.each(data,
+              function (key, item) {
+                  if (key==0) _html += "<option value='"+item.no+"' selected>"+item.ad+"</option>";
+                  else _html += "<option value='"+item.no+"'>"+item.ad+"</option>";
+              });
+              document.getElementById("birim").innerHTML = _html;
+              document.getElementById("dbirim").innerHTML = _html;
+              document.getElementById("hmbirim").innerHTML = _html;
+          }
+        
+      },
+      complete: function(data){
+          $body = $('body'); 
+          $body.removeClass('loading'); 
+      },
+      error: function (hata) {
+      }
+  });
+
+}
+
+
+function fiyatlarikaydet(){
+  const liste = document.getElementsByName("urunfiyat")
+  liste.forEach(element => {
+    if (element.innerText != element.dataset.eski) //fiyatı değişmişse
+    {
+      $.ajax({
+          type: 'post',
+          url: "https://pos.posula.com/api/pos/fiyatguncelle",
+          dataType: 'json',
+          contentType: 'application/json; charset=utf-8',
+          data: JSON.stringify({ no: element.dataset.hamstokno, fiyat: element.innerText }),
+      });
+
+    }
+  });
+  alertify.success("Fiyatlar güncellendi");
+}
+
+
+function grupnogetir() {
+  
+  $.ajax({
+      type: 'post',
+      url: "https://pos.posula.com/api/pos/grupnogetir",
+      dataType: 'json',
+      contentType: 'application/json; charset=utf-8',
+      beforeSend: function(){
+          $body = $('body'); 
+          $body.addClass('loading'); 
+      },
+      success: function (data, textStatus, xhr) {
+          if (xhr.status == "200")
+          {
+            document.getElementById("grupno").value = data;
+          }
+        
+      },
+      complete: function(data){
+          $body = $('body'); 
+          $body.removeClass('loading'); 
+      },
+      error: function (hata) {
+      }
+  });
+
+  }
+
+
+function grupekle(tip) {
+  
+  var grupno = document.getElementById("grupno").value;
+  var grupadi = document.getElementById("grupadi").value;
+  var menudegoster = "0";
+  if (document.getElementById("menudegoster").checked) menudegoster = "1";
+  var hizlimenu = "0";
+  if (document.getElementById("hizlimenu").checked) hizlimenu = "1";
+  
+  if (grupadi!=""){
+    $.ajax({
+        type: 'post',
+        url: "https://pos.posula.com/api/pos/grupekle",
+        dataType: 'json',
+        contentType: 'application/json; charset=utf-8',
+        data: JSON.stringify({ grupno: grupno, grupadi: grupadi, menudegoster: menudegoster, hizlimenu: hizlimenu }),
+        beforeSend: function(){
+            $body = $('body'); 
+            $body.addClass('loading'); 
+        },
+        success: function (data, textStatus, xhr) {
+            if (xhr.status == "200")
+            {
+              if (data == "OK")
+              {
+                grupgetir();
+                grupnogetir();
+                alertify.success("Grup eklendi");
+                if (tip == "devam"){
+                  document.getElementById("grupadi").value="";
+                  $('#grupadi').focus();
+                }
+                else{
+                  $('#grupekleModal').modal('hide');
+                  $('.modal-backdrop').remove()
+                  $(document.body).removeClass("modal-open");
+                }
+  
+              }
+              else 
+              {
+                alertify.error("Grup mevcut");
+                grupnogetir();
+              }
+              
+                
+            }
+          
+        },
+        complete: function(data){
+            $body = $('body'); 
+            $body.removeClass('loading'); 
+        },
+        error: function (hata) {
+          alertify.error("Grup eklenemedi");
+        }
+    });
+  }
+  else{
+    alertify.error("Grup adı giriniz")
+  }
+    
+  
+}
+
+
+function grupduzenle() {
+  
+  var orjgrupno = document.getElementById("grupduzenlemodalgrupno").value
+  var grupno = document.getElementById("dgrupno").value;
+  var grupadi = document.getElementById("dgrupadi").value;
+  var menudegoster = "0";
+  if (document.getElementById("dmenudegoster").checked) menudegoster = "1";
+  var hizlimenu = "0";
+  if (document.getElementById("dhizlimenu").checked) hizlimenu = "1";
+  
+  if (grupadi!=""){
+    $.ajax({
+        type: 'post',
+        url: "https://pos.posula.com/api/pos/grupguncelle",
+        dataType: 'json',
+        contentType: 'application/json; charset=utf-8',
+        data: JSON.stringify({ id: orjgrupno, grupno: grupno, grupadi: grupadi, menudegoster: menudegoster, hizlimenu: hizlimenu }),
+        beforeSend: function(){
+            $body = $('body'); 
+            $body.addClass('loading'); 
+        },
+        success: function (data, textStatus, xhr) {
+            if (xhr.status == "200")
+            {
+              if (data == "OK")
+              {
+                grupgetir();
+                alertify.success("Grup güncellendi");
+  
+              }
+              else 
+              {
+                alertify.error("Grup no mevcut");
+              }
+              
+                
+            }
+          
+        },
+        complete: function(data){
+            $body = $('body'); 
+            $body.removeClass('loading'); 
+        },
+        error: function (hata) {
+          alertify.error("Grup eklenemedi");
+        }
+    });
+  }
+  else{
+    alertify.error("Grup adı giriniz")
+  }
+    
+  
+}
+
+
+function urungrupdegistir() {
+  
+  var urunno = document.getElementById("urunno").value
+  var grupadi = document.getElementById("gdgrupadi").options[document.getElementById("gdgrupadi").selectedIndex].text;
+  var grupno = document.getElementById("gdgrupadi").value;
+  
+  if (grupadi!=""){
+    $.ajax({
+        type: 'post',
+        url: "https://pos.posula.com/api/pos/urungrupguncelle",
+        dataType: 'json',
+        contentType: 'application/json; charset=utf-8',
+        data: JSON.stringify({ no: urunno, grupno: grupno, grupadi: grupadi }),
+        beforeSend: function(){
+            $body = $('body'); 
+            $body.addClass('loading'); 
+        },
+        success: function (data, textStatus, xhr) {
+            if (xhr.status == "200")
+            {
+              if (data == "OK")
+              {
+                alertify.success("Grup güncellendi");
+                urungrubuguncellemodalkapat();
+              }
+              else 
+              {
+                alertify.error("Grup güncellenemedi");
+              }
+              
+                
+            }
+          
+        },
+        complete: function(data){
+            $body = $('body'); 
+            $body.removeClass('loading'); 
+        },
+        error: function (hata) {
+          alertify.error("Grup güncellenemedi");
+        }
+    });
+  }
+  else{
+    alertify.error("Grup güncellenemedi");
+  }
+    
+  
+}
+
+
+function grupsil(id) {
+  
+  $.ajax({
+      type: 'post',
+      url: "https://pos.posula.com/api/pos/grupsil",
+      dataType: 'json',
+      contentType: 'application/json; charset=utf-8',
+      data: JSON.stringify({ id: id }),
+      beforeSend: function(){
+          $body = $('body'); 
+          $body.addClass('loading'); 
+      },
+      success: function (data, textStatus, xhr) {
+          if (xhr.status == "200")
+          {
+            if (data == "OK")
+            {
+              grupgetir();
+              alertify.success("Grup silindi");
+
+            }
+            else 
+            {
+              alertify.error("Grup silinemedi");
+            }
+            
+              
+          }
+        
+      },
+      complete: function(data){
+          $body = $('body'); 
+          $body.removeClass('loading'); 
+      },
+      error: function (hata) {
+        alertify.error("Grup eklenemedi");
+      }
+  });
+    
+  
+}
+  
+
+const urunekleModal = document.getElementById('urunekleModal')
+urunekleModal.addEventListener('show.bs.modal', event => {
+  console.log('urunekle');
+});
+
+
+const grupduzenleModal = document.getElementById('grupduzenleModal')
+grupduzenleModal.addEventListener('show.bs.modal', event => {
+  const button = event.relatedTarget;
+  const recipient = button.getAttribute('data-bs-whatever');
+  document.getElementById('grupduzenlemodalgrupno').value = recipient;
+  grupdetaygetir(recipient);
+
+});
+
+
+function grupdetaygetir(id) {
+  
+  $.ajax({
+      type: 'post',
+      url: "https://pos.posula.com/api/pos/yonetimurungrubudetaygetir",
+      dataType: 'json',
+      contentType: 'application/json; charset=utf-8',
+      data: JSON.stringify({ id: id }),
+      beforeSend: function(){
+          $body = $('body'); 
+          $body.addClass('loading'); 
+      },
+      success: function (data, textStatus, xhr) {
+          if (xhr.status == "200")
+          {
+            document.getElementById("dgrupno").value=data[0].Sira_no;
+            document.getElementById("dgrupadi").value=data[0].SCRNAME;
+            if (data[0].MENUDEGOSTER=="1") document.getElementById("dmenudegoster").checked = true;
+            if (data[0].HIZLIMENU=="1") document.getElementById("dhizlimenu").checked = true;
+          }
+        
+      },
+      complete: function(data){
+          $body = $('body');  
+          $body.removeClass('loading'); 
+      },
+      error: function (hata) {
+      }
+  });
+
+}
+
+
+function urunnogetir() {
+  
+  $.ajax({
+      type: 'post',
+      url: "https://pos.posula.com/api/pos/urunnogetir",
+      dataType: 'json',
+      contentType: 'application/json; charset=utf-8',
+      beforeSend: function(){
+          $body = $('body'); 
+          $body.addClass('loading'); 
+      },
+      success: function (data, textStatus, xhr) {
+          if (xhr.status == "200")
+          {
+            document.getElementById("urunkodu").value=data;
+          }
+        
+      },
+      complete: function(data){
+          $body = $('body'); 
+          $body.removeClass('loading'); 
+      },
+      error: function (hata) {
+      }
+  });
+
+}
+
+
+function urungetir(grupno) {
+
+  document.getElementById("urunlermodalgrupno").value = grupno;
+
+  $.ajax({
+      type: 'post',
+      url: "https://pos.posula.com/api/pos/urunlistegetir",
+      dataType: 'json',
+      contentType: 'application/json; charset=utf-8',
+      data: JSON.stringify({ grup: grupno }),
+      beforeSend: function(){
+          $body = $('body'); 
+          $body.addClass('loading'); 
+      },
+      success: function (data, textStatus, xhr) {
+          if (xhr.status == "200")
+          {
+            var _html="<table id='example2' class='table table-responsive-sm table-responsive-md table-bordered table-striped text-left'><thead><tr><th style='width:15% !important;min-width:15% !important;max-width:15% !important;'>Ürün No</th><th style='width:15% !important;min-width:15% !important;max-width:15% !important;'>Ürün Kodu 2</th><th style='width:40% !important;min-width:40% !important;max-width:40% !important;'>Ürün Adı</th><th style='width:15% !important;min-width:15% !important;max-width:15% !important;'>Fiyat</th><th style='width:15% !important;min-width:15% !important;max-width:15% !important;'>İşlem</th></tr></thead><tbody>";
+            $.each(data,
+              function (key, item) {
+                  _html += "<tr><td class='py-1' style='width:15% !important;min-width:15% !important;max-width:15% !important;'>"+item.HAMSTOKNO+"</td><td class='py-1' style='width:15% !important;min-width:15% !important;max-width:15% !important;'>"+item.URUNKODU+"</td><td class='py-1' style='width:40% !important;min-width:40% !important;max-width:40% !important;'>"+item.SCRNAME+"</td><td class='py-1' name='urunfiyat' style='width:15% !important;min-width:15% !important;max-width:15% !important; text-align:right;' contenteditable id='uc"+item.HAMSTOKNO+"' data-hamstokno='"+item.HAMSTOKNO+"' data-eski='"+item.PRICE+"'>"+item.PRICE+"</td><td class='py-1' style='width:15% !important;min-width:15% !important;max-width:15% !important;'><div class='dropdown'><button class='btn btn-primary dropdown-toggle btn-block py-0' type='button' data-bs-toggle='dropdown' aria-expanded='false'>İşlemler</button><ul class='dropdown-menu'><li><button class='dropdown-item' type='button' onclick='urunguncellemodalac(); urundetaygetir(`"+item.HAMSTOKNO+"`)'>Ürünü Güncelle</button></li><li><button class='dropdown-item' type='button'  onclick='urungrubuguncellemodalac(`"+item.HAMSTOKNO+"`); grupgetir();'>Ürün Grubu Değiştir</button></li><li><button class='dropdown-item' type='button' data-bs-toggle='modal' onclick='urunsil("+item.HAMSTOKNO+");'>Ürünü Sil</button></li></ul></div></td></tr>";
+              });
+              _html += "</tbody></table>";
+              document.getElementById("tbl2").innerHTML = _html;
+              document.getElementById("tbl2").style.display='';
+
+              $("#example2").DataTable({
+                  "paging": false,
+                  "lengthChange": false,
+                  "autoWidth": false,
+                  "buttons": ["excel", "pdf", "print", "colvis"],
+                  "sorting": false,
+                  "dom": "<'row'<'col-sm-12 col-md-6'f>>" +
+                          "<'row'<'col-sm-12'tr>>"
+              }).buttons().container();
+              
+          }
+        
+      },
+      complete: function(data){
+          $body = $('body'); 
+          $body.removeClass('loading'); 
+      },
+      error: function (hata) {
+      }
+  });
+
+}
+
+
+function urundetaygetir(urunno) {
+
+  //document.getElementById("urunlermodalgrupno").value = grupno;
+
+  $.ajax({
+      type: 'post',
+      url: "https://pos.posula.com/api/pos/urundetaygetir",
+      dataType: 'json',
+      contentType: 'application/json; charset=utf-8',
+      data: JSON.stringify({ id: urunno }),
+      beforeSend: function(){
+          $body = $('body'); 
+          $body.addClass('loading'); 
+      },
+      success: function (data, textStatus, xhr) {
+          if (xhr.status == "200")
+          {
+            
+            document.getElementById("urunguncellemodalno").value  = data[0].HAMSTOKNO;
+            document.getElementById("durunkodu").value  = data[0].HAMSTOKNO;
+            document.getElementById("durunkodu2").value  = data[0].URUNKODU;
+            document.getElementById("durunadi").value  = data[0].SCRNAME;
+            document.getElementById("dfiyat1").value  = data[0].PRICE;
+            document.getElementById("dfiyat2").value  = data[0].PRICE2;
+            document.getElementById("dfiyat3").value  = data[0].PRICE3;
+            document.getElementById("dfiyat4").value  = data[0].PRICE4;
+            document.getElementById("dceyrek").value  = data[0].CEYREKFIYAT;
+            document.getElementById("dyarim").value  = data[0].YARIMFIYAT;
+            document.getElementById("dbirbucuk").value  = data[0].BIRBUCUKFIYAT;
+            document.getElementById("dduble").value  = data[0].DUBLEFIYAT;
+            document.getElementById("dfiyat1").value  = data[0].PRICE;
+            if (data[0].PRN_YN == "1") document.getElementById("dyazdir").checked = true;
+            else document.getElementById("dyazdir").checked = false;
+            if (data[0].TERAZIYEGONDER == "1") document.getElementById("dterazi").checked = true;
+            else document.getElementById("dterazi").checked = false;
+            document.getElementById("dyaziciadi").value = data[0].PRN_NO;
+            document.getElementById("dotv").value = data[0].OTV;
+            document.getElementById("dkdv").value = data[0].KDV;
+            document.getElementById("danagrup").value = data[0].HAMANAGRUP;
+
+            var textToFind = data[0].SATISBIRIMI;
+
+            var dd = document.getElementById('dbirim');
+            for (var i = 0; i < dd.options.length; i++) {
+                if (dd.options[i].text === textToFind) {
+                    dd.selectedIndex = i;
+                    break;
+                }
+            }
+
+            
+
+
+            $.ajax({
+              type: 'post',
+              url: "https://pos.posula.com/api/pos/urunbarkodgetir",
+              dataType: 'json',
+              contentType: 'application/json; charset=utf-8',
+              data: JSON.stringify({ id: urunno }),
+              beforeSend: function(){
+                  $body = $('body'); 
+                  $body.addClass('loading'); 
+              },
+              success: function (data, textStatus, xhr) {
+                  if (xhr.status == "200")
+                  {
+                    document.getElementById("dbarkod").value = "";
+                    $.each(data,
+                    function (key, item) {
+                      if (key<data.length-1) document.getElementById("dbarkod").value += item.barkod + "\n";
+                      else document.getElementById("dbarkod").value += item.barkod;
+                    });
+        
+
+                  }
+                
+              },
+              complete: function(data){
+                  $body = $('body'); 
+                  $body.removeClass('loading'); 
+              },
+              error: function (hata) {
+              }
+          });
+ 
+
+          }
+        
+      },
+      complete: function(data){
+          $body = $('body'); 
+          $body.removeClass('loading'); 
+      },
+      error: function (hata) {
+      }
+  });
+
+}
+
+
+function urunsil(urunno) {
+
+//document.getElementById("urunlermodalgrupno").value = grupno;
+
+  $.ajax({
+      type: 'post',
+      url: "https://pos.posula.com/api/pos/urunsil",
+      dataType: 'json',
+      contentType: 'application/json; charset=utf-8',
+      data: JSON.stringify({ id: urunno }),
+      beforeSend: function(){
+          $body = $('body'); 
+          $body.addClass('loading'); 
+      },
+      success: function (data, textStatus, xhr) {
+          if (xhr.status == "200")
+          {
+            
+            if (data == "OK"){
+              alertify.success("Ürün silindi")
+            }
+            else{
+              alertify.error("Ürün silinemedi")
+            }
+
+
+          }
+        
+      },
+      complete: function(data){
+          $body = $('body'); 
+          $body.removeClass('loading'); 
+      },
+      error: function (hata) {
+        alertify.error("Ürün silinemedi");
+      }
+  });
+
+}
+
+
+function urunekle() {
+  
+  //var urunkodu = document.getElementById("urunkodu").value;
+  var urunadi = document.getElementById("urunadi").value;
+  var urunkodu2 = document.getElementById("urunkodu2").value;
+  var fiyat1 = document.getElementById("fiyat1").value;
+  var fiyat2 = document.getElementById("fiyat2").value;
+  var fiyat3 = document.getElementById("fiyat3").value;
+  var fiyat4 = document.getElementById("fiyat4").value;
+  var ceyrek = document.getElementById("ceyrek").value;
+  var yarim = document.getElementById("yarim").value;
+  var birbucuk = document.getElementById("birbucuk").value;
+  var duble = document.getElementById("duble").value;
+  var barkod = document.getElementById("barkod").value;
+  var yazdir = "0";
+  if (document.getElementById("yazdir").checked) yazdir = "1";
+  var terazi = "0";
+  if (document.getElementById("terazi").checked) terazi = "1";
+  var yazicino = document.getElementById("yaziciadi").value;
+  var yaziciadi = document.getElementById("yaziciadi").options[document.getElementById("yaziciadi").selectedIndex].text;
+  var otv = document.getElementById("otv").value;
+  if (otv=="") otv="0";
+  var kdv = document.getElementById("kdv").value;
+  var birim = document.getElementById("birim").options[document.getElementById("birim").selectedIndex].text;
+  var anagrup = document.getElementById("anagrup").options[document.getElementById("anagrup").selectedIndex].text;
+  var grupno = document.getElementById("uruneklemodalgrupno").value;
+  
+  if (urunkodu!="" && urunadi != "" && fiyat1 > 0)
+    {
+      $.ajax({
+          type: 'post',
+          url: "https://pos.posula.com/api/pos/urunekle",
+          dataType: 'json',
+          contentType: 'application/json; charset=utf-8',
+          data: JSON.stringify({  urunadi: urunadi, urunkodu2: urunkodu2, fiyat1: fiyat1, fiyat2: fiyat2, fiyat3: fiyat3, fiyat4: fiyat4, ceyrek: ceyrek, yarim: yarim, birbucuk: birbucuk, duble: duble, barkod: barkod, yazdir: yazdir, terazi: terazi, yaziciadi: yaziciadi, yazicino: yazicino, otv: otv, kdv: kdv, birim: birim, anagrup: anagrup, grupno: grupno }),
+          beforeSend: function(){
+              $body = $('body'); 
+              $body.addClass('loading'); 
+          },
+          success: function (data, textStatus, xhr) {
+              if (xhr.status == "200")
+              {
+                if (data == "OK")
+                {
+                  urunnogetir();
+                  urungetir(grupadi);
+                  temizle();
+                  alertify.success("Ürün eklendi");
+    
+                }
+                else alertify.error("Ürün eklenemedi");
+                  
+              }
+            
+          },
+          complete: function(data){
+              $body = $('body'); 
+              $body.removeClass('loading'); 
+          },
+          error: function (hata) {
+            alertify.error("Ürün eklenemedi");
+          }
+      });
+    }
+    else{
+      alertify.error("Bilgileri doldurunuz")
+    }
+  
+    }
+
+
+function urunguncelle() {
+  
+  var urunkodu = document.getElementById("durunkodu").value;
+  var urunkodu2 = document.getElementById("durunkodu2").value;
+  var urunadi = document.getElementById("durunadi").value;
+  var fiyat1 = document.getElementById("dfiyat1").value;
+  var fiyat2 = document.getElementById("dfiyat2").value;
+  var fiyat3 = document.getElementById("dfiyat3").value;
+  var fiyat4 = document.getElementById("dfiyat4").value;
+  var ceyrek = document.getElementById("dceyrek").value;
+  var yarim = document.getElementById("dyarim").value;
+  var birbucuk = document.getElementById("dbirbucuk").value;
+  var duble = document.getElementById("dduble").value;
+  var barkod = document.getElementById("dbarkod").value;
+  var yazdir = "0";
+  if (document.getElementById("dyazdir").checked) yazdir = "1";
+  var terazi = "0";
+  if (document.getElementById("dterazi").checked) terazi = "1";
+  var yazicino = document.getElementById("dyaziciadi").value;
+  var yaziciadi = document.getElementById("dyaziciadi").options[document.getElementById("dyaziciadi").selectedIndex].text;
+  var otv = document.getElementById("dotv").value;
+  if (otv=="") otv="0";
+  var kdv = document.getElementById("dkdv").value;
+  var birim = document.getElementById("dbirim").options[document.getElementById("dbirim").selectedIndex].text;
+  var anagrup = document.getElementById("danagrup").options[document.getElementById("danagrup").selectedIndex].text;
+  
+  if (urunkodu!="" && urunadi != "" && fiyat1 > 0)
+    {
+      $.ajax({
+          type: 'post',
+          url: "https://pos.posula.com/api/pos/urunguncelle",
+          dataType: 'json',
+          contentType: 'application/json; charset=utf-8',
+          data: JSON.stringify({ urunkodu: urunkodu, urunkodu2: urunkodu2, urunadi: urunadi, fiyat1: fiyat1, fiyat2: fiyat2, fiyat3: fiyat3, fiyat4: fiyat4, ceyrek: ceyrek, yarim: yarim, birbucuk: birbucuk, duble: duble, barkod: barkod, yazdir: yazdir, terazi: terazi, yaziciadi: yaziciadi, yazicino: yazicino, otv: otv, kdv: kdv, birim: birim, anagrup: anagrup }),
+          beforeSend: function(){
+              $body = $('body'); 
+              $body.addClass('loading'); 
+          },
+          success: function (data, textStatus, xhr) {
+              if (xhr.status == "200")
+              {
+                if (data == "OK")
+                {
+                  dtemizle();
+                  alertify.success("Ürün güncellendi");
+                  urunguncellemodalkapat();
+    
+                }
+                else alertify.error("Ürün güncellenemedi");
+                  
+              }
+            
+          },
+          complete: function(data){
+              $body = $('body'); 
+              $body.removeClass('loading'); 
+          },
+          error: function (hata) {
+            alertify.error("Ürün eklenemedi");
+          }
+      });
+    }
+    else{
+      alertify.error("Bilgileri doldurunuz")
+    }
+  
+}
+
+
+function temizle(){
+    
+  document.getElementById("urunadi").value = "";
+  document.getElementById("urunkodu2").value = "";
+  document.getElementById("fiyat1").value = "0";
+  document.getElementById("fiyat2").value = "0";
+  document.getElementById("fiyat3").value = "0";
+  document.getElementById("fiyat4").value = "0";
+  document.getElementById("ceyrek").value = "0";
+  document.getElementById("yarim").value = "0";
+  document.getElementById("birbucuk").value = "0";
+  document.getElementById("duble").value = "0";
+  document.getElementById("barkod").value = "";
+  document.getElementById("otv").value = "0";
+}
+
+
+function dtemizle(){
+    
+    document.getElementById("durunadi").value = "";
+    document.getElementById("durunkodu2").value = "";
+    document.getElementById("dfiyat1").value = "0";
+    document.getElementById("dfiyat2").value = "0";
+    document.getElementById("dfiyat3").value = "0";
+    document.getElementById("dfiyat4").value = "0";
+    document.getElementById("dceyrek").value = "0";
+    document.getElementById("dyarim").value = "0";
+    document.getElementById("dbirbucuk").value = "0";
+    document.getElementById("dduble").value = "0";
+    document.getElementById("dbarkod").value = "";
+    document.getElementById("dotv").value = "0";
+  }
+
+
+function urungetirhizlimenu() {
+
+    $.ajax({
+        type: 'post',
+        url: "https://pos.posula.com/api/pos/urunlistegetirhizlimenu",
+        dataType: 'json',
+        contentType: 'application/json; charset=utf-8',
+        beforeSend: function(){
+            $body = $('body'); 
+            $body.addClass('loading'); 
+        },
+        success: function (data, textStatus, xhr) {
+            if (xhr.status == "200")
+            {
+              var _html="<table id='example3' class='table table-responsive-sm table-responsive-md table-bordered table-striped text-left' style='max-height:200px;'><thead><tr><th style='width:100% !important;min-width:100% !important;max-width:100% !important;'>Ürün Adı</th></tr></thead><tbody>";
+              $.each(data,
+                function (key, item) {
+                    _html += "<tr><td class='py-1' style='width:100% !important;min-width:100% !important;max-width:100% !important;' data-hamstokno='"+item.HAMSTOKNO+"' data-scrname='"+item.SCRNAME+"' data-fiyat1='"+item.PRICE+"' data-fiyat2='"+item.PRICE2+"' data-fiyat3='"+item.PRICE3+"' data-fiyat4='"+item.PRICE4+"' onclick='hizlimenusolaekle(this);'>"+item.SCRNAME+"</td></tr>";
+                });
+                _html += "</tbody></table>";
+                document.getElementById("hizlimenueklenecekler").innerHTML = _html;
+
+                $("#example3").DataTable({
+                    "paging": false,
+                    "lengthChange": false,
+                    "autoWidth": false,
+                    "buttons": ["excel", "pdf", "print", "colvis"],
+                    "sorting": false,
+                    "dom": "<'row'<'col-sm-12 col-md-6'f>>" +
+                            "<'row'<'col-sm-12'tr>>"
+                }).buttons().container();
+                
+            }
+          
+        },
+        complete: function(data){
+            $body = $('body'); 
+            $body.removeClass('loading'); 
+        },
+        error: function (hata) {
+        }
+    });
+
+}
+
+
+function urungetiraltmenu() {
+
+$.ajax({
+    type: 'post',
+    url: "https://pos.posula.com/api/pos/urunlistegetiraltmenu",
+    dataType: 'json',
+    contentType: 'application/json; charset=utf-8',
+    beforeSend: function(){
+        $body = $('body'); 
+        $body.addClass('loading'); 
+    },
+    success: function (data, textStatus, xhr) {
+        if (xhr.status == "200")
+        {
+          var _html="<table id='example4' class='table table-responsive-sm table-responsive-md table-bordered table-striped text-left' style='max-height:200px;'><thead><tr><th style='width:100% !important;min-width:100% !important;max-width:100% !important;'>Ürün Adı</th></tr></thead><tbody>";
+          $.each(data,
+            function (key, item) {
+                _html += "<tr><td class='py-1' style='width:100% !important;min-width:100% !important;max-width:100% !important;' data-hamstokno='"+item.HAMSTOKNO+"' data-scrname='"+item.SCRNAME+"' data-fiyat1='"+item.PRICE+"' data-fiyat2='"+item.PRICE2+"' data-fiyat3='"+item.PRICE3+"' data-fiyat4='"+item.PRICE4+"' onclick='altmenusolaekle(this);'>"+item.SCRNAME+"</td></tr>";
+            });
+            _html += "</tbody></table>";
+            document.getElementById("altmenueklenecekler").innerHTML = _html;
+
+            $("#example4").DataTable({
+                "paging": false,
+                "lengthChange": false,
+                "autoWidth": false,
+                "buttons": ["excel", "pdf", "print", "colvis"],
+                "sorting": false,
+                "dom": "<'row'<'col-sm-12 col-md-6'f>>" +
+                        "<'row'<'col-sm-12'tr>>"
+            }).buttons().container();
+            
+        }
+      
+    },
+    complete: function(data){
+        $body = $('body'); 
+        $body.removeClass('loading'); 
+    },
+    error: function (hata) {
+    }
+});
+
+}
+
+
+function hizlimenusolaekle(elem){
+  var _html = "";
+  var table = document.getElementById("hizlimenueklenenler");
+  var totalRowCount = table.rows.length+1;
+  _html = "<tr id='tr_"+elem.dataset.hamstokno+"' data-sirano='"+totalRowCount+"'><td data-hamstokno='"+elem.dataset.hamstokno+"' contenteditable>"+ totalRowCount + "</td><td onclick='satirsil(document.getElementById(`tr_"+elem.dataset.hamstokno+"`))'>" + elem.dataset.scrname + "</td><td contenteditable>1</td><td contenteditable>" + elem.dataset.fiyat1 + "</td><td contenteditable>" + elem.dataset.fiyat2 + "</td><td contenteditable>" + elem.dataset.fiyat3 + "</td><td contenteditable>" + elem.dataset.fiyat4 + "</td></tr>";
+  document.getElementById("hizlimenueklenenler").innerHTML+=_html;
+}
+
+
+function altmenusolaekle(elem){
+  var _html = "";
+  var table = document.getElementById("altmenueklenenler");
+  var totalRowCount = table.rows.length+1;
+  _html = "<tr id='tr_"+elem.dataset.hamstokno+"' data-sirano='"+totalRowCount+"'><td data-hamstokno='"+elem.dataset.hamstokno+"' contenteditable>"+ totalRowCount + "</td><td onclick='satirsil(document.getElementById(`tr_"+elem.dataset.hamstokno+"`))'>" + elem.dataset.scrname + "</td><td contenteditable>1</td><td contenteditable>" + elem.dataset.fiyat1 + "</td><td contenteditable>" + elem.dataset.fiyat2 + "</td><td contenteditable>" + elem.dataset.fiyat3 + "</td><td contenteditable>" + elem.dataset.fiyat4 + "</td></tr>";
+  document.getElementById("altmenueklenenler").innerHTML+=_html;
+}
+
+
+function satirsil(elem){
+  elem.remove();
+}
+
+
+function hizlimenuekle(tip){
+  var urunadi = document.getElementById("hmurunadi").value;
+  var fiyat1 = document.getElementById("hmfiyat1").value;
+  var fiyat2 = document.getElementById("hmfiyat2").value;
+  var fiyat3 = document.getElementById("hmfiyat3").value;
+  var fiyat4 = document.getElementById("hmfiyat4").value;
+  var yazdir = "0";
+  if (document.getElementById("yazdir").checked) yazdir = "1";
+  var yazicino = document.getElementById("hmyaziciadi").value;
+  var yaziciadi = document.getElementById("hmyaziciadi").options[document.getElementById("hmyaziciadi").selectedIndex].text;
+  var otv = document.getElementById("hmotv").value;
+  if (otv=="") otv="0";
+  var kdv = document.getElementById("hmkdv").value;
+  var birim = document.getElementById("hmbirim").options[document.getElementById("hmbirim").selectedIndex].text;
+  var anagrup = document.getElementById("hmanagrup").options[document.getElementById("hmanagrup").selectedIndex].text;
+  var grupno = document.getElementById("hizlimenueklemodalgrupno").value;
+
+  var table = document.getElementById('hizlimenueklenenler');
+  var rowCount = table.rows.length;
+  var colCount = document.getElementById('hizlimenueklenenler').rows[0].cells.length;
+
+  var liste = "";
+  for (var r = 0; r < rowCount; r++) {
+    
+    liste += table.rows[r].cells[0].dataset.hamstokno + "#";
+
+    liste += table.rows[r].cells[0].innerText + "#";
+    liste += table.rows[r].cells[1].innerText + "#";
+    liste += table.rows[r].cells[2].innerText + "#";
+    liste += table.rows[r].cells[3].innerText + "#";
+    liste += table.rows[r].cells[4].innerText + "#";
+    liste += table.rows[r].cells[5].innerText + "#";
+    liste += table.rows[r].cells[6].innerText + "$";
+  }
+
+  liste = liste.slice(0,-1);
+
+  if (urunadi != "" && fiyat1 > 0 && liste != "")
+    {
+      $.ajax({
+          type: 'post',
+          url: "https://pos.posula.com/api/pos/hizlimenuekle",
+          dataType: 'json',
+          contentType: 'application/json; charset=utf-8',
+          data: JSON.stringify({ liste: liste, urunadi: urunadi, fiyat1: fiyat1, fiyat2: fiyat2, fiyat3: fiyat3, fiyat4: fiyat4, yazdir: yazdir, yaziciadi: yaziciadi, yazicino: yazicino, otv: otv, kdv: kdv, birim: birim, anagrup: anagrup, grupno: grupno }),
+          beforeSend: function(){
+              $body = $('body'); 
+              $body.addClass('loading'); 
+          },
+          success: function (data, textStatus, xhr) {
+              if (xhr.status == "200")
+              {
+                if (data == "OK")
+                {
+                  hmtemizle();
+                  alertify.success("Menü eklendi");
+
+                  if (tip=="geri"){
+                    hizlimenueklemodalkapat();
+                  }
+                }
+                else alertify.error("Menü eklenemedi");
+              }
+            
+          },
+          complete: function(data){
+              $body = $('body'); 
+              $body.removeClass('loading'); 
+          },
+          error: function (hata) {
+            alertify.error("Menü eklenemedi");
+          }
+      });
+    }
+    else{
+      alertify.error("Bilgileri doldurunuz")
+    }
+}
+
+
+function altmenuekle(){
+  var urunadi = document.getElementById("amurunadi").value;
+
+  var altmenutipi = document.querySelector('input[name="altmenutipi"]:checked').value;
+  
+  var table = document.getElementById('altmenueklenenler');
+  var rowCount = table.rows.length;
+  var colCount = document.getElementById('altmenueklenenler').rows[0].cells.length;
+
+  var liste = "";
+  for (var r = 0; r < rowCount; r++) {
+    
+    liste += table.rows[r].cells[0].dataset.hamstokno + "#";
+
+    liste += table.rows[r].cells[0].innerText + "#";
+    liste += table.rows[r].cells[1].innerText + "#";
+    liste += table.rows[r].cells[2].innerText + "#";
+    liste += table.rows[r].cells[3].innerText + "#";
+    liste += table.rows[r].cells[4].innerText + "#";
+    liste += table.rows[r].cells[5].innerText + "#";
+    liste += table.rows[r].cells[6].innerText + "$";
+  }
+
+  liste = liste.slice(0,-1);
+
+  if (urunadi != "" && liste != "")
+    {
+      $.ajax({
+          type: 'post',
+          url: "https://pos.posula.com/api/pos/altmenuekle",
+          dataType: 'json',
+          contentType: 'application/json; charset=utf-8',
+          data: JSON.stringify({ liste: liste, urunadi: urunadi, altmenutipi: altmenutipi }),
+          beforeSend: function(){
+              $body = $('body'); 
+              $body.addClass('loading'); 
+          },
+          success: function (data, textStatus, xhr) {
+              if (xhr.status == "200")
+              {
+                if (data != "HATA")
+                {
+                  
+                  var _html = "";
+                  var table = document.getElementById("hizlimenueklenenler");
+                  var totalRowCount = table.rows.length+1;
+                  _html = "<tr id='tr_"+data+"' data-sirano='"+totalRowCount+"'><td data-hamstokno='"+data+"' contenteditable>"+ totalRowCount + "</td><td onclick='satirsil(document.getElementById(`tr_"+data+"`))'>" + document.getElementById('amurunadi').value + "</td><td contenteditable>1</td><td> </td><td> </td><td> </td><td> </td></tr>";
+                  document.getElementById("hizlimenueklenenler").innerHTML+=_html;
+                  
+                  
+                  amtemizle();
+                  alertify.success("Menü eklendi");
+                  altmenueklemodalkapat();
+                  
+                }
+                else alertify.error("Menü eklenemedi");
+              }
+            
+          },
+          complete: function(data){
+              $body = $('body'); 
+              $body.removeClass('loading'); 
+          },
+          error: function (hata) {
+            alertify.error("Menü eklenemedi");
+          }
+      });
+    }
+    else{
+      alertify.error("Bilgileri doldurunuz")
+    }
+}
+
+function hmtemizle(){
+    
+  document.getElementById("hmurunadi").value = "";
+  document.getElementById("hmfiyat1").value = "0";
+  document.getElementById("hmfiyat2").value = "0";
+  document.getElementById("hmfiyat3").value = "0";
+  document.getElementById("hmfiyat4").value = "0";
+  document.getElementById("otv").value = "0";
+  document.getElementById("hizlimenueklenenler").innerHTML="";
+}
+
+
+function amtemizle(){
+    
+    document.getElementById("amurunadi").value = "";
+    document.getElementById("altmenueklenenler").innerHTML="";
+  }
+
+</script>
+
+</body>
+</html>

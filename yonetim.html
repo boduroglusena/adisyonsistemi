@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <title>POSULA | Yönetim</title>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="icon" type="image/png" href="images/icons/favicon.ico"/>
+  <link rel="stylesheet" type="text/css" href="vendor/bootstrap-5/css/bootstrap.min.css">
+  <link rel="stylesheet" type="text/css" href="vendor/fontawesome-6/css/all.min.css">
+  <link rel="stylesheet" href="css/adminlte.min.css">
+  <link rel="stylesheet" type="text/css" href="vendor/alertifyJS/alertify.min.css">
+  <link rel="stylesheet" type="text/css" href="vendor/overlayScrollbars/css/OverlayScrollbars.min.css">
+  
+  <style>
+    html, body {
+      height: 100%;
+      margin: 0;
+    }
+    
+    .full-height {
+      height: 100%;
+      width: 100%;
+    }	
+    
+    .alertify-notifier {
+                color: #fff;
+            }
+    
+    .loading-bar{
+      display: none;
+      position: fixed;
+      z-index: 9999;
+      left:0;
+      top:0;
+      width: 100%;
+      height: 100%;
+      background-image: url('images/loading.gif');
+      background-position: 50% 50%;
+      background-color: rgba(255,255,255,0.8);
+      background-repeat: no-repeat;
+    }
+    
+    body.loading{
+      overflow: hidden;
+    }
+    
+    body.loading .loading-bar{
+      display: block;
+    }
+    
+    input[type="file"] {
+      display: none;
+    }
+
+    .custom-file-upload {
+      border: 1px solid #ccc;
+      display: inline-block;
+      padding: 6px 12px;
+      cursor: pointer;
+    }
+    </style>
+
+
+</head>
+<body class="hold-transition sidebar-mini layout-fixed layout-navbar-fixed layout-footer-fixed ">
+<!-- Site wrapper -->
+<div class="wrapper">
+  <!-- Navbar -->
+  <nav class="main-header navbar navbar-expand navbar-white navbar-light">
+    <!-- Left navbar links -->
+    <ul class="navbar-nav">
+      <li class="nav-item">
+        <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
+      </li>
+      <li class="nav-item">
+        <a id="menuadi" class="nav-link">İşletme Bilgileri</a>
+      </li>
+    </ul>
+  </nav>
+  <!-- /.navbar -->
+
+  <!-- Main Sidebar Container -->
+  <aside class="main-sidebar sidebar-light-primary elevation-2">
+    <a class="brand-link">
+      <img src="images/O_small.png" alt="POSULA" class="brand-image img-circle elevation-3" style="opacity: .8">
+      <span class="brand-text" style="color:#312783; font-weight: 600; margin-left: 10px;">POSULA</span>
+    </a>
+    <!-- Sidebar -->
+    <div class="sidebar">
+
+      <!-- Sidebar Menu -->
+      <nav class="mt-2">
+        <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+          <!-- Add icons to the links using the .nav-icon class
+               with font-awesome or any other icon font library -->
+          <li class="nav-item">
+            <a class="nav-link active">
+              <i class="nav-icon fas fa-building"></i>
+              <p>
+                İşletme Bilgieri
+              </p>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="tanimlamalar.html" class="nav-link">
+              <i class="nav-icon fas fa-gears"></i>
+              <p>
+                Genel Ayarlar
+              </p>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="bolum.html" class="nav-link">
+              <i class="nav-icon fas fa-th"></i>
+              <p>
+                Bölüm ve Masalar
+              </p>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="urunler.html" class="nav-link">
+              <i class="nav-icon fas fa-coffee"></i>
+              <p>
+                Ürünler
+              </p>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="kullanicilar.html" class="nav-link">
+              <i class="nav-icon fas fa-user"></i>
+              <p>
+                Kullanıcılar
+              </p>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="javascript:void(0)" onclick="localStorage.pos_userno='';localStorage.pos_password='';window.location='index.html';" class="nav-link">
+              <i class="nav-icon fas fa-power-off"></i>
+              <p>Çıkış</p>
+            </a>
+          </li>
+        </ul>
+      </nav>
+      <!-- /.sidebar-menu -->
+    </div>
+    <!-- /.sidebar -->
+  </aside>
+
+  <!-- Content Wrapper. Contains page content -->
+  <div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+      <div class="container-fluid">
+        <div class="row">
+
+          <div class="col-auto">
+            <div class="form-floating mb-2" style="display:inline-block !important;">
+              <input type="text" class="form-control" autocomplete="off" id="isletmeadi" placeholder="İşletme Adı" onchange="isletmekodu();" style="width:300px; max-width:300px;">
+              <label for="isletmeadi" style="font-weight: 500;">İşletme Adı</label>
+            </div>
+            <br>
+            <div class="form-floating mb-2" style="display:inline-block !important;">
+              <input type="text" class="form-control" autocomplete="off" id="isletmekodu" placeholder="İşletme Kodu" style="width:300px; max-width:300px;">
+              <label for="isletmekodu" style="font-weight: 500;">İşletme Kodu</label>
+            </div>
+          </div>
+          <div class="col-auto">
+            <div class="form-floating mb-2" style="display:inline-block !important;">
+              <input type="text" class="form-control" autocomplete="off" id="subeadi" placeholder="Şube Adı" onchange="subekodu();" style="width:300px; max-width:300px;">
+              <label for="subeadi" style="font-weight: 500;">Şube Adı</label>
+            </div>
+            <br>
+            <div class="form-floating mb-2" style="display:inline-block !important;">
+              <input type="text" class="form-control" autocomplete="off" id="subekodu" placeholder="Şube Kodu" style="width:300px; max-width:300px;">
+              <label for="subekodu" style="font-weight: 500;">Şube Kodu</label>
+            </div>
+          </div>
+
+        </div>
+
+
+        <div class="row mb-2">
+
+          <div class="col-auto">
+            <div class="form-floating mb-1">
+              <img src="" style="max-width: 300px; width:100%; height: auto;" id="firmalogo">
+            </div>
+            
+            <label for="firmalogo_input" class="custom-file-upload btn-block" style="border-radius: 4px; padding-top:15px; background-color: white; width:100% !important; max-width: 300px;" id="firmalogo_label">
+              <i class="fas fa-upload"></i> Firma Logosu
+            </label>
+            <input id="firmalogo_input" accept="image/png, image/gif, image/jpeg, image/bmp" style="width:300px !important;" type="file" onchange="gorselkontrol();"/>  
+          </div>
+
+          <div class="col-auto">
+            <div class="form-floating mb-1">
+              <img src="" style="max-width: 300px; width:100%; height: auto;" id="adisyonlogo">
+            </div>
+            
+            <label for="adisyonlogo_input" class="custom-file-upload btn-block" style="border-radius: 4px; padding-top:15px; background-color: white; width:100% !important; max-width: 300px;" id="adisyonlogo_label">
+              <i class="fas fa-upload"></i> Adisyon Logosu
+            </label>
+            <input id="adisyonlogo_input" accept="image/png, image/gif, image/jpeg, image/bmp" style="width:300px !important;" type="file" onchange="gorselkontrol2();"/>  
+          </div>
+
+        </div>
+
+      </div><!-- /.container-fluid -->
+    </section>
+  </div>
+  <!-- /.content-wrapper -->
+
+  <footer id="footer" class="main-footer">
+    <div class="float-right">
+      <button class='btn btn-primary py-0' onclick="kaydet();">Kaydet</button>
+    </div>
+    <strong><a href="https://posula.com" style="color:royalblue">POSULA</a> &copy; 2023</strong>
+  </footer>
+
+  <!-- Control Sidebar -->
+  <aside class="control-sidebar control-sidebar-light">
+    <!-- Control sidebar content goes here -->
+  </aside>
+  <!-- /.control-sidebar -->
+</div>
+<!-- ./wrapper -->
+<div class="loading-bar"></div>
+
+<script src="vendor/jquery/jquery-3.2.1.min.js"></script>
+<script src="vendor/bootstrap-5/js/bootstrap.min.js"></script>
+<script src="vendor/overlayScrollbars/js/OverlayScrollbars.min.js"></script>
+<script src="vendor/alertifyJS/alertify.min.js"></script>
+<script src="js/adminlte.min.js"></script>
+
+<script type="text/javascript">
+  $(document).ready(function () {
+
+  if (localStorage.pos_userno == "" || localStorage.pos_userno == null || localStorage.pos_userno == undefined) window.location = "index.html";
+  bilgilerigetir();
+
+  });
+
+  function bilgilerigetir(){
+    $.ajax({
+    async: false,
+    type: 'post',
+    url: "https://pos.posula.com/api/pos/yonetimbilgigetir",
+    dataType: 'json',
+    contentType: 'application/json; charset=utf-8',
+    success: function (gelenveri) {
+     
+      if (gelenveri.length>0){
+        document.getElementById("isletmekodu").value = gelenveri[0]["firmaid"];
+        document.getElementById("isletmeadi").value = gelenveri[0]["firmaadi"];
+        document.getElementById("subekodu").value = gelenveri[0]["subeid"];
+        document.getElementById("subeadi").value = gelenveri[0]["subeadi"];
+        if (gelenveri[0]["firmalogo"]!="") document.getElementById("firmalogo").src = "images/"+ gelenveri[0]["firmalogo"];
+        if (gelenveri[0]["adisyonlogo"]!="") document.getElementById("adisyonlogo").src = "images/"+ gelenveri[0]["adisyonlogo"];
+      }
+      
+    }
+        
+    });
+  }
+
+  function gorselkontrol(){
+    if( document.getElementById("firmalogo_input").files.length > 0 ){
+
+        var fileName = document.getElementById("firmalogo_input").value;
+        var idxDot = fileName.lastIndexOf(".") + 1;
+        var extFile = fileName.substr(idxDot, fileName.length).toLowerCase();
+        if (extFile=="jpg" || extFile=="jpeg" || extFile=="png"){
+            //document.getElementById("d_gorsellabel").innerHTML = "<i class='fas fa-check' style='color: #20b711;'></i> " + document.getElementById("d_gorsel").value;
+            document.getElementById("firmalogo_label").innerHTML = "<i class='fas fa-check' style='color: #20b711;'></i>";
+            //document.getElementById("d_kategorigorsel").src=document.getElementById("d_gorsel").value;
+
+            var input = document.getElementById("firmalogo_input");
+            var fReader = new FileReader();
+            fReader.readAsDataURL(input.files[0]);
+            fReader.onloadend = function(event){
+                var img = document.getElementById("firmalogo");
+                img.src = event.target.result;
+            }
+        }else{
+            alertify.error("Sadece görsel dosya yükleyebilirsiniz");
+        }
+    }
+    else {
+      document.getElementById("firmalogo_label").innerHTML = "<i class='fas fa-upload'></i> Firma Logosu";
+    }
+  }
+
+  function gorselkontrol2(){
+    if( document.getElementById("adisyonlogo_input").files.length > 0 ){
+
+        var fileName = document.getElementById("adisyonlogo_input").value;
+        var idxDot = fileName.lastIndexOf(".") + 1;
+        var extFile = fileName.substr(idxDot, fileName.length).toLowerCase();
+        if (extFile=="jpg" || extFile=="jpeg" || extFile=="png"){
+            //document.getElementById("d_gorsellabel").innerHTML = "<i class='fas fa-check' style='color: #20b711;'></i> " + document.getElementById("d_gorsel").value;
+            document.getElementById("adisyonlogo_label").innerHTML = "<i class='fas fa-check' style='color: #20b711;'></i>";
+            //document.getElementById("d_kategorigorsel").src=document.getElementById("d_gorsel").value;
+
+            var input = document.getElementById("adisyonlogo_input");
+            var fReader = new FileReader();
+            fReader.readAsDataURL(input.files[0]);
+            fReader.onloadend = function(event){
+                var img = document.getElementById("adisyonlogo");
+                img.src = event.target.result;
+            }
+        }else{
+            alertify.error("Sadece görsel dosya yükleyebilirsiniz");
+        }
+    }
+    else {
+      document.getElementById("adisyonlogo_label").innerHTML = "<i class='fas fa-upload'></i> Adisyon Logosu";
+    }
+  }
+
+  function kaydet(){
+  
+  var subeid = document.getElementById("subekodu").value;
+  var subeadi = document.getElementById("subeadi").value;
+  var isletmeid = document.getElementById("isletmekodu").value;
+  var isletmeadi = document.getElementById("isletmeadi").value;
+  var firmalogo = document.getElementById("firmalogo_input").value;
+  var adisyonlogo = document.getElementById("adisyonlogo_input").value;
+  
+  if (firmalogo.lastIndexOf("\\")>-1) firmalogo=firmalogo.slice(firmalogo.lastIndexOf("\\")+1);
+  if (adisyonlogo.lastIndexOf("\\")>-1) adisyonlogo=adisyonlogo.slice(adisyonlogo.lastIndexOf("\\")+1);
+  
+    $.ajax({
+      async: false,
+      type: 'post',
+      url: "https://pos.posula.com/api/pos/isletmeguncelle",
+      dataType: 'json',
+      contentType: 'application/json; charset=utf-8',
+      data: JSON.stringify({ subeid: subeid, subeadi: subeadi, isletmeid: isletmeid, isletmeadi: isletmeadi, firmalogo: firmalogo, adisyonlogo: adisyonlogo }),
+      success: function (gelenveri) {
+            if (gelenveri!="HATA"){
+              var data = new FormData();
+            var files = $("#firmalogo_input").get(0).files;
+            if (files.length > 0) {
+                for (f = 0; f < files.length; f++) {
+                    data.append("UploadedImage", files[f]);
+                }
+  
+                $.ajax({
+                    type: "POST",
+                    async: true,
+                    url: "https://pos.posula.com/api/pos/firmalogoguncelle/",
+                    contentType: false,
+                    processData: false,
+                    data: data,
+                    beforeSend: function(){
+                        $body = $('body'); 
+                        $body.addClass('loading'); 
+                    },
+                    complete: function(data){
+                        $body = $('body'); 
+                        $body.removeClass('loading'); 
+                        alertify.success("Kaydedildi");
+                    },
+                });
+            }
+
+            var data1 = new FormData();
+            var files1 = $("#adisyonlogo_input").get(0).files;
+            if (files1.length > 0) {
+                for (f = 0; f < files1.length; f++) {
+                    data1.append("UploadedImage", files1[f]);
+                }
+  
+                $.ajax({
+                    type: "POST",
+                    async: true,
+                    url: "https://pos.posula.com/api/pos/adisyonlogoguncelle/",
+                    contentType: false,
+                    processData: false,
+                    data: data1,
+                    beforeSend: function(){
+                        $body = $('body'); 
+                        $body.addClass('loading'); 
+                    },
+                    complete: function(data){
+                        $body = $('body'); 
+                        $body.removeClass('loading'); 
+                        alertify.success("Kaydedildi");
+                    },
+                });
+            }
+
+
+            alertify.success("Kaydedildi");
+            }
+            else alertify.error("Kaydedilemedi");
+          },
+      });
+}
+
+
+function isletmekodu(){
+  var bosluk = 0;
+  document.getElementById("isletmekodu").value = document.getElementById("isletmeadi").value.substr(0,1);
+  if (document.getElementById("isletmeadi").value.indexOf(" ")>-1)
+  {
+    bosluk = document.getElementById("isletmeadi").value.indexOf(" ");
+    document.getElementById("isletmekodu").value += document.getElementById("isletmeadi").value.substr(bosluk+1,1) + "01";
+  }
+  
+}
+
+function subekodu(){
+  var bosluk = 0;
+  document.getElementById("subekodu").value = document.getElementById("subeadi").value.substr(0,1);
+  if (document.getElementById("subeadi").value.indexOf(" ")>-1)
+  {
+    bosluk = document.getElementById("subeadi").value.indexOf(" ");
+    document.getElementById("subekodu").value += document.getElementById("subeadi").value.substr(bosluk+1,1) + "01";
+  }
+  
+}
+
+</script>
+
+
+</body>
+</html>

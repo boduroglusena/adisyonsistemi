@@ -1,0 +1,811 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <title>POSULA | Yönetim</title>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="icon" type="image/png" href="images/icons/favicon.ico"/>
+  <link rel="stylesheet" type="text/css" href="vendor/bootstrap-5/css/bootstrap.min.css">
+  <link rel="stylesheet" type="text/css" href="vendor/fontawesome-6/css/all.min.css">
+  <link rel="stylesheet" href="css/adminlte.min.css">
+  <link rel="stylesheet" type="text/css" href="vendor/alertifyJS/alertify.min.css">
+  <link rel="stylesheet" type="text/css" href="vendor/overlayScrollbars/css/OverlayScrollbars.min.css">
+
+  <!-- DataTables -->
+  <link rel="stylesheet" href="vendor/datatables-bs4/css/dataTables.bootstrap4.css">
+  <link rel="stylesheet" href="vendor/datatables-responsive/css/responsive.bootstrap4.min.css">
+  <link rel="stylesheet" href="vendor/datatables-buttons/css/buttons.bootstrap4.min.css">
+  
+
+  <style>
+    .loading-bar{
+        display: none;
+        position: fixed;
+        z-index: 9999;
+        left:0;
+        top:0;
+        width: 100%;
+        height: 100%;
+        background-image: url('images/loading.gif');
+        background-position: 50% 50%;
+        background-color: rgba(255,255,255,0.8);
+        background-repeat: no-repeat;
+      }
+      
+      body.loading{
+        overflow: hidden;
+      }
+      
+      body.loading .loading-bar{
+        display: block;
+      }
+  
+      .alertify-notifier {
+                  color: #fff;
+              }
+      
+  </style>
+
+</head>
+<body class="hold-transition sidebar-mini layout-fixed layout-navbar-fixed layout-footer-fixed ">
+<!-- Site wrapper -->
+<div class="wrapper">
+  <!-- Navbar -->
+  <nav class="main-header navbar navbar-expand navbar-white navbar-light">
+    <!-- Left navbar links -->
+    <ul class="navbar-nav">
+      <li class="nav-item">
+        <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
+      </li>
+      <li class="nav-item">
+        <a id="menuadi" class="nav-link">Kullanıcılar</a>
+      </li>
+    </ul>
+
+  </nav>
+  <!-- /.navbar -->
+
+  <!-- Main Sidebar Container -->
+  <aside class="main-sidebar sidebar-light-primary elevation-2">
+    <a class="brand-link">
+      <img src="images/O_small.png" alt="POSULA" class="brand-image img-circle elevation-3" style="opacity: .8">
+      <span class="brand-text" style="color:#312783; font-weight: 600; margin-left: 10px;">POSULA</span>
+    </a>
+    <!-- Sidebar -->
+    <div class="sidebar">
+
+      <!-- Sidebar Menu -->
+      <nav class="mt-2">
+        <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+          <!-- Add icons to the links using the .nav-icon class
+               with font-awesome or any other icon font library -->
+          <li class="nav-item">
+            <a href="yonetim.html" class="nav-link">
+              <i class="nav-icon fas fa-building"></i>
+              <p>
+                İşletme Bilgileri
+              </p>
+            </a>
+          </li>
+
+          <li class="nav-item">
+            <a href="tanimlamalar.html" class="nav-link">
+              <i class="nav-icon fas fa-gears"></i>
+              <p>
+                Genel Ayarlar
+              </p>
+            </a>
+          </li>
+
+          <li class="nav-item">
+            <a href="bolum.html" class="nav-link">
+              <i class="nav-icon fas fa-th"></i>
+              <p>
+                Bölüm ve Masalar
+              </p>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="urunler.html" class="nav-link">
+              <i class="nav-icon fas fa-coffee"></i>
+              <p>
+                Ürünler
+              </p>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link active">
+              <i class="nav-icon fas fa-user"></i>
+              <p>
+                Kullanıcılar
+              </p>
+            </a>
+          </li>
+
+        
+          <li class="nav-item">
+            <a href="javascript:void(0)" onclick="localStorage.pos_userno='';localStorage.pos_password='';window.location='index.html';" class="nav-link">
+              <i class="nav-icon fas fa-power-off"></i>
+              <p>Çıkış</p>
+            </a>
+          </li>
+        </ul>
+      </nav>
+      <!-- /.sidebar-menu -->
+    </div>
+    <!-- /.sidebar -->
+  </aside>
+
+  <!-- Content Wrapper. Contains page content -->
+  <div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+      <div class="container-fluid">
+        <div class="row mb-2">
+          
+          <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12 px-1 mb-2" id="tbl1" style="padding-top:20px; display: none; background-color: white; border:1px solid #ccc; border-radius: 10px;">
+                
+          </div>
+
+
+        </div>
+      </div><!-- /.container-fluid -->
+    </section>
+  </div>
+  <!-- /.content-wrapper -->
+
+
+  <div class="modal fade" id="kullaniciekleModal" tabindex="-1" aria-labelledby="kullaniciekleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+      <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="kullaniciekleModalLabel">Kullanıcı Ekle</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <div class="row">
+              <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                <div class="form-floating mb-2">
+                  <input type="text" class="form-control" id="ad" placeholder="Ad">
+                  <label for="ad" style="font-weight: 500;">Ad</label>
+                </div>
+              </div>
+              <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                <div class="form-floating mb-2">
+                  <input type="password" class="form-control" min="0" step="10" id="sifre" placeholder="Şifre">
+                  <label for="sifre" style="font-weight: 500;">Şifre</label>
+                </div>
+              </div>
+              <div class="col-xl-4 col-lg-4 col-md-4 col-sm-6 col-xs-6 mb-2">
+                <button class="btn btn-outline-primary btn-block" onclick="yetkisec('garson');">Garson</button>
+              </div>
+              <div class="col-xl-4 col-lg-4 col-md-4 col-sm-6 col-xs-6 mb-2">
+                <button class="btn btn-outline-primary btn-block" onclick="yetkisec('kasiyer');">Kasiyer</button>
+              </div>
+              <div class="col-xl-4 col-lg-4 col-md-4 col-sm-6 col-xs-6 mb-2">
+                <button class="btn btn-outline-primary btn-block" onclick="yetkisec('yonetici');">Yönetici</button>
+              </div>
+              <div class="col-xl-12 col-lg-12 col-md-12 col-sm-6 col-xs-6 mb-2">
+                <button class="btn btn-outline-primary btn-block" onclick="yetkisec('iptal');">Tüm yetkileri kaldır</button>
+              </div>
+              
+              <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                <div class="form-check form-switch pl-0">
+                  <label class="form-check-label" for="yonetimegiris">Yönetime giriş</label>
+                  <input class="form-check-input" style="position:absolute; right:0;" type="checkbox" role="switch" id="yonetimegiris">
+                </div>
+                <div class="form-check form-switch pl-0">
+                  <label class="form-check-label" for="satisagiris">Satışa giriş</label>
+                  <input class="form-check-input" style="position:absolute; right:0;" type="checkbox" role="switch" id="satisagiris">
+                </div>
+                <div class="form-check form-switch pl-0">
+                  <label class="form-check-label" for="kasaraporu">Kasa raporu</label>
+                  <input class="form-check-input" style="position:absolute; right:0;" type="checkbox" role="switch" id="kasaraporu">
+                </div>
+                <div class="form-check form-switch pl-0">
+                  <label class="form-check-label" for="tumraporlar">Tüm raporlar</label>
+                  <input class="form-check-input" style="position:absolute; right:0;" type="checkbox" role="switch" id="tumraporlar">
+                </div>
+                <div class="form-check form-switch pl-0">
+                  <label class="form-check-label" for="satis">Satış</label>
+                  <input class="form-check-input" style="position:absolute; right:0;" type="checkbox" role="switch" id="satis">
+                </div>
+                <div class="form-check form-switch pl-0">
+                  <label class="form-check-label" for="tahsilat">Tahsilat</label>
+                  <input class="form-check-input" style="position:absolute; right:0;" type="checkbox" role="switch" id="tahsilat">
+                </div>
+                <div class="form-check form-switch pl-0">
+                  <label class="form-check-label" for="kapatilanhesap">Kapatılan hesapta işlem</label>
+                  <input class="form-check-input" style="position:absolute; right:0;" type="checkbox" role="switch" id="kapatilanhesap">
+                </div>
+                <div class="form-check form-switch pl-0">
+                  <label class="form-check-label" for="iptal">Ürün İptali</label>
+                  <input class="form-check-input" style="position:absolute; right:0;" type="checkbox" role="switch" id="iptal">
+                </div>
+              </div>
+              <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                <div class="form-check form-switch pl-0">
+                  <label class="form-check-label" for="oraniskonto">Oran iskontosu</label>
+                  <input class="form-check-input" style="position:absolute; right:0;" type="checkbox" role="switch" id="oraniskonto">
+                </div>
+                <div class="form-check form-switch pl-0">
+                  <label class="form-check-label" for="tutariskonto">Tutar iskontosu</label>
+                  <input class="form-check-input" style="position:absolute; right:0;" type="checkbox" role="switch" id="tutariskonto">
+                </div>
+                <div class="form-check form-switch pl-0">
+                  <label class="form-check-label" for="ikram">İkram</label>
+                  <input class="form-check-input" style="position:absolute; right:0;" type="checkbox" role="switch" id="ikram">
+                </div>
+                <div class="form-check form-switch pl-0">
+                  <label class="form-check-label" for="veresiye">Veresiye kapatma</label>
+                  <input class="form-check-input" style="position:absolute; right:0;" type="checkbox" role="switch" id="veresiye">
+                </div>
+                <div class="form-check form-switch pl-0">
+                  <label class="form-check-label" for="fiyatdegistirme">Fiyat değiştirme</label>
+                  <input class="form-check-input" style="position:absolute; right:0;" type="checkbox" role="switch" id="fiyatdegistirme">
+                </div>
+                <div class="form-check form-switch pl-0">
+                  <label class="form-check-label" for="uruntasima">Ürün taşıma</label>
+                  <input class="form-check-input" style="position:absolute; right:0;" type="checkbox" role="switch" id="uruntasima">
+                </div>
+                <div class="form-check form-switch pl-0">
+                  <label class="form-check-label" for="masatasima">Masa taşıma</label>
+                  <input class="form-check-input" style="position:absolute; right:0;" type="checkbox" role="switch" id="masatasima">
+                </div>
+                <div class="form-check form-switch pl-0">
+                  <label class="form-check-label" for="gelirnoktasi">Masa kilidi kaldır</label>
+                  <input class="form-check-input" style="position:absolute; right:0;" type="checkbox" role="switch" id="gelirnoktasi">
+                </div>
+              </div>
+              <div class="col-12 my-1 text-right mt-3">
+                <button class='btn btn-primary py-1' onclick="kullaniciekle('devam');">Kaydet ve Devam Et</button>
+                <button class='btn btn-primary py-1' onclick="kullaniciekle('geri');">Kaydet ve Geri Dön</button>
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    <div class="modal fade" id="kullaniciguncelleModal" tabindex="-1" aria-labelledby="kullaniciguncelleModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="kullaniciguncelleModalLabel">Kullanıcı Güncelle</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <div class="row">
+                <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                  <div class="form-floating mb-2">
+                    <input type="password" style="display: none;" id="kullanicino">
+                    <input type="text" class="form-control" id="mad" placeholder="Ad">
+                    <label for="mad" style="font-weight: 500;">Ad</label>
+                  </div>
+                </div>
+                <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                  <div class="form-floating mb-2">
+                    <input type="password" class="form-control" min="0" step="10" id="msifre" placeholder="Şifre">
+                    <label for="msifre" style="font-weight: 500;">Şifre</label>
+                  </div>
+                </div>
+                
+                <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                  <div class="form-check form-switch pl-0">
+                    <label class="form-check-label" for="myonetimegiris">Yönetime giriş</label>
+                    <input class="form-check-input" style="position:absolute; right:0;" type="checkbox" role="switch" id="myonetimegiris">
+                  </div>
+                  <div class="form-check form-switch pl-0">
+                    <label class="form-check-label" for="msatisagiris">Satışa giriş</label>
+                    <input class="form-check-input" style="position:absolute; right:0;" type="checkbox" role="switch" id="msatisagiris">
+                  </div>
+                  <div class="form-check form-switch pl-0">
+                    <label class="form-check-label" for="mkasaraporu">Kasa raporu</label>
+                    <input class="form-check-input" style="position:absolute; right:0;" type="checkbox" role="switch" id="mkasaraporu">
+                  </div>
+                  <div class="form-check form-switch pl-0">
+                    <label class="form-check-label" for="mtumraporlar">Tüm raporlar</label>
+                    <input class="form-check-input" style="position:absolute; right:0;" type="checkbox" role="switch" id="mtumraporlar">
+                  </div>
+                  <div class="form-check form-switch pl-0">
+                    <label class="form-check-label" for="msatis">Satış</label>
+                    <input class="form-check-input" style="position:absolute; right:0;" type="checkbox" role="switch" id="msatis">
+                  </div>
+                  <div class="form-check form-switch pl-0">
+                    <label class="form-check-label" for="mtahsilat">Tahsilat</label>
+                    <input class="form-check-input" style="position:absolute; right:0;" type="checkbox" role="switch" id="mtahsilat">
+                  </div>
+                  <div class="form-check form-switch pl-0">
+                    <label class="form-check-label" for="mkapatilanhesap">Kapatılan hesapta işlem</label>
+                    <input class="form-check-input" style="position:absolute; right:0;" type="checkbox" role="switch" id="mkapatilanhesap">
+                  </div>
+                  <div class="form-check form-switch pl-0">
+                    <label class="form-check-label" for="miptal">Ürün İptali</label>
+                    <input class="form-check-input" style="position:absolute; right:0;" type="checkbox" role="switch" id="miptal">
+                  </div>
+                </div>
+                <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                  <div class="form-check form-switch pl-0">
+                    <label class="form-check-label" for="moraniskonto">Oran iskontosu</label>
+                    <input class="form-check-input" style="position:absolute; right:0;" type="checkbox" role="switch" id="moraniskonto">
+                  </div>
+                  <div class="form-check form-switch pl-0">
+                    <label class="form-check-label" for="mtutariskonto">Tutar iskontosu</label>
+                    <input class="form-check-input" style="position:absolute; right:0;" type="checkbox" role="switch" id="mtutariskonto">
+                  </div>
+                  <div class="form-check form-switch pl-0">
+                    <label class="form-check-label" for="mikram">İkram</label>
+                    <input class="form-check-input" style="position:absolute; right:0;" type="checkbox" role="switch" id="mikram">
+                  </div>
+                  <div class="form-check form-switch pl-0">
+                    <label class="form-check-label" for="mveresiye">Veresiye kapatma</label>
+                    <input class="form-check-input" style="position:absolute; right:0;" type="checkbox" role="switch" id="mveresiye">
+                  </div>
+                  <div class="form-check form-switch pl-0">
+                    <label class="form-check-label" for="mfiyatdegistirme">Fiyat değiştirme</label>
+                    <input class="form-check-input" style="position:absolute; right:0;" type="checkbox" role="switch" id="mfiyatdegistirme">
+                  </div>
+                  <div class="form-check form-switch pl-0">
+                    <label class="form-check-label" for="muruntasima">Ürün taşıma</label>
+                    <input class="form-check-input" style="position:absolute; right:0;" type="checkbox" role="switch" id="muruntasima">
+                  </div>
+                  <div class="form-check form-switch pl-0">
+                    <label class="form-check-label" for="mmasatasima">Masa taşıma</label>
+                    <input class="form-check-input" style="position:absolute; right:0;" type="checkbox" role="switch" id="mmasatasima">
+                  </div>
+                  <div class="form-check form-switch pl-0">
+                    <label class="form-check-label" for="mgelirnoktasi">Masa kilidi kaldır</label>
+                    <input class="form-check-input" style="position:absolute; right:0;" type="checkbox" role="switch" id="mgelirnoktasi">
+                  </div>
+                </div>
+                <div class="col-12 my-1 text-right mt-3">
+                  <button class='btn btn-primary py-1' onclick="kullaniciguncelle();">Kaydet</button>
+                </div>
+                
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+  <footer id="footer" class="main-footer">
+    <div class="float-right">
+      <button class='btn btn-primary py-0' data-bs-toggle='modal' data-bs-target='#kullaniciekleModal'>Kullanıcı Ekle</button>
+    </div>
+    <strong><a href="https://posula.com" style="color:royalblue">POSULA</a> &copy; 2023</strong>
+  </footer>
+
+  <!-- Control Sidebar -->
+  <aside class="control-sidebar control-sidebar-dark">
+    <!-- Control sidebar content goes here -->
+  </aside>
+  <!-- /.control-sidebar -->
+</div>
+<!-- ./wrapper -->
+
+
+<div class="loading-bar"></div>
+
+
+<!-- jQuery -->
+<script src="vendor/jquery/jquery-3.2.1.min.js"></script>
+<!-- Bootstrap 4 -->
+<script src="vendor/bootstrap-5/js/bootstrap.min.js"></script>
+
+<script src="vendor/bootstrap-5/js/bootstrap.bundle.min.js"></script>
+
+<script src="vendor/overlayScrollbars/js/OverlayScrollbars.min.js"></script>
+
+<script src="vendor/alertifyJS/alertify.min.js"></script>
+<!-- AdminLTE App -->
+<script src="js/adminlte.min.js"></script> "local
+
+<!-- DataTables  & Plugins -->
+<script src="vendor/datatables/jquery.dataTables.min.js"></script>
+<script src="vendor/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
+<script src="vendor/datatables-responsive/js/dataTables.responsive.min.js"></script>
+<script src="vendor/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
+<script src="vendor/datatables-buttons/js/dataTables.buttons.min.js"></script>
+<script src="vendor/datatables-buttons/js/buttons.bootstrap4.min.js"></script>
+<script src="vendor/jszip/jszip.min.js"></script>
+<script src="vendor/pdfmake/pdfmake.min.js"></script>
+<script src="vendor/pdfmake/vfs_fonts.js"></script>
+<script src="vendor/datatables-buttons/js/buttons.html5.min.js"></script>
+<script src="vendor/datatables-buttons/js/buttons.print.min.js"></script>
+<script src="vendor/datatables-buttons/js/buttons.colVis.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function () {
+
+  if (localStorage.pos_userno == "" || localStorage.pos_userno == null || localStorage.pos_userno == undefined) window.location = "index.html";
+  kullanicigetir();
+
+});
+
+function yetkisec(tip){
+
+  if (tip=="garson"){
+    document.getElementById("satisagiris").checked = true;
+    document.getElementById("satis").checked = true; 
+    document.getElementById("uruntasima").checked = true;
+    document.getElementById("masatasima").checked = true;
+  }
+  else if (tip=="kasiyer"){
+    document.getElementById("satisagiris").checked = true;
+    document.getElementById("kasaraporu").checked = true;
+    document.getElementById("tahsilat").checked = true;
+    document.getElementById("veresiye").checked = true;
+    document.getElementById("uruntasima").checked = true;
+    document.getElementById("masatasima").checked = true;
+  }
+  else if (tip=="yonetici"){
+    document.getElementById("yonetimegiris").checked = true;
+    document.getElementById("satisagiris").checked = true;
+    document.getElementById("kasaraporu").checked = true;
+    document.getElementById("tumraporlar").checked = true;
+    document.getElementById("satis").checked = true;
+    document.getElementById("tahsilat").checked = true;
+    document.getElementById("kapatilanhesap").checked = true;
+    document.getElementById("iptal").checked = true;
+    document.getElementById("oraniskonto").checked = true;
+    document.getElementById("tutariskonto").checked = true;
+    document.getElementById("ikram").checked = true;
+    document.getElementById("veresiye").checked = true;
+    document.getElementById("fiyatdegistirme").checked = true;
+    document.getElementById("uruntasima").checked = true;
+    document.getElementById("masatasima").checked = true;
+    document.getElementById("gelirnoktasi").checked = true;    
+  }
+  else if (tip=="iptal"){
+    document.getElementById("yonetimegiris").checked = false;
+    document.getElementById("satisagiris").checked = false;
+    document.getElementById("kasaraporu").checked = false;
+    document.getElementById("tumraporlar").checked = false;
+    document.getElementById("satis").checked = false;
+    document.getElementById("tahsilat").checked = false;
+    document.getElementById("kapatilanhesap").checked = false;
+    document.getElementById("iptal").checked = false;
+    document.getElementById("oraniskonto").checked = false;
+    document.getElementById("tutariskonto").checked = false;
+    document.getElementById("ikram").checked = false;
+    document.getElementById("veresiye").checked = false;
+    document.getElementById("fiyatdegistirme").checked = false;
+    document.getElementById("uruntasima").checked = false;
+    document.getElementById("masatasima").checked = false;
+    document.getElementById("gelirnoktasi").checked = false;
+  }
+}
+
+function kullanicigetir() {
+  
+  $.ajax({
+      type: 'post',
+      url: "https://pos.posula.com/api/pos/kullanicilistegetir",
+      dataType: 'json',
+      contentType: 'application/json; charset=utf-8',
+      beforeSend: function(){
+          $body = $('body'); 
+          $body.addClass('loading'); 
+      },
+      success: function (data, textStatus, xhr) {
+          if (xhr.status == "200")
+          {
+            var _html="<h6>Kayıtlı Kullanıcılar</h6><hr><table id='example1' class='table table-responsive-sm table-responsive-md table-bordered table-striped'><thead><tr><th style='width:20% !important;min-width:20% !important;max-width:20% !important;'>Kullanıcı No</th><th style='width:50% !important;min-width:50% !important;max-width:50% !important;'>Adı</th><th style='width:30% !important;min-width:30% !important;max-width:30% !important;'>İşlem</th></tr></thead><tbody>";
+            $.each(data,
+              function (key, item) {
+                  _html += "<tr><td class='py-1' style='width:20% !important;min-width:20% !important;max-width:20% !important;'>"+item.USERNO+"</td><td class='py-1' style='width:50% !important;min-width:50% !important;max-width:50% !important;'>"+item.ad+"</td><td class='py-1' style='width:30%;'><div class='dropdown'><button class='btn btn-primary dropdown-toggle btn-block py-0' type='button' data-bs-toggle='dropdown' aria-expanded='false'>İşlemler</button><ul class='dropdown-menu'><li><button class='dropdown-item' type='button' onclick='islem(`duzenle`, `"+item.USERNO+"`, `"+item.ad+"`);'>Düzenle</button></li><li><button class='dropdown-item' type='button' onclick='islem(`sil`, `"+item.USERNO+"`, `"+item.ad+"`);'>Kullanıcıyı Sil</button></li></ul></div></td></tr>";
+              });
+              _html += "</tbody></table>";
+              document.getElementById("tbl1").innerHTML = _html;
+              document.getElementById("tbl1").style.display='';
+
+              $("#example1").DataTable({
+                "paging": false,
+                  "lengthChange": false,
+                  "autoWidth": false,
+                  "buttons": ["excel", "pdf", "print", "colvis"],
+                  "sorting": false,
+                  "dom": "<'row'<'col-sm-12 col-md-6'f>>" +
+                          "<'row'<'col-sm-12'tr>>"
+              }).buttons().container();
+              
+          }
+        
+      },
+      complete: function(data){
+          $body = $('body'); 
+          $body.removeClass('loading'); 
+      },
+      error: function (hata) {
+      }
+  });
+
+}
+
+function islem(tip, userno, username){
+  if (tip == 'duzenle'){
+    document.getElementById("kullanicino").value=userno;
+    kullanicidetaygetir(userno);
+    $('#kullaniciguncelleModal').modal('show');
+  }
+  else{
+    alertify.confirm('UYARI',  username + ' isimli kullanıcıyı silmek istiyor musunuz?',
+     function(){ 
+      kullanicisil(userno);}, 
+      function(){ });
+  }
+}
+
+function kullaniciekle(tip){
+  var ad = document.getElementById("ad").value;
+  var sifre = document.getElementById("sifre").value;
+  var yonetimegiris = "0";
+  if (document.getElementById("yonetimegiris").checked) yonetimegiris = "1";
+  var satisagiris = "0";
+  if (document.getElementById("satisagiris").checked) satisagiris = "1";
+  var kasaraporu = "0";
+  if (document.getElementById("kasaraporu").checked) kasaraporu = "1";
+  var tumraporlar = "0";
+  if (document.getElementById("tumraporlar").checked) tumraporlar = "1";
+  var satis = "0";
+  if (document.getElementById("satis").checked) satis = "1";
+  var tahsilat = "0";
+  if (document.getElementById("tahsilat").checked) tahsilat = "1";
+  var kapatilanhesap = "0";
+  if (document.getElementById("kapatilanhesap").checked) kapatilanhesap = "1";
+  var iptal = "0";
+  if (document.getElementById("iptal").checked) iptal = "1";
+  var oraniskonto = "0";
+  if (document.getElementById("oraniskonto").checked) oraniskonto = "1";
+  var tutariskonto = "0";
+  if (document.getElementById("tutariskonto").checked) tutariskonto = "1";
+  var ikram = "0";
+  if (document.getElementById("ikram").checked) ikram = "1";
+  var veresiye = "0";
+  if (document.getElementById("veresiye").checked) veresiye = "1";
+  var fiyatdegistirme = "0";
+  if (document.getElementById("fiyatdegistirme").checked) fiyatdegistirme = "1";
+  var uruntasima = "0";
+  if (document.getElementById("uruntasima").checked) uruntasima = "1";
+  var masatasima = "0";
+  if (document.getElementById("masatasima").checked) masatasima = "1";
+  var gelirnoktasi = "0";
+  if (document.getElementById("gelirnoktasi").checked) gelirnoktasi = "1";
+  
+  if (sifre!="" && ad != ""){
+    $.ajax({
+        type: 'post',
+        url: "https://pos.posula.com/api/pos/kullaniciekle",
+        dataType: 'json',
+        contentType: 'application/json; charset=utf-8',
+        data: JSON.stringify({ sifre: sifre, ad: ad, yonetimegiris: yonetimegiris, satisagiris: satisagiris, kasaraporu: kasaraporu, tumraporlar: tumraporlar, satis: satis, tahsilat: tahsilat, kapatilanhesap: kapatilanhesap, iptal: iptal, oraniskonto: oraniskonto, tutariskonto: tutariskonto, ikram: ikram, veresiye: veresiye, fiyatdegistirme: fiyatdegistirme, uruntasima: uruntasima, masatasima: masatasima, gelirnoktasi: gelirnoktasi }),
+        beforeSend: function(){
+            $body = $('body'); 
+            $body.addClass('loading'); 
+        },
+        success: function (data, textStatus, xhr) {
+            if (xhr.status == "200")
+            {
+              if (data == "OK")
+              {
+                kullanicigetir();
+                alertify.success("Kullanıcı eklendi");
+                if (tip == "devam"){
+                  document.getElementById("ad").value = "";
+                  document.getElementById("sifre").value = "";
+                }
+                else{
+                  temizle();
+                  $('#kullaniciekleModal').modal('hide');
+                  $('.modal-backdrop').remove()
+                  $(document.body).removeClass("modal-open");
+                }
+  
+              }
+              else alertify.error("Kullanıcı eklenemedi");
+                
+            }
+          
+        },
+        complete: function(data){
+            $body = $('body'); 
+            $body.removeClass('loading'); 
+        },
+        error: function (hata) {
+          alertify.error("Kullanıcı eklenemedi");
+        }
+    });
+  }
+  else{
+    alertify.error("Ad ve şifre bilgisi zorunludur");
+  }
+
+    
+}
+
+function kullanicisil(userno){
+
+  $.ajax({
+        type: 'post',
+        url: "https://pos.posula.com/api/pos/kullanicisil",
+        dataType: 'json',
+        contentType: 'application/json; charset=utf-8',
+        data: JSON.stringify({ userno: userno }),
+        beforeSend: function(){
+            $body = $('body'); 
+            $body.addClass('loading'); 
+        },
+        success: function (data, textStatus, xhr) {
+            if (xhr.status == "200")
+            {
+              if (data == "OK")
+              {
+                kullanicigetir();
+                alertify.success("Kullanıcı silindi");  
+              }
+              else alertify.error("Kullanıcı silinemedi");
+                
+            }
+          
+        },
+        complete: function(data){
+            $body = $('body'); 
+            $body.removeClass('loading'); 
+        },
+        error: function (hata) {
+          alertify.error("Kullanıcı silinemedi");
+        }
+    });
+
+}
+
+
+function temizle(){
+  document.getElementById("ad").value = "";
+  document.getElementById("sifre").value = "";
+}
+
+
+function kullanicidetaygetir(kullanicino){
+  
+    $.ajax({
+        type: 'post',
+        url: "https://pos.posula.com/api/pos/kullanicidetaygetir",
+        dataType: 'json',
+        contentType: 'application/json; charset=utf-8',
+        data: JSON.stringify({ kullanicino: kullanicino }),
+        beforeSend: function(){
+            $body = $('body'); 
+            $body.addClass('loading'); 
+        },
+        success: function (data, textStatus, xhr) {
+            if (xhr.status == "200")
+            {
+              if (data.length > 0)
+              {
+                document.getElementById("mad").value = data[0]["ad"];
+                document.getElementById("msifre").value = data[0]["sifre"];
+                if (data[0]["yonetimegiris"]=="1") document.getElementById("myonetimegiris").checked = true;
+                else document.getElementById("myonetimegiris").checked = false;
+                if (data[0]["satisagiris"]=="1") document.getElementById("msatisagiris").checked = true;
+                else document.getElementById("msatisagiris").checked = false;
+                if (data[0]["kasaraporu"]=="1") document.getElementById("mkasaraporu").checked = true;
+                else document.getElementById("mkasaraporu").checked = false;
+                if (data[0]["tumraporlar"]=="1") document.getElementById("mtumraporlar").checked = true;
+                else document.getElementById("mtumraporlar").checked = false;
+                if (data[0]["satis"]=="1") document.getElementById("msatis").checked = true;
+                else document.getElementById("msatis").checked = false;
+                if (data[0]["tahsilat"]=="1") document.getElementById("mtahsilat").checked = true;
+                else document.getElementById("mtahsilat").checked = false;
+                if (data[0]["kapatilanhesaptaislem"]=="1") document.getElementById("mkapatilanhesap").checked = true;
+                else document.getElementById("mkapatilanhesap").checked = false;
+                if (data[0]["uruniptali"]=="1") document.getElementById("miptal").checked = true;
+                else document.getElementById("miptal").checked = false;
+                if (data[0]["oraniskonto"]=="1") document.getElementById("moraniskonto").checked = true;
+                else document.getElementById("moraniskonto").checked = false;
+                if (data[0]["tutariskonto"]=="1") document.getElementById("mtutariskonto").checked = true;
+                else document.getElementById("mtutariskonto").checked = false;
+                if (data[0]["ikram"]=="1") document.getElementById("mikram").checked = true;
+                else document.getElementById("mikram").checked = false;
+                if (data[0]["veresiyekapatma"]=="1") document.getElementById("mveresiye").checked = true;
+                else document.getElementById("mveresiye").checked = false;
+                if (data[0]["fiyatdegistirme"]=="1") document.getElementById("mfiyatdegistirme").checked = true;
+                else document.getElementById("mfiyatdegistirme").checked = false;
+                if (data[0]["uruntasima"]=="1") document.getElementById("muruntasima").checked = true;
+                else document.getElementById("muruntasima").checked = false;
+                if (data[0]["masatasima"]=="1") document.getElementById("mmasatasima").checked = true;
+                else document.getElementById("mmasatasima").checked = false;
+                if (data[0]["gelirnoktasitanimlama"]=="1") document.getElementById("mgelirnoktasi").checked = true;
+                else document.getElementById("mgelirnoktasi").checked = false;
+  
+              }
+                
+            }
+          
+        },
+        complete: function(data){
+            $body = $('body'); 
+            $body.removeClass('loading'); 
+        },
+        error: function (hata) {
+          alertify.error("Kullanıcı eklenemedi");
+        }
+    });
+}
+
+
+function kullaniciguncelle(){
+  var ad = document.getElementById("mad").value;
+  var sifre = document.getElementById("msifre").value;
+  var kullanicino = document.getElementById("kullanicino").value;
+  var yonetimegiris = "0";
+  if (document.getElementById("myonetimegiris").checked) yonetimegiris = "1";
+  var satisagiris = "0";
+  if (document.getElementById("msatisagiris").checked) satisagiris = "1";
+  var kasaraporu = "0";
+  if (document.getElementById("mkasaraporu").checked) kasaraporu = "1";
+  var tumraporlar = "0";
+  if (document.getElementById("mtumraporlar").checked) tumraporlar = "1";
+  var satis = "0";
+  if (document.getElementById("msatis").checked) satis = "1";
+  var tahsilat = "0";
+  if (document.getElementById("mtahsilat").checked) tahsilat = "1";
+  var kapatilanhesap = "0";
+  if (document.getElementById("mkapatilanhesap").checked) kapatilanhesap = "1";
+  var iptal = "0";
+  if (document.getElementById("miptal").checked) iptal = "1";
+  var oraniskonto = "0";
+  if (document.getElementById("moraniskonto").checked) oraniskonto = "1";
+  var tutariskonto = "0";
+  if (document.getElementById("mtutariskonto").checked) tutariskonto = "1";
+  var ikram = "0";
+  if (document.getElementById("mikram").checked) ikram = "1";
+  var veresiye = "0";
+  if (document.getElementById("mveresiye").checked) veresiye = "1";
+  var fiyatdegistirme = "0";
+  if (document.getElementById("mfiyatdegistirme").checked) fiyatdegistirme = "1";
+  var uruntasima = "0";
+  if (document.getElementById("muruntasima").checked) uruntasima = "1";
+  var masatasima = "0";
+  if (document.getElementById("mmasatasima").checked) masatasima = "1";
+  var gelirnoktasi = "0";
+  if (document.getElementById("mgelirnoktasi").checked) gelirnoktasi = "1";
+  
+    $.ajax({
+        type: 'post',
+        url: "https://pos.posula.com/api/pos/kullaniciguncelle",
+        dataType: 'json',
+        contentType: 'application/json; charset=utf-8',
+        data: JSON.stringify({ kullanicino: kullanicino, sifre: sifre, ad: ad, yonetimegiris: yonetimegiris, satisagiris: satisagiris, kasaraporu: kasaraporu, tumraporlar: tumraporlar, satis: satis, tahsilat: tahsilat, kapatilanhesap: kapatilanhesap, iptal: iptal, oraniskonto: oraniskonto, tutariskonto: tutariskonto, ikram: ikram, veresiye: veresiye, fiyatdegistirme: fiyatdegistirme, uruntasima: uruntasima, masatasima: masatasima, gelirnoktasi: gelirnoktasi }),
+        beforeSend: function(){
+            $body = $('body'); 
+            $body.addClass('loading'); 
+        },
+        success: function (data, textStatus, xhr) {
+            if (xhr.status == "200")
+            {
+              if (data == "OK")
+              {
+                kullanicigetir();
+                alertify.success("Kullanıcı güncellendi");
+              }
+              else alertify.error("Kullanıcı güncellenemedi");
+                
+            }
+          
+        },
+        complete: function(data){
+            $body = $('body'); 
+            $body.removeClass('loading'); 
+        },
+        error: function (hata) {
+          alertify.error("Kullanıcı güncellenemedi");
+        }
+    });
+}
+</script>
+
+</body>
+</html>
